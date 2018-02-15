@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace ZendTest\ContainerTest;
 
+use Zend\ContainerTest\AliasTestTrait;
 use Zend\ContainerTest\ContainerTest;
 use Zend\ContainerTest\FactoryTestTrait;
 use Zend\ContainerTest\InvokableTestTrait;
@@ -16,6 +17,7 @@ use Zend\ContainerTest\SharedTestTrait;
 
 abstract class BaseContainerTest extends ContainerTest
 {
+    use AliasTestTrait;
     use FactoryTestTrait;
     use InvokableTestTrait;
     use SharedTestTrait;
