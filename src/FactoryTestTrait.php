@@ -19,6 +19,15 @@ trait FactoryTestTrait
         yield 'invokable' => [['factories' => ['service' => TestAsset\Factory::class]]];
         yield 'invokable-array' => [['factories' => ['service' => [TestAsset\FactoryStatic::class, 'create']]]];
         yield 'invokable-string' => [['factories' => ['service' => TestAsset\FactoryStatic::class . '::create']]];
+        yield 'invokable-callback' => [
+            [
+                'factories' => [
+                    'service' => function () {
+                        return new TestAsset\Service();
+                    },
+                ],
+            ],
+        ];
     }
 
     /**
