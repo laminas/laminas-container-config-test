@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace Zend\ContainerTest;
 
 use Generator;
+use Psr\Container\NotFoundExceptionInterface;
 
 trait FactoryTestTrait
 {
@@ -18,12 +19,6 @@ trait FactoryTestTrait
         yield 'invokable' => [['factories' => ['service' => TestAsset\Factory::class]]];
         yield 'invokable-array' => [['factories' => ['service' => [TestAsset\FactoryStatic::class, 'create']]]];
         yield 'invokable-string' => [['factories' => ['service' => TestAsset\FactoryStatic::class . '::create']]];
-        yield 'alias' => [
-            [
-                'factories' => ['service' => 'factory'],
-                'services' => ['factory' => new TestAsset\Factory()],
-            ]
-        ];
     }
 
     /**
@@ -61,5 +56,18 @@ trait FactoryTestTrait
         self::assertGreaterThanOrEqual(2, $args);
         self::assertSame($container, array_shift($args));
         self::assertEquals('service', array_shift($args));
+    }
+
+    public function testFactoryUsesAliasToService() : void
+    {
+        $container = $this->createContainer([
+            'factories' => ['service' => 'factory'],
+            'services' => ['factory' => new TestAsset\Factory()],
+        ]);
+
+        self::assertTrue($container->has('service'));
+
+        $this->expectException(NotFoundExceptionInterface::class);
+        $container->get('service');
     }
 }
