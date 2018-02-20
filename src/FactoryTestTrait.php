@@ -46,11 +46,14 @@ trait FactoryTestTrait
         yield 'invokable' => [['factories' => ['service' => TestAsset\FactoryWithName::class]]];
         yield 'invokable-array' => [['factories' => ['service' => [TestAsset\FactoryStatic::class, 'withName']]]];
         yield 'invokable-string' => [['factories' => ['service' => TestAsset\FactoryStatic::class . '::withName']]];
-        yield 'alias' => [
+        yield 'invokable-callback' => [
             [
-                'factories' => ['service' => 'factory'],
-                'services' => ['factory' => new TestAsset\FactoryWithName()],
-            ]
+                'factories' => [
+                    'service' => function () {
+                        return func_get_args();
+                    },
+                ],
+            ],
         ];
     }
 
