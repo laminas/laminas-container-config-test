@@ -98,11 +98,11 @@ trait DelegatorTestTrait
 
         $container = $this->createContainer($config);
 
-        self::assertTrue($container->has('foo-bar'));
-        $delegator = $container->get('foo-bar');
+        self::assertTrue($container->has('alias'));
+        $delegator = $container->get('alias');
         self::assertInstanceOf(TestAsset\Delegator::class, $delegator);
         self::assertInstanceOf(TestAsset\Service::class, ($delegator->callback)());
-        self::assertSame($delegator, $container->get('foo-bar'));
+        self::assertSame($delegator, $container->get('alias'));
     }
 
     public function testDelegatorForAliasService() : void
@@ -124,11 +124,11 @@ trait DelegatorTestTrait
 
         $container = $this->createContainer($config);
 
-        self::assertTrue($container->has('foo-bar'));
-        $delegator = $container->get('foo-bar');
+        self::assertTrue($container->has('alias'));
+        $delegator = $container->get('alias');
         self::assertInstanceOf(TestAsset\Delegator::class, $delegator);
         self::assertSame($myService, ($delegator->callback)());
-        self::assertSame($delegator, $container->get('foo-bar'));
+        self::assertSame($delegator, $container->get('alias'));
     }
 
     public function testDelegatorForAliasFactory() : void
@@ -149,11 +149,11 @@ trait DelegatorTestTrait
 
         $container = $this->createContainer($config);
 
-        self::assertTrue($container->has('foo-bar'));
-        $delegator = $container->get('foo-bar');
+        self::assertTrue($container->has('alias'));
+        $delegator = $container->get('alias');
         self::assertInstanceOf(TestAsset\Delegator::class, $delegator);
         self::assertInstanceOf(TestAsset\Service::class, ($delegator->callback)());
-        self::assertSame($delegator, $container->get('foo-bar'));
+        self::assertSame($delegator, $container->get('alias'));
     }
 
     public function delegatorService() : Generator
