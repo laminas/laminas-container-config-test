@@ -16,24 +16,24 @@ trait FactoryTestTrait
 {
     public function factory() : Generator
     {
-        yield 'invokable' => [['factories' => ['service' => TestAsset\Factory::class]]];
-        yield 'invokable-array' => [['factories' => ['service' => [TestAsset\FactoryStatic::class, 'create']]]];
-        yield 'invokable-string' => [['factories' => ['service' => TestAsset\FactoryStatic::class . '::create']]];
-        yield 'invokable-callback' => [
-            [
-                'factories' => [
-                    'service' => function () {
-                        return new TestAsset\Service();
-                    },
-                ],
+        yield 'function-name'        => [['factories' => ['service' => __NAMESPACE__ . '\TestAsset\factory']]];
+        yield 'invokable-class-name' => [['factories' => ['service' => TestAsset\Factory::class]]];
+        yield 'invokable-instance'   => [['factories' => ['service' => new TestAsset\Factory()]]];
+        yield 'callable-array'       => [['factories' => ['service' => [TestAsset\FactoryStatic::class, 'create']]]];
+        yield 'callable-string'      => [['factories' => ['service' => TestAsset\FactoryStatic::class . '::create']]];
+        yield 'closure'   => [[
+            'factories' => [
+                'service' => function () {
+                    return new TestAsset\Service();
+                },
             ],
-        ];
+        ]];
     }
 
     /**
      * @dataProvider factory
      */
-    public function testFactory(array $config) : void
+    public function testFactoryIsUsedToProduceService(array $config) : void
     {
         $container = $this->createContainer($config);
 
@@ -45,10 +45,12 @@ trait FactoryTestTrait
 
     public function factoryWithName() : Generator
     {
-        yield 'invokable' => [['factories' => ['service' => TestAsset\FactoryWithName::class]]];
-        yield 'invokable-array' => [['factories' => ['service' => [TestAsset\FactoryStatic::class, 'withName']]]];
-        yield 'invokable-string' => [['factories' => ['service' => TestAsset\FactoryStatic::class . '::withName']]];
-        yield 'invokable-callback' => [
+        yield 'function-name'        => [['factories' => ['service' => __NAMESPACE__ . '\TestAsset\factoryWithName']]];
+        yield 'invokable-class-name' => [['factories' => ['service' => TestAsset\FactoryWithName::class]]];
+        yield 'invokable-instance'   => [['factories' => ['service' => new TestAsset\FactoryWithName()]]];
+        yield 'callable-array'       => [['factories' => ['service' => [TestAsset\FactoryStatic::class, 'withName']]]];
+        yield 'callable-string'      => [['factories' => ['service' => TestAsset\FactoryStatic::class . '::withName']]];
+        yield 'closure' => [
             [
                 'factories' => [
                     'service' => function () {
@@ -62,7 +64,7 @@ trait FactoryTestTrait
     /**
      * @dataProvider factoryWithName
      */
-    public function testFactoryGetsServiceName(array $config) : void
+    public function testFactoryIsProvidedContainerAndServiceNameAsArguments(array $config) : void
     {
         $container = $this->createContainer($config);
 
@@ -72,7 +74,7 @@ trait FactoryTestTrait
         self::assertEquals('service', array_shift($args));
     }
 
-    public function testFactoryUsesAliasToService() : void
+    public function testFactoryReferencingAServiceWillResultInExceptionDuringRetrieval() : void
     {
         $container = $this->createContainer([
             'factories' => ['service' => 'factory'],
