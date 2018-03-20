@@ -1,6 +1,6 @@
 {
     "name": "zendframework/zend-container-config-test",
-    "description": "Expressive PSR-11 Container configuration tests",
+    "description": "Expressive PSR-11 container configuration tests",
     "license": "BSD-3-Clause",
     "keywords": [
         "expressive",
@@ -43,10 +43,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "1.0-dev"
-        },
-        "zf": {
-            "config-provider": "Zend\\ContainerTest\\ConfigProvider"
+            "dev-master": "1.0.x-dev"
         }
     },
     "scripts": {
