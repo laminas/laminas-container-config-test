@@ -11,7 +11,6 @@
         "psr-11"
     ],
     "support": {
-        "docs": "https://docs.zendframework.com/zend-container-config-test/",
         "issues": "https://github.com/zendframework/zend-container-config-test/issues",
         "source": "https://github.com/zendframework/zend-container-config-test",
         "rss": "https://github.com/zendframework/zend-container-config-test/releases.atom",
