@@ -42,6 +42,5 @@ following traits into your test case:
 - `Zend\ContainerTest\FactoryTestTrait` - to support `factories` configuration,
 - `Zend\ContainerTest\InvokableTestTrait` - to support `invokables` configuration,
 - `Zend\ContainerTest\ServiceTestTrait` - to support `services` configuration,
-- `Zend\ContainerTest\SharedTestTrait` - to support `shared` and `shared_by_default` configurations,
 
 or use `Zend\ContainerTest\AllTestTrait` to support whole `zend-servicemanager` configuration.

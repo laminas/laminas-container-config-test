@@ -16,5 +16,4 @@ trait AllTestTrait
     use FactoryTestTrait;
     use InvokableTestTrait;
     use ServiceTestTrait;
-    use SharedTestTrait;
 }
