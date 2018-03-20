@@ -20,13 +20,15 @@ trait AliasTestTrait
                 'aliases' => ['alias' => 'service'],
                 'services' => ['service' => new TestAsset\Service()],
             ],
+            'service',
         ];
 
         yield 'alias-invokable' => [
             [
-                'aliases' => ['alias' => 'service'],
-                'invokables' => ['service' => TestAsset\Service::class],
+                'aliases' => ['alias' => TestAsset\Service::class],
+                'invokables' => [TestAsset\Service::class => TestAsset\Service::class],
             ],
+            TestAsset\Service::class,
         ];
 
         yield 'alias-factory' => [
@@ -34,20 +36,7 @@ trait AliasTestTrait
                 'aliases' => ['alias' => 'service'],
                 'factories' => ['service' => TestAsset\Factory::class],
             ],
-        ];
-
-        yield 'alias-delegator' => [
-            [
-                'aliases' => ['alias' => 'service'],
-                'factories' => [
-                    'service' => TestAsset\Factory::class,
-                ],
-                'delegators' => [
-                    'service' => [
-                        TestAsset\DelegatorFactory::class,
-                    ],
-                ],
-            ],
+            'service',
         ];
 
         yield 'alias-alias-service' => [
@@ -60,18 +49,20 @@ trait AliasTestTrait
                     'service' => new TestAsset\Service(),
                 ],
             ],
+            'service',
         ];
 
         yield 'alias-alias-invokable' => [
             [
                 'aliases' => [
                     'alias' => 'alias2',
-                    'alias2' => 'service',
+                    'alias2' => TestAsset\Service::class,
                 ],
                 'invokables' => [
-                    'service' => TestAsset\Service::class,
+                    TestAsset\Service::class => TestAsset\Service::class,
                 ],
             ],
+            TestAsset\Service::class,
         ];
 
         yield 'alias-alias-factory' => [
@@ -84,47 +75,35 @@ trait AliasTestTrait
                     'service' => TestAsset\Factory::class,
                 ],
             ],
-        ];
-
-        yield 'alias-alias-delegator' => [
-            [
-                'aliases' => [
-                    'alias' => 'alias2',
-                    'alias2' => 'service',
-                ],
-                'factories' => [
-                    'service' => TestAsset\Factory::class,
-                ],
-                'delegators' => [
-                    'service' => [
-                        TestAsset\DelegatorFactory::class,
-                    ],
-                ],
-            ],
+            'service',
         ];
     }
 
     /**
      * @dataProvider alias
      */
-    public function testAliasGetServiceFirst(array $config) : void
-    {
+    public function testRetrievingServiceByNameBeforeAliasOfServiceResultsInSameInstance(
+        array $config,
+        string $serviceToTest
+    ) : void {
         $container = $this->createContainer($config);
 
-        self::assertTrue($container->has('service'));
+        self::assertTrue($container->has($serviceToTest));
         self::assertTrue($container->has('alias'));
-        self::assertSame($container->get('service'), $container->get('alias'));
+        self::assertSame($container->get($serviceToTest), $container->get('alias'));
     }
 
     /**
      * @dataProvider alias
      */
-    public function testAliasGetAliasFirst(array $config) : void
-    {
+    public function testRetrievingAliasedServiceBeforeResolvedServiceResultsInSameInstance(
+        array $config,
+        string $serviceToTest
+    ) : void {
         $container = $this->createContainer($config);
 
         self::assertTrue($container->has('alias'));
-        self::assertTrue($container->has('service'));
-        self::assertSame($container->get('alias'), $container->get('service'));
+        self::assertTrue($container->has($serviceToTest));
+        self::assertSame($container->get('alias'), $container->get($serviceToTest));
     }
 }
