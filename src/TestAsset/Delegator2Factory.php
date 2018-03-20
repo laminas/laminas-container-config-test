@@ -7,14 +7,8 @@
 
 declare(strict_types=1);
 
-namespace Zend\ContainerTest;
+namespace Zend\ContainerTest\TestAsset;
 
-trait AllTestTrait
+class Delegator2Factory extends Delegator1Factory
 {
-    use AliasTestTrait;
-    use DelegatorTestTrait;
-    use FactoryTestTrait;
-    use InvokableTestTrait;
-    use ServiceTestTrait;
-    use SharedTestTrait;
 }

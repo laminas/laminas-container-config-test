@@ -38,6 +38,7 @@ Then, depends what functionality you'd like to support, you can add the
 following traits into your test case:
 
 - `Zend\ContainerTest\AliasTestTrait` - to support `aliases` configuration,
+- `Zend\ContainerTest\DelegatorTestTrait` - to support `delegators` configuration,
 - `Zend\ContainerTest\FactoryTestTrait` - to support `factories` configuration,
 - `Zend\ContainerTest\InvokableTestTrait` - to support `invokables` configuration,
 - `Zend\ContainerTest\ServiceTestTrait` - to support `services` configuration,

@@ -7,14 +7,17 @@
 
 declare(strict_types=1);
 
-namespace Zend\ContainerTest;
+namespace Zend\ContainerTest\TestAsset;
 
-trait AllTestTrait
+use Psr\Container\ContainerInterface;
+
+class Delegator1Factory
 {
-    use AliasTestTrait;
-    use DelegatorTestTrait;
-    use FactoryTestTrait;
-    use InvokableTestTrait;
-    use ServiceTestTrait;
-    use SharedTestTrait;
+    public function __invoke(ContainerInterface $container, $name, callable $callback)
+    {
+        $service = $callback();
+        $service->inject(static::class);
+
+        return $service;
+    }
 }
