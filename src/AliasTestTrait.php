@@ -15,17 +15,92 @@ trait AliasTestTrait
 {
     public function alias() : Generator
     {
+        yield 'alias-service' => [
+            [
+                'aliases' => ['alias' => 'service'],
+                'services' => ['service' => new TestAsset\Service()],
+            ],
+        ];
+
         yield 'alias-invokable' => [
             [
                 'aliases' => ['alias' => 'service'],
                 'invokables' => ['service' => TestAsset\Service::class],
-            ]
+            ],
         ];
+
         yield 'alias-factory' => [
             [
                 'aliases' => ['alias' => 'service'],
                 'factories' => ['service' => TestAsset\Factory::class],
-            ]
+            ],
+        ];
+
+        yield 'alias-delegator' => [
+            [
+                'aliases' => ['alias' => 'service'],
+                'factories' => [
+                    'service' => TestAsset\Factory::class,
+                ],
+                'delegators' => [
+                    'service' => [
+                        TestAsset\DelegatorFactory::class,
+                    ],
+                ],
+            ],
+        ];
+
+        yield 'alias-alias-service' => [
+            [
+                'aliases' => [
+                    'alias' => 'alias2',
+                    'alias2' => 'service',
+                ],
+                'services' => [
+                    'service' => new TestAsset\Service(),
+                ],
+            ],
+        ];
+
+        yield 'alias-alias-invokable' => [
+            [
+                'aliases' => [
+                    'alias' => 'alias2',
+                    'alias2' => 'service',
+                ],
+                'invokables' => [
+                    'service' => TestAsset\Service::class,
+                ],
+            ],
+        ];
+
+        yield 'alias-alias-factory' => [
+            [
+                'aliases' => [
+                    'alias' => 'alias2',
+                    'alias2' => 'service',
+                ],
+                'factories' => [
+                    'service' => TestAsset\Factory::class,
+                ],
+            ],
+        ];
+
+        yield 'alias-alias-delegator' => [
+            [
+                'aliases' => [
+                    'alias' => 'alias2',
+                    'alias2' => 'service',
+                ],
+                'factories' => [
+                    'service' => TestAsset\Factory::class,
+                ],
+                'delegators' => [
+                    'service' => [
+                        TestAsset\DelegatorFactory::class,
+                    ],
+                ],
+            ],
         ];
     }
 
