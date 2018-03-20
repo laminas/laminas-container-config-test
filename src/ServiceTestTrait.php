@@ -11,7 +11,7 @@ namespace Zend\ContainerTest;
 
 trait ServiceTestTrait
 {
-    public function testService()
+    public function testService() : void
     {
         $service = new TestAsset\Service();
         $config = [

@@ -9,9 +9,11 @@ declare(strict_types=1);
 
 namespace Zend\ContainerTest;
 
+use Generator;
+
 trait DelegatorTestTrait
 {
-    public function testDelegatorForInvokable()
+    public function testDelegatorForInvokable() : void
     {
         $config = [
             'invokables' => [
@@ -30,9 +32,10 @@ trait DelegatorTestTrait
         $delegator = $container->get('foo-bar');
         self::assertInstanceOf(TestAsset\Delegator::class, $delegator);
         self::assertInstanceOf(TestAsset\Service::class, ($delegator->callback)());
+        self::assertSame($delegator, $container->get('foo-bar'));
     }
 
-    public function testDelegatorForService()
+    public function testDelegatorForService() : void
     {
         $myService = new TestAsset\Service();
         $config = [
@@ -52,9 +55,10 @@ trait DelegatorTestTrait
         $delegator = $container->get('foo-bar');
         self::assertInstanceOf(TestAsset\Delegator::class, $delegator);
         self::assertSame($myService, ($delegator->callback)());
+        self::assertSame($delegator, $container->get('foo-bar'));
     }
 
-    public function testDelegatorForFactory()
+    public function testDelegatorForFactory() : void
     {
         $config = [
             'factories' => [
@@ -73,9 +77,10 @@ trait DelegatorTestTrait
         $delegator = $container->get('foo-bar');
         self::assertInstanceOf(TestAsset\Delegator::class, $delegator);
         self::assertInstanceOf(TestAsset\Service::class, ($delegator->callback)());
+        self::assertSame($delegator, $container->get('foo-bar'));
     }
 
-    public function testDelegatorForAliasInvokable()
+    public function testDelegatorForAliasInvokable() : void
     {
         $config = [
             'aliases' => [
@@ -97,9 +102,10 @@ trait DelegatorTestTrait
         $delegator = $container->get('foo-bar');
         self::assertInstanceOf(TestAsset\Delegator::class, $delegator);
         self::assertInstanceOf(TestAsset\Service::class, ($delegator->callback)());
+        self::assertSame($delegator, $container->get('foo-bar'));
     }
 
-    public function testDelegatorForAliasService()
+    public function testDelegatorForAliasService() : void
     {
         $myService = new TestAsset\Service();
         $config = [
@@ -122,9 +128,10 @@ trait DelegatorTestTrait
         $delegator = $container->get('foo-bar');
         self::assertInstanceOf(TestAsset\Delegator::class, $delegator);
         self::assertSame($myService, ($delegator->callback)());
+        self::assertSame($delegator, $container->get('foo-bar'));
     }
 
-    public function testDelegatorForAliasFactory()
+    public function testDelegatorForAliasFactory() : void
     {
         $config = [
             'aliases' => [
@@ -146,9 +153,10 @@ trait DelegatorTestTrait
         $delegator = $container->get('foo-bar');
         self::assertInstanceOf(TestAsset\Delegator::class, $delegator);
         self::assertInstanceOf(TestAsset\Service::class, ($delegator->callback)());
+        self::assertSame($delegator, $container->get('foo-bar'));
     }
 
-    public function delegatorService()
+    public function delegatorService() : Generator
     {
         yield 'invokable' => [
             [
@@ -172,7 +180,7 @@ trait DelegatorTestTrait
     /**
      * @dataProvider delegatorService
      */
-    public function testDelegatorMultipleDelegators(array $config)
+    public function testDelegatorMultipleDelegators(array $config) : void
     {
         $config += [
             'delegators' => [
@@ -195,5 +203,6 @@ trait DelegatorTestTrait
             ],
             $service->injected
         );
+        self::assertSame($service, $container->get('foo-bar'));
     }
 }

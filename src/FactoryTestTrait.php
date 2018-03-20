@@ -38,7 +38,9 @@ trait FactoryTestTrait
         $container = $this->createContainer($config);
 
         self::assertTrue($container->has('service'));
-        self::assertInstanceOf(TestAsset\Service::class, $container->get('service'));
+        $service = $container->get('service');
+        self::assertInstanceOf(TestAsset\Service::class, $service);
+        self::assertSame($service, $container->get('service'));
     }
 
     public function factoryWithName() : Generator

@@ -44,5 +44,6 @@ trait InvokableTestTrait
         $originService = $container->get(TestAsset\Service::class);
         self::assertInstanceOf(TestAsset\Service::class, $originService);
         self::assertSame($service, $originService);
+        self::assertSame($originService, $container->get(TestAsset\Service::class));
     }
 }
