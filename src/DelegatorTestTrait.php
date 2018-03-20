@@ -175,6 +175,27 @@ trait DelegatorTestTrait
                 'factories' => ['foo-bar' => TestAsset\Factory::class],
             ],
         ];
+
+        yield 'alias-invokable' => [
+            [
+                'aliases' => ['foo-bar' => 'alias'],
+                'invokables' => ['alias' => TestAsset\Service::class],
+            ],
+        ];
+
+        yield 'alias-service' => [
+            [
+                'aliases' => ['foo-bar' => 'alias'],
+                'services' => ['alias' => new TestAsset\Service()],
+            ],
+        ];
+
+        yield 'alias-factory' => [
+            [
+                'aliases' => ['foo-bar' => 'alias'],
+                'factories' => ['alias' => TestAsset\Factory::class],
+            ],
+        ];
     }
 
     /**
