@@ -1,5 +1,5 @@
 {
-    "name": "zendframework/zend-container-test",
+    "name": "zendframework/zend-container-config-test",
     "description": "Expressive PSR-11 Container configuration tests",
     "license": "BSD-3-Clause",
     "keywords": [
@@ -11,10 +11,10 @@
         "psr-11"
     ],
     "support": {
-        "docs": "https://docs.zendframework.com/zend-container-test/",
-        "issues": "https://github.com/zendframework/zend-container-test/issues",
-        "source": "https://github.com/zendframework/zend-container-test",
-        "rss": "https://github.com/zendframework/zend-container-test/releases.atom",
+        "docs": "https://docs.zendframework.com/zend-container-config-test/",
+        "issues": "https://github.com/zendframework/zend-container-config-test/issues",
+        "source": "https://github.com/zendframework/zend-container-config-test",
+        "rss": "https://github.com/zendframework/zend-container-config-test/releases.atom",
         "slack": "https://zendframework-slack.herokuapp.com",
         "forum": "https://discourse.zendframework.com/c/questions/expressive"
     },
@@ -31,12 +31,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Zend\\ContainerTest\\": "src/"
+            "Zend\\ContainerConfigTest\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "ZendTest\\ContainerTest\\": "test/"
+            "ZendTest\\ContainerConfigTest\\": "test/"
         }
     },
     "config": {

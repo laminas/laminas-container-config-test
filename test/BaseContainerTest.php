@@ -1,16 +1,16 @@
 <?php
 /**
- * @see       https://github.com/zendframework/zend-container-test for the canonical source repository
+ * @see       https://github.com/zendframework/zend-container-config-test for the canonical source repository
  * @copyright Copyright (c) 2018 Zend Technologies USA Inc. (https://www.zend.com)
- * @license   https://github.com/zendframework/zend-container-test/blob/master/LICENSE.md New BSD License
+ * @license   https://github.com/zendframework/zend-container-config-test/blob/master/LICENSE.md New BSD License
  */
 
 declare(strict_types=1);
 
-namespace ZendTest\ContainerTest;
+namespace ZendTest\ContainerConfigTest;
 
-use Zend\ContainerTest\AllTestTrait;
-use Zend\ContainerTest\ContainerTest;
+use Zend\ContainerConfigTest\AllTestTrait;
+use Zend\ContainerConfigTest\ContainerTest;
 
 abstract class BaseContainerTest extends ContainerTest
 {
