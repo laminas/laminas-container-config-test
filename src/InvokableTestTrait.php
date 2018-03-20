@@ -11,7 +11,7 @@ namespace Zend\ContainerConfigTest;
 
 trait InvokableTestTrait
 {
-    public function testInvokableWithoutAlias() : void
+    public function testCanSpecifyInvokableWithoutKey() : void
     {
         $config = [
             'invokables' => [
@@ -24,10 +24,45 @@ trait InvokableTestTrait
         self::assertTrue($container->has(TestAsset\Service::class));
         $service = $container->get(TestAsset\Service::class);
         self::assertInstanceOf(TestAsset\Service::class, $service);
-        self::assertTrue($container->has('0'));
     }
 
-    public function testInvokableWithAlias() : void
+    public function testCanSpecifyMultipleInvokablesWithoutKeyAndNotCauseCollisions() : void
+    {
+        $config = [
+            'invokables' => [
+                TestAsset\Service::class,
+                TestAsset\DelegatorFactory::class,
+            ],
+        ];
+
+        $container = $this->createContainer($config);
+
+        self::assertTrue($container->has(TestAsset\Service::class));
+        self::assertTrue($container->has(TestAsset\DelegatorFactory::class));
+
+        $instance = $container->get(TestAsset\Service::class);
+        self::assertInstanceOf(TestAsset\Service::class, $instance);
+
+        $instance = $container->get(TestAsset\DelegatorFactory::class);
+        self::assertInstanceOf(TestAsset\DelegatorFactory::class, $instance);
+    }
+
+    public function testCanFetchInvokableByClassName() : void
+    {
+        $config = [
+            'invokables' => [
+                TestAsset\Service::class => TestAsset\Service::class,
+            ],
+        ];
+
+        $container = $this->createContainer($config);
+
+        self::assertTrue($container->has(TestAsset\Service::class));
+        $service = $container->get(TestAsset\Service::class);
+        self::assertInstanceOf(TestAsset\Service::class, $service);
+    }
+
+    public function testCanFetchInvokableByBothAliasAndClassName() : void
     {
         $config = [
             'invokables' => [
