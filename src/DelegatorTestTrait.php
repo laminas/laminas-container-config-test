@@ -119,6 +119,31 @@ trait DelegatorTestTrait
         self::assertSame($instance, $container->get(TestAsset\Service::class));
     }
 
+    public function testDelegatorsNamedForAliasDoNotApplyToInvokableServiceWithAlias() : void
+    {
+        $config = [
+            'invokables' => [
+                'alias' => TestAsset\Service::class,
+            ],
+            'delegators' => [
+                'alias' => [
+                    TestAsset\DelegatorFactory::class,
+                ],
+            ],
+        ];
+
+        $container = $this->createContainer($config);
+
+        self::assertTrue($container->has('alias'));
+        $instance = $container->get('alias');
+        self::assertInstanceOf(TestAsset\Service::class, $instance);
+        self::assertNotInstanceOf(TestAsset\Delegator::class, $instance);
+
+        // Now ensure that the instance already retrieved by alias is the same
+        // as that when fetched by the canonical service name.
+        self::assertSame($instance, $container->get(TestAsset\Service::class));
+    }
+
     public function testDelegatorsDoNotApplyToAliasResolvingToServiceEntry() : void
     {
         $myService = new TestAsset\Service();
