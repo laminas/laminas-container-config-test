@@ -30,8 +30,8 @@
     },
     "autoload": {
         "files": [
-            "src/TestAsset/factory.php",
-            "src/TestAsset/factory-with-name.php"
+            "src/TestAsset/function-factory.php",
+            "src/TestAsset/function-factory-with-name.php"
         ],
         "psr-4": {
             "Zend\\ContainerConfigTest\\": "src/"
