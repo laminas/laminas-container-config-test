@@ -106,4 +106,21 @@ trait AliasTestTrait
         self::assertTrue($container->has($serviceToTest));
         self::assertSame($container->get('alias'), $container->get($serviceToTest));
     }
+
+    public function testInstancesRetrievedByTwoAliasesResolvingToSameServiceMustBeTheSame()
+    {
+        $container = $this->createContainer([
+            'aliases' => [
+                'alias1' => TestAsset\Service::class,
+                'alias2' => TestAsset\Service::class,
+            ],
+            'invokables' => [
+                TestAsset\Service::class,
+            ],
+        ]);
+
+        self::assertTrue($container->has('alias1'));
+        self::assertTrue($container->has('alias2'));
+        self::assertSame($container->get('alias1'), $container->get('alias2'));
+    }
 }
