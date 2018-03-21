@@ -134,8 +134,8 @@ trait DelegatorTestTrait
         self::assertInstanceOf(TestAsset\Service::class, $instance);
         self::assertNotInstanceOf(TestAsset\Delegator::class, $instance);
 
-        // Now ensure that the service fetched by alias is the same as that
-        // fetched by the canonical service name.
+        // Now ensure that the instance already retrieved by alias is the same
+        // as that when fetched by the canonical service name.
         self::assertSame($instance, $container->get(TestAsset\Service::class));
     }
 
@@ -166,8 +166,8 @@ trait DelegatorTestTrait
         self::assertNotInstanceOf(TestAsset\Delegator::class, $instance);
         self::assertSame($myService, $instance);
 
-        // Now ensure that the service fetched by alias is the same as that
-        // fetched by the canonical service name.
+        // Now ensure that the instance already retrieved by alias is the same
+        // as that when fetched by the canonical service name.
         self::assertSame($instance, $container->get('foo-bar'));
     }
 
@@ -194,13 +194,9 @@ trait DelegatorTestTrait
         self::assertInstanceOf(TestAsset\Service::class, $instance);
         self::assertNotInstanceOf(TestAsset\Delegator::class, $instance);
 
-        // Now ensure that the service fetched by alias is the same as that
-        // fetched by the canonical service name.
+        // Now ensure that the instance already retrieved by alias is the same
+        // as that when fetched by the canonical service name.
         self::assertSame($instance, $container->get('foo-bar'));
-
-        // Now ensure that subsequent retrievals by alias retrieve the same
-        // instance.
-        self::assertSame($instance, $container->get('alias'));
     }
 
     public function testDelegatorsTriggerForFactoryServiceResolvedByAlias() : void
@@ -226,8 +222,8 @@ trait DelegatorTestTrait
         self::assertInstanceOf(TestAsset\Delegator::class, $instance);
         self::assertInstanceOf(TestAsset\Service::class, ($instance->callback)());
 
-        // Now ensure that the service fetched by alias is the same as that
-        // fetched by the canonical service name.
+        // Now ensure that the instance already retrieved by alias is the same
+        // as that when fetched by the canonical service name.
         self::assertSame($instance, $container->get('foo-bar'));
 
         // Now ensure that subsequent retrievals by alias retrieve the same
