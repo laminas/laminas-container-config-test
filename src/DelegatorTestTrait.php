@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace Zend\ContainerConfigTest;
 
+use Error;
 use Generator;
 use Psr\Container\ContainerExceptionInterface;
 use Throwable;
@@ -478,5 +479,206 @@ trait DelegatorTestTrait
 
         // Retrieving a second time should retrieve the same instance.
         self::assertSame($instance, $container->get('service'));
+    }
+    
+    // @codingStandardsIgnoreStart
+    public function testWhenInvokableWithDelegatorsResolvesToNonExistentClassNoExceptionIsRaisedIfCallbackNeverInvoked()
+    {
+        // @codingStandardsIgnoreEnd
+        $container = $this->createContainer([
+            'invokables' => [
+                TestAsset\NonExistent::class,
+            ],
+            'delegators' => [
+                TestAsset\NonExistent::class => [
+                    TestAsset\DelegatorFactory::class,
+                ],
+            ],
+        ]);
+
+        self::assertTrue($container->has(TestAsset\NonExistent::class));
+        $instance = $container->get(TestAsset\NonExistent::class);
+        self::assertInstanceOf(TestAsset\Delegator::class, $instance);
+    }
+    
+    // @codingStandardsIgnoreStart
+    public function testWhenInvokableWithDelegatorsResolvesToInvalidClassAnExceptionIsRaisedIfCallbackNeverInvoked()
+    {
+        // @codingStandardsIgnoreEnd
+        $container = $this->createContainer([
+            'invokables' => [
+                TestAsset\FactoryWithRequiredParameters::class,
+            ],
+            'delegators' => [
+                TestAsset\FactoryWithRequiredParameters::class => [
+                    TestAsset\DelegatorFactory::class,
+                ],
+            ],
+        ]);
+
+        self::assertTrue($container->has(TestAsset\FactoryWithRequiredParameters::class));
+        $instance = $container->get(TestAsset\FactoryWithRequiredParameters::class);
+        self::assertInstanceOf(TestAsset\Delegator::class, $instance);
+    }
+    
+    public function testWhenInvokableWithDelegatorsResolvesToNonExistentClassAnExceptionIsRaisedWhenCallbackIsInvoked()
+    {
+        $container = $this->createContainer([
+            'invokables' => [
+                TestAsset\NonExistent::class,
+            ],
+            'delegators' => [
+                TestAsset\NonExistent::class => [
+                    TestAsset\Delegator1Factory::class,
+                ],
+            ],
+        ]);
+
+        self::assertTrue($container->has(TestAsset\NonExistent::class));
+
+        $caught = false;
+        try {
+            $container->get(TestAsset\NonExistent::class);
+        } catch (Throwable $e) {
+            if (! $e instanceof Error && ! $e instanceof TypeError && ! $e instanceof ContainerExceptionInterface) {
+                $this->fail(sprintf(
+                    'Throwable of type %s (%s) was raised; expected Error, TypeError, or %s',
+                    get_class($e),
+                    $e->getMessage(),
+                    ContainerExceptionInterface::class
+                ));
+            }
+            $caught = true;
+        }
+
+        $this->assertTrue($caught, 'No TypeError or ContainerExceptionInterface thrown when one was expected');
+    }
+    
+    // @codingStandardsIgnoreStart
+    public function testWhenInvokableWithDelegatorsResolvesToInvalidFactoryClassAnExceptionIsRaisedWhenCallbackIsInvoked()
+    {
+        // @codingStandardsIgnoreEnd
+        $container = $this->createContainer([
+            'invokables' => [
+                TestAsset\FactoryWithRequiredParameters::class,
+            ],
+            'delegators' => [
+                'service' => [
+                    TestAsset\Delegator1Factory::class,
+                ],
+            ],
+        ]);
+
+        self::assertTrue($container->has(TestAsset\FactoryWithRequiredParameters::class));
+
+        $caught = false;
+        try {
+            $container->get(TestAsset\FactoryWithRequiredParameters::class);
+        } catch (Throwable $e) {
+            if (! $e instanceof TypeError && ! $e instanceof ContainerExceptionInterface) {
+                $this->fail(sprintf(
+                    'Throwable of type %s (%s) was raised; expected TypeError or %s',
+                    get_class($e),
+                    $e->getMessage(),
+                    ContainerExceptionInterface::class
+                ));
+            }
+            $caught = true;
+        }
+
+        $this->assertTrue($caught, 'No TypeError or ContainerExceptionInterface thrown when one was expected');
+    }
+    
+    // @codingStandardsIgnoreStart
+    public function testWhenServiceWithDelegatorsResolvesToNonExistentFactoryClassNoExceptionIsRaisedIfCallbackNeverInvoked()
+    {
+        // @codingStandardsIgnoreEnd
+        $container = $this->createContainer([
+            'factories' => [
+                'service' => TestAsset\NonExistentFactory::class,
+            ],
+            'delegators' => [
+                'service' => [
+                    TestAsset\DelegatorFactory::class,
+                ],
+            ],
+        ]);
+
+        self::assertTrue($container->has('service'));
+        $instance = $container->get('service');
+        self::assertInstanceOf(TestAsset\Delegator::class, $instance);
+    }
+    
+    // @codingStandardsIgnoreStart
+    public function testWhenServiceWithDelegatorsResolvesToInvalidFactoryClassAnExceptionIsRaisedIfCallbackNeverInvoked()
+    {
+        // @codingStandardsIgnoreEnd
+        $container = $this->createContainer([
+            'factories' => [
+                'service' => TestAsset\FactoryWithRequiredParameters::class,
+            ],
+            'delegators' => [
+                'service' => [
+                    TestAsset\DelegatorFactory::class,
+                ],
+            ],
+        ]);
+
+        self::assertTrue($container->has('service'));
+        $instance = $container->get('service');
+        self::assertInstanceOf(TestAsset\Delegator::class, $instance);
+    }
+    
+    // @codingStandardsIgnoreStart
+    public function testWhenServiceWithDelegatorsResolvesToNonExistentFactoryClassAnExceptionIsRaisedWhenCallbackIsInvoked()
+    {
+        // @codingStandardsIgnoreEnd
+        $container = $this->createContainer([
+            'factories' => [
+                'service' => TestAsset\NonExistentFactory::class,
+            ],
+            'delegators' => [
+                'service' => [
+                    TestAsset\Delegator1Factory::class,
+                ],
+            ],
+        ]);
+
+        self::assertTrue($container->has('service'));
+        $this->expectException(ContainerExceptionInterface::class);
+        $container->get('service');
+    }
+    
+    public function testWhenServiceWithDelegatorsResolvesToInvalidFactoryClassAnExceptionIsRaisedWhenCallbackIsInvoked()
+    {
+        $container = $this->createContainer([
+            'factories' => [
+                'service' => TestAsset\FactoryWithRequiredParameters::class,
+            ],
+            'delegators' => [
+                'service' => [
+                    TestAsset\Delegator1Factory::class,
+                ],
+            ],
+        ]);
+
+        self::assertTrue($container->has('service'));
+
+        $caught = false;
+        try {
+            $container->get('service');
+        } catch (Throwable $e) {
+            if (! $e instanceof TypeError && ! $e instanceof ContainerExceptionInterface) {
+                $this->fail(sprintf(
+                    'Throwable of type %s (%s) was raised; expected TypeError or %s',
+                    get_class($e),
+                    $e->getMessage(),
+                    ContainerExceptionInterface::class
+                ));
+            }
+            $caught = true;
+        }
+
+        $this->assertTrue($caught, 'No TypeError or ContainerExceptionInterface thrown when one was expected');
     }
 }
