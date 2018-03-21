@@ -11,7 +11,6 @@ namespace Zend\ContainerConfigTest;
 
 use Generator;
 use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\NotFoundExceptionInterface;
 use Throwable;
 use TypeError;
 
@@ -88,7 +87,7 @@ trait FactoryTestTrait
 
         self::assertTrue($container->has('service'));
 
-        $this->expectException(NotFoundExceptionInterface::class);
+        $this->expectException(ContainerExceptionInterface::class);
         $container->get('service');
     }
 
