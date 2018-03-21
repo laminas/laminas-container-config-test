@@ -9,6 +9,10 @@ declare(strict_types=1);
 
 namespace Zend\ContainerConfigTest;
 
+use Psr\Container\ContainerExceptionInterface;
+use Throwable;
+use TypeError;
+
 trait InvokableTestTrait
 {
     public function testCanSpecifyInvokableWithoutKey() : void
@@ -80,5 +84,29 @@ trait InvokableTestTrait
         self::assertInstanceOf(TestAsset\Service::class, $originService);
         self::assertSame($service, $originService);
         self::assertSame($originService, $container->get(TestAsset\Service::class));
+    }
+
+    public function testFetchingInvokableThatHasRequiredConstructorParametersResultsInException()
+    {
+        $config = [
+            'invokables' => [
+                TestAsset\Delegator::class,
+            ],
+        ];
+
+        $container = $this->createContainer($config);
+
+        self::assertTrue($container->has(TestAsset\Delegator::class));
+
+        $caught = false;
+        try {
+            $container->get(TestAsset\Delegator::class);
+        } catch (Throwable $e) {
+            if ($e instanceof TypeError || $e instanceof ContainerExceptionInterface) {
+                $caught = true;
+            }
+        }
+
+        $this->assertTrue($caught, 'No TypeError or ContainerExceptionInterface thrown when one was expected');
     }
 }
