@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace Zend\ContainerConfigTest;
 
 use Generator;
+use Psr\Container\ContainerInterface;
 use Psr\Container\ContainerExceptionInterface;
 use Throwable;
 use TypeError;
@@ -74,7 +75,9 @@ trait FactoryTestTrait
 
         $args = $container->get('service');
         self::assertGreaterThanOrEqual(2, $args);
-        self::assertSame($container, array_shift($args));
+        // Not testing for identical $container argument here, as some implementations
+        // may decorate another container in order to fulfill the config contracts.
+        self::assertInstanceOf(ContainerInterface::class, array_shift($args));
         self::assertEquals('service', array_shift($args));
     }
 
