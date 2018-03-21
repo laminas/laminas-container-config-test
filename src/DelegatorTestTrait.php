@@ -10,6 +10,9 @@ declare(strict_types=1);
 namespace Zend\ContainerConfigTest;
 
 use Generator;
+use Psr\Container\ContainerExceptionInterface;
+use Throwable;
+use TypeError;
 
 trait DelegatorTestTrait
 {
@@ -342,5 +345,68 @@ trait DelegatorTestTrait
         self::assertSame($instance, $container->get('alias1'));
         self::assertSame($instance, $container->get('alias2'));
         self::assertSame($instance, $container->get(TestAsset\Service::class));
+    }
+
+    public function testNonInvokableDelegatorClassNameResultsInExceptionDuringInstanceRetrieval()
+    {
+        $container = $this->createContainer([
+            'invokables' => [
+                TestAsset\Service::class => TestAsset\Service::class,
+            ],
+            'delegators' => [
+                TestAsset\Service::class => [
+                    TestAsset\NonInvokableFactory::class,
+                ],
+            ],
+        ]);
+
+        self::assertTrue($container->has(TestAsset\Service::class));
+        $this->expectException(ContainerExceptionInterface::class);
+        $container->get(TestAsset\Service::class);
+    }
+
+    public function testNonExistentDelegatorClassResultsInExceptionDuringInstanceRetrieval()
+    {
+        $container = $this->createContainer([
+            'invokables' => [
+                TestAsset\Service::class => TestAsset\Service::class,
+            ],
+            'delegators' => [
+                TestAsset\Service::class => [
+                    TestAsset\NonExistentDelegatorFactory::class,
+                ],
+            ],
+        ]);
+
+        self::assertTrue($container->has(TestAsset\Service::class));
+        $this->expectException(ContainerExceptionInterface::class);
+        $container->get(TestAsset\Service::class);
+    }
+
+    public function testDelegatorClassNameRequiringConstructorArgumentsResultsInExceptionDuringInstanceRetrieval()
+    {
+        $container = $this->createContainer([
+            'invokables' => [
+                TestAsset\Service::class => TestAsset\Service::class,
+            ],
+            'delegators' => [
+                TestAsset\Service::class => [
+                    TestAsset\FactoryWithRequiredParameters::class,
+                ],
+            ],
+        ]);
+
+        self::assertTrue($container->has(TestAsset\Service::class));
+
+        $caught = false;
+        try {
+            $container->get(TestAsset\Service::class);
+        } catch (Throwable $e) {
+            if ($e instanceof TypeError || $e instanceof ContainerExceptionInterface) {
+                $caught = true;
+            }
+        }
+
+        $this->assertTrue($caught, 'No TypeError or ContainerExceptionInterface thrown when one was expected');
     }
 }
