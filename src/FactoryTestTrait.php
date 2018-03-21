@@ -10,7 +10,10 @@ declare(strict_types=1);
 namespace Zend\ContainerConfigTest;
 
 use Generator;
+use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use Throwable;
+use TypeError;
 
 trait FactoryTestTrait
 {
@@ -87,5 +90,53 @@ trait FactoryTestTrait
 
         $this->expectException(NotFoundExceptionInterface::class);
         $container->get('service');
+    }
+
+    public function testNonInvokableFactoryClassNameResultsInExceptionDuringInstanceRetrieval()
+    {
+        $container = $this->createContainer([
+            'factories' => [
+                'service' => TestAsset\NonInvokableFactory::class,
+            ],
+        ]);
+
+        self::assertTrue($container->has('service'));
+        $this->expectException(ContainerExceptionInterface::class);
+        $container->get('service');
+    }
+
+    public function testNonExistentFactoryClassResultsInExceptionDuringInstanceRetrieval()
+    {
+        $container = $this->createContainer([
+            'factories' => [
+                'service' => TestAsset\NonExistentFactory::class,
+            ],
+        ]);
+
+        self::assertTrue($container->has('service'));
+        $this->expectException(ContainerExceptionInterface::class);
+        $container->get('service');
+    }
+
+    public function testFactoryClassNameRequiringConstructorArgumentsResultsInExceptionDuringInstanceRetrieval()
+    {
+        $container = $this->createContainer([
+            'factories' => [
+                'service' => TestAsset\FactoryWithRequiredParameters::class,
+            ],
+        ]);
+
+        self::assertTrue($container->has('service'));
+
+        $caught = false;
+        try {
+            $container->get('service');
+        } catch (Throwable $e) {
+            if ($e instanceof TypeError || $e instanceof ContainerExceptionInterface) {
+                $caught = true;
+            }
+        }
+
+        $this->assertTrue($caught, 'No TypeError or ContainerExceptionInterface thrown when one was expected');
     }
 }
