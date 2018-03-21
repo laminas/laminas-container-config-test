@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace Zend\ContainerConfigTest;
 
+use ArgumentCountError;
 use Psr\Container\ContainerExceptionInterface;
 use Throwable;
 use TypeError;
@@ -108,5 +109,29 @@ trait InvokableTestTrait
         }
 
         $this->assertTrue($caught, 'No TypeError or ContainerExceptionInterface thrown when one was expected');
+    }
+
+    public function testFetchingInvalidInvokableServiceByAliasResultsInException()
+    {
+        $config = [
+            'invokables' => [
+                'alias' => TestAsset\FactoryWithRequiredParameters::class,
+            ],
+        ];
+
+        $container = $this->createContainer($config);
+
+        self::assertTrue($container->has('alias'));
+
+        $caught = false;
+        try {
+            $container->get('alias');
+        } catch (Throwable $e) {
+            if ($e instanceof ArgumentCountError || $e instanceof ContainerExceptionInterface) {
+                $caught = true;
+            }
+        }
+
+        $this->assertTrue($caught, 'No ArgumentError or ContainerExceptionInterface thrown when one was expected');
     }
 }
