@@ -309,4 +309,38 @@ trait DelegatorTestTrait
         // Ensure subsequent retrievals get same instance
         self::assertSame($instance, $container->get($serviceNameToTest));
     }
+
+    public function testMultipleAliasesForADelegatedInvokableServiceReceiveSameInstance()
+    {
+        $container = $this->createContainer([
+            'invokables' => [
+                'alias1' => TestAsset\Service::class,
+                'alias2' => TestAsset\Service::class,
+            ],
+            'delegators' => [
+                TestAsset\Service::class => [
+                    TestAsset\Delegator1Factory::class,
+                    TestAsset\Delegator2Factory::class,
+                ],
+            ],
+        ]);
+
+        self::assertTrue($container->has('alias1'));
+        self::assertTrue($container->has('alias2'));
+
+        $instance = $container->get('alias1');
+        self::assertInstanceOf(TestAsset\Service::class, $instance);
+        self::assertEquals(
+            [
+                TestAsset\Delegator1Factory::class,
+                TestAsset\Delegator2Factory::class,
+            ],
+            $instance->injected
+        );
+
+        // Ensure subsequent retrievals get same instance
+        self::assertSame($instance, $container->get('alias1'));
+        self::assertSame($instance, $container->get('alias2'));
+        self::assertSame($instance, $container->get(TestAsset\Service::class));
+    }
 }
