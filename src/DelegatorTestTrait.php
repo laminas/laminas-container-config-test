@@ -437,4 +437,46 @@ trait DelegatorTestTrait
 
         $this->assertTrue($caught, 'No TypeError or ContainerExceptionInterface thrown when one was expected');
     }
+
+    public function factoriesForDelegators() : Generator
+    {
+        yield 'function-name'        => [['factories' => ['service' => __NAMESPACE__ . '\TestAsset\factory']]];
+        yield 'invokable-class-name' => [['factories' => ['service' => TestAsset\Factory::class]]];
+        yield 'invokable-instance'   => [['factories' => ['service' => new TestAsset\Factory()]]];
+        yield 'callable-array'       => [['factories' => ['service' => [TestAsset\FactoryStatic::class, 'create']]]];
+        yield 'callable-string'      => [['factories' => ['service' => TestAsset\FactoryStatic::class . '::create']]];
+        yield 'closure'   => [
+            [
+                'factories' => [
+                    'service' => function () {
+                        return new TestAsset\Service();
+                    },
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider factoriesForDelegators
+     */
+    public function testDelegatorFactoriesTriggerForFactoryBackedServicesUsingAnyFactoryType(array $config)
+    {
+        $config += [
+            'delegators' => [
+                'service' => [
+                    TestAsset\DelegatorFactory::class,
+                ],
+            ],
+        ];
+
+        $container = $this->createContainer($config);
+
+        self::assertTrue($container->has('service'));
+        $instance = $container->get('service');
+        self::assertInstanceOf(TestAsset\Delegator::class, $instance);
+        self::assertInstanceOf(TestAsset\Service::class, ($instance->callback)());
+
+        // Retrieving a second time should retrieve the same instance.
+        self::assertSame($instance, $container->get('service'));
+    }
 }
