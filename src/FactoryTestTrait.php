@@ -21,13 +21,15 @@ trait FactoryTestTrait
         yield 'invokable-instance'   => [['factories' => ['service' => new TestAsset\Factory()]]];
         yield 'callable-array'       => [['factories' => ['service' => [TestAsset\FactoryStatic::class, 'create']]]];
         yield 'callable-string'      => [['factories' => ['service' => TestAsset\FactoryStatic::class . '::create']]];
-        yield 'closure'   => [[
-            'factories' => [
-                'service' => function () {
-                    return new TestAsset\Service();
-                },
+        yield 'closure'   => [
+            [
+                'factories' => [
+                    'service' => function () {
+                        return new TestAsset\Service();
+                    },
+                ],
             ],
-        ]];
+        ];
     }
 
     /**
