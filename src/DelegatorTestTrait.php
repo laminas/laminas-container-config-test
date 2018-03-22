@@ -63,30 +63,6 @@ trait DelegatorTestTrait
         self::assertSame($myService, $instance);
     }
 
-    public function testDelegatorsOperateOnFactoryBackedServices() : void
-    {
-        $config = [
-            'factories' => [
-                'foo-bar' => TestAsset\Factory::class,
-            ],
-            'delegators' => [
-                'foo-bar' => [
-                    TestAsset\DelegatorFactory::class,
-                ],
-            ],
-        ];
-
-        $container = $this->createContainer($config);
-
-        self::assertTrue($container->has('foo-bar'));
-        $instance = $container->get('foo-bar');
-        self::assertInstanceOf(TestAsset\Delegator::class, $instance);
-        self::assertInstanceOf(TestAsset\Service::class, ($instance->callback)());
-
-        // Retrieving a second time should retrieve the same instance.
-        self::assertSame($instance, $container->get('foo-bar'));
-    }
-
     public function testDelegatorsApplyToInvokableServiceResolvedViaAlias() : void
     {
         $config = [
