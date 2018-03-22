@@ -540,6 +540,21 @@ trait DelegatorTestTrait
             'alias',
             'service',
         ];
+
+        yield 'non-invokable-factory' => [
+            ['factories' => ['service' => TestAsset\NonInvokableFactory::class]],
+            'service',
+            'service',
+        ];
+
+        yield 'non-invokable-aliased-factory' => [
+            [
+                'aliases' => ['alias' => 'service'],
+                'factories' => ['service' => TestAsset\NonInvokableFactory::class],
+            ],
+            'alias',
+            'service',
+        ];
     }
 
     /**
