@@ -484,175 +484,108 @@ trait DelegatorTestTrait
         // as that when fetched by the canonical service name.
         self::assertSame($instance, $container->get('service'));
     }
-    
-    // @codingStandardsIgnoreStart
-    public function testWhenInvokableWithDelegatorsResolvesToNonExistentClassNoExceptionIsRaisedIfCallbackNeverInvoked()
+
+    public function invalidService()
     {
-        // @codingStandardsIgnoreEnd
-        $container = $this->createContainer([
-            'invokables' => [
-                TestAsset\NonExistent::class,
+        yield 'non-existent-invokable' => [
+            ['invokables' => [TestAsset\NonExistent::class]],
+            TestAsset\NonExistent::class,
+            TestAsset\NonExistent::class,
+        ];
+
+        yield 'non-existent-aliased-invokable' => [
+            ['invokables' => ['service' => TestAsset\NonExistent::class]],
+            'service',
+            TestAsset\NonExistent::class,
+        ];
+
+        yield 'non-existent-factory' => [
+            ['factories' => ['service' => TestAsset\NonExistent::class]],
+            'service',
+            'service',
+        ];
+
+        yield 'non-existent-aliased-factory' => [
+            [
+                'aliases' => ['alias' => 'service'],
+                'factories' => ['service' => TestAsset\NonExistent::class],
             ],
+            'alias',
+            'service',
+        ];
+
+        yield 'invalid-invokable' => [
+            ['invokables' => [TestAsset\FactoryWithRequiredParameters::class]],
+            TestAsset\FactoryWithRequiredParameters::class,
+            TestAsset\FactoryWithRequiredParameters::class,
+        ];
+
+        yield 'invalid-aliased-invokable' => [
+            ['invokables' => ['service' => TestAsset\FactoryWithRequiredParameters::class]],
+            'service',
+            TestAsset\FactoryWithRequiredParameters::class,
+        ];
+
+        yield 'invalid-factory' => [
+            ['factories' => ['service' => TestAsset\FactoryWithRequiredParameters::class]],
+            'service',
+            'service',
+        ];
+
+        yield 'invalid-aliased-factory' => [
+            [
+                'aliases' => ['alias' => 'service'],
+                'factories' => ['service' => TestAsset\FactoryWithRequiredParameters::class],
+            ],
+            'alias',
+            'service',
+        ];
+    }
+
+    /**
+     * @dataProvider invalidService
+     */
+    public function testWithDelegatorsResolvesToInvalidClassNoExceptionIsRaisedIfCallbackNeverInvoked(
+        array $config,
+        string $serviceNameToTest,
+        string $delegatedServiceName
+    ) : void {
+        $container = $this->createContainer($config + [
             'delegators' => [
-                TestAsset\NonExistent::class => [
+                $delegatedServiceName => [
                     TestAsset\DelegatorFactory::class,
                 ],
             ],
         ]);
 
-        self::assertTrue($container->has(TestAsset\NonExistent::class));
-        $instance = $container->get(TestAsset\NonExistent::class);
+        self::assertTrue($container->has($serviceNameToTest));
+        $instance = $container->get($serviceNameToTest);
         self::assertInstanceOf(TestAsset\Delegator::class, $instance);
     }
-    
-    // @codingStandardsIgnoreStart
-    public function testWhenInvokableWithDelegatorsResolvesToInvalidClassAnExceptionIsRaisedIfCallbackNeverInvoked()
-    {
-        // @codingStandardsIgnoreEnd
-        $container = $this->createContainer([
-            'invokables' => [
-                TestAsset\FactoryWithRequiredParameters::class,
-            ],
-            'delegators' => [
-                TestAsset\FactoryWithRequiredParameters::class => [
-                    TestAsset\DelegatorFactory::class,
-                ],
-            ],
-        ]);
 
-        self::assertTrue($container->has(TestAsset\FactoryWithRequiredParameters::class));
-        $instance = $container->get(TestAsset\FactoryWithRequiredParameters::class);
-        self::assertInstanceOf(TestAsset\Delegator::class, $instance);
-    }
-    
-    public function testWhenInvokableWithDelegatorsResolvesToNonExistentClassAnExceptionIsRaisedWhenCallbackIsInvoked()
-    {
-        $container = $this->createContainer([
-            'invokables' => [
-                TestAsset\NonExistent::class,
-            ],
+    /**
+     * @dataProvider invalidService
+     */
+    public function testWithDelegatorsResolvesToInvalidClassAnExceptionIsRaisedWhenCallbackIsInvoked(
+        array $config,
+        string $serviceNameToTest,
+        string $delegatedServiceName
+    ) : void {
+        $container = $this->createContainer($config + [
             'delegators' => [
-                TestAsset\NonExistent::class => [
+                $delegatedServiceName => [
                     TestAsset\Delegator1Factory::class,
                 ],
             ],
         ]);
 
-        self::assertTrue($container->has(TestAsset\NonExistent::class));
+        self::assertTrue($container->has($serviceNameToTest));
 
         Assert::expectedExceptions(
-            function () use ($container) {
-                $container->get(TestAsset\NonExistent::class);
+            function () use ($container, $serviceNameToTest) {
+                $container->get($serviceNameToTest);
             },
             [Error::class, ContainerExceptionInterface::class]
-        );
-    }
-    
-    // @codingStandardsIgnoreStart
-    public function testWhenInvokableWithDelegatorsResolvesToInvalidFactoryClassAnExceptionIsRaisedWhenCallbackIsInvoked()
-    {
-        // @codingStandardsIgnoreEnd
-        $container = $this->createContainer([
-            'invokables' => [
-                TestAsset\FactoryWithRequiredParameters::class,
-            ],
-            'delegators' => [
-                'service' => [
-                    TestAsset\Delegator1Factory::class,
-                ],
-            ],
-        ]);
-
-        self::assertTrue($container->has(TestAsset\FactoryWithRequiredParameters::class));
-
-        Assert::expectedExceptions(
-            function () use ($container) {
-                $container->get(TestAsset\FactoryWithRequiredParameters::class);
-            },
-            [ArgumentCountError::class, ContainerExceptionInterface::class]
-        );
-    }
-    
-    // @codingStandardsIgnoreStart
-    public function testWhenServiceWithDelegatorsResolvesToNonExistentFactoryClassNoExceptionIsRaisedIfCallbackNeverInvoked()
-    {
-        // @codingStandardsIgnoreEnd
-        $container = $this->createContainer([
-            'factories' => [
-                'service' => TestAsset\NonExistentFactory::class,
-            ],
-            'delegators' => [
-                'service' => [
-                    TestAsset\DelegatorFactory::class,
-                ],
-            ],
-        ]);
-
-        self::assertTrue($container->has('service'));
-        $instance = $container->get('service');
-        self::assertInstanceOf(TestAsset\Delegator::class, $instance);
-    }
-    
-    // @codingStandardsIgnoreStart
-    public function testWhenServiceWithDelegatorsResolvesToInvalidFactoryClassAnExceptionIsRaisedIfCallbackNeverInvoked()
-    {
-        // @codingStandardsIgnoreEnd
-        $container = $this->createContainer([
-            'factories' => [
-                'service' => TestAsset\FactoryWithRequiredParameters::class,
-            ],
-            'delegators' => [
-                'service' => [
-                    TestAsset\DelegatorFactory::class,
-                ],
-            ],
-        ]);
-
-        self::assertTrue($container->has('service'));
-        $instance = $container->get('service');
-        self::assertInstanceOf(TestAsset\Delegator::class, $instance);
-    }
-    
-    // @codingStandardsIgnoreStart
-    public function testWhenServiceWithDelegatorsResolvesToNonExistentFactoryClassAnExceptionIsRaisedWhenCallbackIsInvoked()
-    {
-        // @codingStandardsIgnoreEnd
-        $container = $this->createContainer([
-            'factories' => [
-                'service' => TestAsset\NonExistentFactory::class,
-            ],
-            'delegators' => [
-                'service' => [
-                    TestAsset\Delegator1Factory::class,
-                ],
-            ],
-        ]);
-
-        self::assertTrue($container->has('service'));
-        $this->expectException(ContainerExceptionInterface::class);
-        $container->get('service');
-    }
-    
-    public function testWhenServiceWithDelegatorsResolvesToInvalidFactoryClassAnExceptionIsRaisedWhenCallbackIsInvoked()
-    {
-        $container = $this->createContainer([
-            'factories' => [
-                'service' => TestAsset\FactoryWithRequiredParameters::class,
-            ],
-            'delegators' => [
-                'service' => [
-                    TestAsset\Delegator1Factory::class,
-                ],
-            ],
-        ]);
-
-        self::assertTrue($container->has('service'));
-
-        Assert::expectedExceptions(
-            function () use ($container) {
-                $container->get('service');
-            },
-            [ArgumentCountError::class, ContainerExceptionInterface::class]
         );
     }
 }
