@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace Zend\ContainerConfigTest;
 
 use ArgumentCountError;
+use Error;
 use Psr\Container\ContainerExceptionInterface;
 use Zend\ContainerConfigTest\Helper\Assert;
 
@@ -123,6 +124,46 @@ trait InvokableTestTrait
                 $container->get('alias');
             },
             [ArgumentCountError::class, ContainerExceptionInterface::class]
+        );
+    }
+
+    final public function testFetchingNonExistingInvokableServiceResultsInException() : void
+    {
+        $config = [
+            'invokables' => [
+                TestAsset\NonExistent::class,
+            ],
+        ];
+
+        $container = $this->createContainer($config);
+
+        self::assertTrue($container->has(TestAsset\NonExistent::class));
+
+        Assert::expectedExceptions(
+            function () use ($container) {
+                $container->get(TestAsset\NonExistent::class);
+            },
+            [Error::class, ContainerExceptionInterface::class]
+        );
+    }
+
+    final public function testFetchingNonExistingInvokableByAliasServiceResultsInException() : void
+    {
+        $config = [
+            'invokables' => [
+                'alias' => TestAsset\NonExistent::class,
+            ],
+        ];
+
+        $container = $this->createContainer($config);
+
+        self::assertTrue($container->has('alias'));
+
+        Assert::expectedExceptions(
+            function () use ($container) {
+                $container->get('alias');
+            },
+            [Error::class, ContainerExceptionInterface::class]
         );
     }
 }
