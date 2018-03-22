@@ -280,6 +280,31 @@ trait DelegatorTestTrait
         self::assertSame($instance, $container->get($serviceNameToTest));
     }
 
+    /**
+     * @dataProvider delegatorService
+     */
+    final public function testEmptyDelegatorListOriginalServiceShouldBeReturned(
+        array $config,
+        string $serviceNameToTest,
+        string $delegatedServiceName
+    ) : void {
+        $config += [
+            'delegators' => [
+                $delegatedServiceName => [],
+            ],
+        ];
+
+        $container = $this->createContainer($config);
+
+        self::assertTrue($container->has($serviceNameToTest));
+        $instance = $container->get($serviceNameToTest);
+        self::assertInstanceOf(TestAsset\Service::class, $instance);
+        self::assertEquals([], $instance->injected);
+
+        // Ensure subsequent retrievals get same instance
+        self::assertSame($instance, $container->get($serviceNameToTest));
+    }
+
     final public function testMultipleAliasesForADelegatedInvokableServiceReceiveSameInstance() : void
     {
         $container = $this->createContainer([
