@@ -16,8 +16,8 @@ use function get_class;
 use function implode;
 use function sprintf;
 
-class Assert {
-
+class Assert
+{
     public static function expectedExceptions(callable $function, array $exceptions) : void
     {
         $caught = false;
