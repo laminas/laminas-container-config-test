@@ -9,11 +9,11 @@ declare(strict_types=1);
 
 namespace Zend\ContainerConfigTest;
 
+use ArgumentCountError;
 use Error;
 use Generator;
 use Psr\Container\ContainerExceptionInterface;
-use Throwable;
-use TypeError;
+use Zend\ContainerConfigTest\Helper\Assert;
 
 trait DelegatorTestTrait
 {
@@ -365,16 +365,12 @@ trait DelegatorTestTrait
 
         self::assertTrue($container->has(TestAsset\Service::class));
 
-        $caught = false;
-        try {
-            $container->get(TestAsset\Service::class);
-        } catch (Throwable $e) {
-            if ($e instanceof TypeError || $e instanceof ContainerExceptionInterface) {
-                $caught = true;
-            }
-        }
-
-        $this->assertTrue($caught, 'No TypeError or ContainerExceptionInterface thrown when one was expected');
+        Assert::expectedExceptions(
+            function () use ($container) {
+                $container->get(TestAsset\Service::class);
+            },
+            [ArgumentCountError::class, ContainerExceptionInterface::class]
+        );
     }
 
     public function factoriesForDelegators() : Generator
@@ -535,22 +531,12 @@ trait DelegatorTestTrait
 
         self::assertTrue($container->has(TestAsset\NonExistent::class));
 
-        $caught = false;
-        try {
-            $container->get(TestAsset\NonExistent::class);
-        } catch (Throwable $e) {
-            if (! $e instanceof Error && ! $e instanceof TypeError && ! $e instanceof ContainerExceptionInterface) {
-                $this->fail(sprintf(
-                    'Throwable of type %s (%s) was raised; expected Error, TypeError, or %s',
-                    get_class($e),
-                    $e->getMessage(),
-                    ContainerExceptionInterface::class
-                ));
-            }
-            $caught = true;
-        }
-
-        $this->assertTrue($caught, 'No TypeError or ContainerExceptionInterface thrown when one was expected');
+        Assert::expectedExceptions(
+            function () use ($container) {
+                $container->get(TestAsset\NonExistent::class);
+            },
+            [Error::class, ContainerExceptionInterface::class]
+        );
     }
     
     // @codingStandardsIgnoreStart
@@ -570,22 +556,12 @@ trait DelegatorTestTrait
 
         self::assertTrue($container->has(TestAsset\FactoryWithRequiredParameters::class));
 
-        $caught = false;
-        try {
-            $container->get(TestAsset\FactoryWithRequiredParameters::class);
-        } catch (Throwable $e) {
-            if (! $e instanceof TypeError && ! $e instanceof ContainerExceptionInterface) {
-                $this->fail(sprintf(
-                    'Throwable of type %s (%s) was raised; expected TypeError or %s',
-                    get_class($e),
-                    $e->getMessage(),
-                    ContainerExceptionInterface::class
-                ));
-            }
-            $caught = true;
-        }
-
-        $this->assertTrue($caught, 'No TypeError or ContainerExceptionInterface thrown when one was expected');
+        Assert::expectedExceptions(
+            function () use ($container) {
+                $container->get(TestAsset\FactoryWithRequiredParameters::class);
+            },
+            [ArgumentCountError::class, ContainerExceptionInterface::class]
+        );
     }
     
     // @codingStandardsIgnoreStart
@@ -663,21 +639,11 @@ trait DelegatorTestTrait
 
         self::assertTrue($container->has('service'));
 
-        $caught = false;
-        try {
-            $container->get('service');
-        } catch (Throwable $e) {
-            if (! $e instanceof TypeError && ! $e instanceof ContainerExceptionInterface) {
-                $this->fail(sprintf(
-                    'Throwable of type %s (%s) was raised; expected TypeError or %s',
-                    get_class($e),
-                    $e->getMessage(),
-                    ContainerExceptionInterface::class
-                ));
-            }
-            $caught = true;
-        }
-
-        $this->assertTrue($caught, 'No TypeError or ContainerExceptionInterface thrown when one was expected');
+        Assert::expectedExceptions(
+            function () use ($container) {
+                $container->get('service');
+            },
+            [ArgumentCountError::class, ContainerExceptionInterface::class]
+        );
     }
 }

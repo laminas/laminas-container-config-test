@@ -11,8 +11,7 @@ namespace Zend\ContainerConfigTest;
 
 use ArgumentCountError;
 use Psr\Container\ContainerExceptionInterface;
-use Throwable;
-use TypeError;
+use Zend\ContainerConfigTest\Helper\Assert;
 
 trait InvokableTestTrait
 {
@@ -99,16 +98,12 @@ trait InvokableTestTrait
 
         self::assertTrue($container->has(TestAsset\Delegator::class));
 
-        $caught = false;
-        try {
-            $container->get(TestAsset\Delegator::class);
-        } catch (Throwable $e) {
-            if ($e instanceof TypeError || $e instanceof ContainerExceptionInterface) {
-                $caught = true;
-            }
-        }
-
-        $this->assertTrue($caught, 'No TypeError or ContainerExceptionInterface thrown when one was expected');
+        Assert::expectedExceptions(
+            function () use ($container) {
+                $container->get(TestAsset\Delegator::class);
+            },
+            [ArgumentCountError::class, ContainerExceptionInterface::class]
+        );
     }
 
     public function testFetchingInvalidInvokableServiceByAliasResultsInException()
@@ -123,15 +118,11 @@ trait InvokableTestTrait
 
         self::assertTrue($container->has('alias'));
 
-        $caught = false;
-        try {
-            $container->get('alias');
-        } catch (Throwable $e) {
-            if ($e instanceof ArgumentCountError || $e instanceof ContainerExceptionInterface) {
-                $caught = true;
-            }
-        }
-
-        $this->assertTrue($caught, 'No ArgumentError or ContainerExceptionInterface thrown when one was expected');
+        Assert::expectedExceptions(
+            function () use ($container) {
+                $container->get('alias');
+            },
+            [ArgumentCountError::class, ContainerExceptionInterface::class]
+        );
     }
 }

@@ -9,11 +9,11 @@ declare(strict_types=1);
 
 namespace Zend\ContainerConfigTest;
 
+use ArgumentCountError;
 use Generator;
 use Psr\Container\ContainerInterface;
 use Psr\Container\ContainerExceptionInterface;
-use Throwable;
-use TypeError;
+use Zend\ContainerConfigTest\Helper\Assert;
 
 trait FactoryTestTrait
 {
@@ -130,15 +130,11 @@ trait FactoryTestTrait
 
         self::assertTrue($container->has('service'));
 
-        $caught = false;
-        try {
-            $container->get('service');
-        } catch (Throwable $e) {
-            if ($e instanceof TypeError || $e instanceof ContainerExceptionInterface) {
-                $caught = true;
-            }
-        }
-
-        $this->assertTrue($caught, 'No TypeError or ContainerExceptionInterface thrown when one was expected');
+        Assert::expectedExceptions(
+            function () use ($container) {
+                $container->get('service');
+            },
+            [ArgumentCountError::class, ContainerExceptionInterface::class]
+        );
     }
 }
