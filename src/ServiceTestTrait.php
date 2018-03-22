@@ -11,7 +11,7 @@ namespace Zend\ContainerConfigTest;
 
 trait ServiceTestTrait
 {
-    public function testFetchingServiceReturnsSameInstance() : void
+    final public function testFetchingServiceReturnsSameInstance() : void
     {
         $service = new TestAsset\Service();
         $config = [

@@ -15,7 +15,7 @@ use Zend\ContainerConfigTest\Helper\Assert;
 
 trait InvokableTestTrait
 {
-    public function testCanSpecifyInvokableWithoutKey() : void
+    final public function testCanSpecifyInvokableWithoutKey() : void
     {
         $config = [
             'invokables' => [
@@ -30,7 +30,7 @@ trait InvokableTestTrait
         self::assertInstanceOf(TestAsset\Service::class, $service);
     }
 
-    public function testCanSpecifyMultipleInvokablesWithoutKeyAndNotCauseCollisions() : void
+    final public function testCanSpecifyMultipleInvokablesWithoutKeyAndNotCauseCollisions() : void
     {
         $config = [
             'invokables' => [
@@ -51,7 +51,7 @@ trait InvokableTestTrait
         self::assertInstanceOf(TestAsset\DelegatorFactory::class, $instance);
     }
 
-    public function testCanFetchInvokableByClassName() : void
+    final public function testCanFetchInvokableByClassName() : void
     {
         $config = [
             'invokables' => [
@@ -66,7 +66,7 @@ trait InvokableTestTrait
         self::assertInstanceOf(TestAsset\Service::class, $service);
     }
 
-    public function testCanFetchInvokableByBothAliasAndClassName() : void
+    final public function testCanFetchInvokableByBothAliasAndClassName() : void
     {
         $config = [
             'invokables' => [
@@ -86,7 +86,7 @@ trait InvokableTestTrait
         self::assertSame($originService, $container->get(TestAsset\Service::class));
     }
 
-    public function testFetchingInvokableThatHasRequiredConstructorParametersResultsInException()
+    final public function testFetchingInvokableThatHasRequiredConstructorParametersResultsInException() : void
     {
         $config = [
             'invokables' => [
@@ -106,7 +106,7 @@ trait InvokableTestTrait
         );
     }
 
-    public function testFetchingInvalidInvokableServiceByAliasResultsInException()
+    final public function testFetchingInvalidInvokableServiceByAliasResultsInException()
     {
         $config = [
             'invokables' => [
