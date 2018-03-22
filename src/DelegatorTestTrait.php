@@ -314,60 +314,69 @@ trait DelegatorTestTrait
         self::assertSame($instance, $container->get(TestAsset\Service::class));
     }
 
-    public function testNonInvokableDelegatorClassNameResultsInExceptionDuringInstanceRetrieval()
-    {
-        $container = $this->createContainer([
-            'invokables' => [
-                TestAsset\Service::class => TestAsset\Service::class,
-            ],
+    /**
+     * @dataProvider delegatorService
+     */
+    public function testNonInvokableDelegatorClassNameResultsInExceptionDuringInstanceRetrieval(
+        array $config,
+        string $serviceNameToTest,
+        string $delegatedServiceName
+    ) : void {
+        $container = $this->createContainer($config + [
             'delegators' => [
-                TestAsset\Service::class => [
+                $delegatedServiceName => [
                     TestAsset\NonInvokableFactory::class,
                 ],
             ],
         ]);
 
-        self::assertTrue($container->has(TestAsset\Service::class));
+        self::assertTrue($container->has($serviceNameToTest));
         $this->expectException(ContainerExceptionInterface::class);
-        $container->get(TestAsset\Service::class);
+        $container->get($serviceNameToTest);
     }
 
-    public function testNonExistentDelegatorClassResultsInExceptionDuringInstanceRetrieval()
-    {
-        $container = $this->createContainer([
-            'invokables' => [
-                TestAsset\Service::class => TestAsset\Service::class,
-            ],
+    /**
+     * @dataProvider delegatorService
+     */
+    public function testNonExistentDelegatorClassResultsInExceptionDuringInstanceRetrieval(
+        array $config,
+        string $serviceNameToTest,
+        string $delegatedServiceName
+    ) : void {
+        $container = $this->createContainer($config + [
             'delegators' => [
-                TestAsset\Service::class => [
+                $delegatedServiceName => [
                     TestAsset\NonExistentDelegatorFactory::class,
                 ],
             ],
         ]);
 
-        self::assertTrue($container->has(TestAsset\Service::class));
+        self::assertTrue($container->has($serviceNameToTest));
         $this->expectException(ContainerExceptionInterface::class);
-        $container->get(TestAsset\Service::class);
+        $container->get($serviceNameToTest);
     }
 
-    public function testDelegatorClassNameRequiringConstructorArgumentsResultsInExceptionDuringInstanceRetrieval()
-    {
-        $container = $this->createContainer([
-            'invokables' => [
-                TestAsset\Service::class => TestAsset\Service::class,
-            ],
+    /**
+     * @dataProvider delegatorService
+     */
+    public function testDelegatorClassNameRequiringConstructorArgumentsResultsInExceptionDuringInstanceRetrieval(
+        array $config,
+        string $serviceNameToTest,
+        string $delegatedServiceName
+    ) : void {
+        $container = $this->createContainer($config + [
             'delegators' => [
-                TestAsset\Service::class => [
+                $delegatedServiceName => [
                     TestAsset\FactoryWithRequiredParameters::class,
                 ],
             ],
         ]);
 
-        self::assertTrue($container->has(TestAsset\Service::class));
+        self::assertTrue($container->has($serviceNameToTest));
 
         Assert::expectedExceptions(
-            function () use ($container) {
-                $container->get(TestAsset\Service::class);
+            function () use ($container, $serviceNameToTest) {
+                $container->get($serviceNameToTest);
             },
             [ArgumentCountError::class, ContainerExceptionInterface::class]
         );
