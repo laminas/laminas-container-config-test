@@ -9,9 +9,12 @@ declare(strict_types=1);
 
 namespace Zend\ContainerConfigTest\TestAsset;
 
-use Psr\Container\ContainerInterface;
-
-function factoryWithName(ContainerInterface $container, string $name) : FactoryService
+class FactoryService
 {
-    return new FactoryService(func_get_args());
+    public $args = [];
+
+    public function __construct(array $args)
+    {
+        $this->args = $args;
+    }
 }

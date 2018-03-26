@@ -18,8 +18,8 @@ class FactoryStatic
         return new Service();
     }
 
-    public static function withName() : array
+    public static function withName() : FactoryService
     {
-        return func_get_args();
+        return new FactoryService(func_get_args());
     }
 }

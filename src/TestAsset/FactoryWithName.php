@@ -11,8 +11,8 @@ namespace Zend\ContainerConfigTest\TestAsset;
 
 class FactoryWithName
 {
-    public function __invoke() : array
+    public function __invoke() : FactoryService
     {
-        return func_get_args();
+        return new FactoryService(func_get_args());
     }
 }

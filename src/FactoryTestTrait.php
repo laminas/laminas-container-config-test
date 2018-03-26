@@ -59,7 +59,7 @@ trait FactoryTestTrait
             [
                 'factories' => [
                     'service' => function () {
-                        return func_get_args();
+                        return new TestAsset\FactoryService(func_get_args());
                     },
                 ],
             ],
@@ -73,7 +73,7 @@ trait FactoryTestTrait
     {
         $container = $this->createContainer($config);
 
-        $args = $container->get('service');
+        $args = $container->get('service')->args;
         self::assertGreaterThanOrEqual(2, $args);
         // Not testing for identical $container argument here, as some implementations
         // may decorate another container in order to fulfill the config contracts.
