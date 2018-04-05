@@ -9,15 +9,15 @@ declare(strict_types=1);
 
 namespace Zend\ContainerConfigTest;
 
+use ArgumentCountError;
 use Error;
 use Generator;
 use Psr\Container\ContainerExceptionInterface;
-use Throwable;
-use TypeError;
+use Zend\ContainerConfigTest\Helper\Assert;
 
 trait DelegatorTestTrait
 {
-    public function testDelegatorsOperateOnInvokables() : void
+    final public function testDelegatorsOperateOnInvokables() : void
     {
         $config = [
             'invokables' => [
@@ -41,7 +41,7 @@ trait DelegatorTestTrait
         self::assertSame($instance, $container->get(TestAsset\Service::class));
     }
 
-    public function testDelegatorsDoNotOperateOnServices() : void
+    final public function testDelegatorsDoNotOperateOnServices() : void
     {
         $myService = new TestAsset\Service();
         $config = [
@@ -63,31 +63,7 @@ trait DelegatorTestTrait
         self::assertSame($myService, $instance);
     }
 
-    public function testDelegatorsOperateOnFactoryBackedServices() : void
-    {
-        $config = [
-            'factories' => [
-                'foo-bar' => TestAsset\Factory::class,
-            ],
-            'delegators' => [
-                'foo-bar' => [
-                    TestAsset\DelegatorFactory::class,
-                ],
-            ],
-        ];
-
-        $container = $this->createContainer($config);
-
-        self::assertTrue($container->has('foo-bar'));
-        $instance = $container->get('foo-bar');
-        self::assertInstanceOf(TestAsset\Delegator::class, $instance);
-        self::assertInstanceOf(TestAsset\Service::class, ($instance->callback)());
-
-        // Retrieving a second time should retrieve the same instance.
-        self::assertSame($instance, $container->get('foo-bar'));
-    }
-
-    public function testDelegatorsApplyToInvokableServiceResolvedViaAlias() : void
+    final public function testDelegatorsApplyToInvokableServiceResolvedViaAlias() : void
     {
         $config = [
             'aliases' => [
@@ -115,7 +91,7 @@ trait DelegatorTestTrait
         self::assertSame($instance, $container->get(TestAsset\Service::class));
     }
 
-    public function testDelegatorsNamedForAliasDoNotApplyToInvokableServiceResolvedViaAlias() : void
+    final public function testDelegatorsNamedForAliasDoNotApplyToInvokableServiceResolvedViaAlias() : void
     {
         $config = [
             'aliases' => [
@@ -143,7 +119,32 @@ trait DelegatorTestTrait
         self::assertSame($instance, $container->get(TestAsset\Service::class));
     }
 
-    public function testDelegatorsDoNotApplyToAliasResolvingToServiceEntry() : void
+    final public function testDelegatorsNamedForAliasDoNotApplyToInvokableServiceWithAlias() : void
+    {
+        $config = [
+            'invokables' => [
+                'alias' => TestAsset\Service::class,
+            ],
+            'delegators' => [
+                'alias' => [
+                    TestAsset\DelegatorFactory::class,
+                ],
+            ],
+        ];
+
+        $container = $this->createContainer($config);
+
+        self::assertTrue($container->has('alias'));
+        $instance = $container->get('alias');
+        self::assertInstanceOf(TestAsset\Service::class, $instance);
+        self::assertNotInstanceOf(TestAsset\Delegator::class, $instance);
+
+        // Now ensure that the instance already retrieved by alias is the same
+        // as that when fetched by the canonical service name.
+        self::assertSame($instance, $container->get(TestAsset\Service::class));
+    }
+
+    final public function testDelegatorsDoNotApplyToAliasResolvingToServiceEntry() : void
     {
         $myService = new TestAsset\Service();
         $config = [
@@ -175,35 +176,7 @@ trait DelegatorTestTrait
         self::assertSame($instance, $container->get('foo-bar'));
     }
 
-    public function testDelegatorsDoNotTriggerForAliasTargetingFactoryBasedService() : void
-    {
-        $config = [
-            'aliases' => [
-                'alias' => 'foo-bar',
-            ],
-            'factories' => [
-                'foo-bar' => TestAsset\Factory::class,
-            ],
-            'delegators' => [
-                'alias' => [
-                    TestAsset\DelegatorFactory::class,
-                ],
-            ],
-        ];
-
-        $container = $this->createContainer($config);
-
-        self::assertTrue($container->has('alias'));
-        $instance = $container->get('alias');
-        self::assertInstanceOf(TestAsset\Service::class, $instance);
-        self::assertNotInstanceOf(TestAsset\Delegator::class, $instance);
-
-        // Now ensure that the instance already retrieved by alias is the same
-        // as that when fetched by the canonical service name.
-        self::assertSame($instance, $container->get('foo-bar'));
-    }
-
-    public function testDelegatorsDoNotTriggerForAliasTargetingInvokableService() : void
+    final public function testDelegatorsDoNotTriggerForAliasTargetingInvokableService() : void
     {
         $config = [
             'aliases' => [
@@ -231,39 +204,7 @@ trait DelegatorTestTrait
         self::assertSame($instance, $container->get(TestAsset\Service::class));
     }
 
-    public function testDelegatorsTriggerForFactoryServiceResolvedByAlias() : void
-    {
-        $config = [
-            'aliases' => [
-                'alias' => 'foo-bar',
-            ],
-            'factories' => [
-                'foo-bar' => TestAsset\Factory::class,
-            ],
-            'delegators' => [
-                'foo-bar' => [
-                    TestAsset\DelegatorFactory::class,
-                ],
-            ],
-        ];
-
-        $container = $this->createContainer($config);
-
-        self::assertTrue($container->has('alias'));
-        $instance = $container->get('alias');
-        self::assertInstanceOf(TestAsset\Delegator::class, $instance);
-        self::assertInstanceOf(TestAsset\Service::class, ($instance->callback)());
-
-        // Now ensure that the instance already retrieved by alias is the same
-        // as that when fetched by the canonical service name.
-        self::assertSame($instance, $container->get('foo-bar'));
-
-        // Now ensure that subsequent retrievals by alias retrieve the same
-        // instance.
-        self::assertSame($instance, $container->get('alias'));
-    }
-
-    public function delegatorService() : Generator
+    final public function delegatorService() : Generator
     {
         yield 'invokable' => [
             [
@@ -281,14 +222,6 @@ trait DelegatorTestTrait
             TestAsset\Service::class,
         ];
 
-        yield 'factory-service' => [
-            [
-                'factories' => ['foo-bar' => TestAsset\Factory::class],
-            ],
-            'foo-bar',
-            'foo-bar',
-        ];
-
         yield 'alias-of-invokable' => [
             [
                 'aliases' => ['foo-bar' => TestAsset\Service::class],
@@ -298,20 +231,25 @@ trait DelegatorTestTrait
             TestAsset\Service::class,
         ];
 
-        yield 'alias-of-factory-service' => [
-            [
-                'aliases' => ['alias' => 'foo-bar'],
-                'factories' => ['foo-bar' => TestAsset\Factory::class],
-            ],
-            'alias',
-            'foo-bar',
-        ];
+        foreach ($this->factoriesForDelegators() as $name => $params) {
+            yield 'factory-service-' . $name => [
+                $params[0],
+                'service',
+                'service',
+            ];
+
+            yield 'alias-of-factory-service-' . $name => [
+                $params[0] + ['aliases' => ['alias' => 'service']],
+                'alias',
+                'service',
+            ];
+        }
     }
 
     /**
      * @dataProvider delegatorService
      */
-    public function testDelegatorsReceiveCallbackResolvingToReturnValueOfPrevious(
+    final public function testDelegatorsReceiveCallbackResolvingToReturnValueOfPrevious(
         array $config,
         string $serviceNameToTest,
         string $delegatedServiceName
@@ -342,7 +280,32 @@ trait DelegatorTestTrait
         self::assertSame($instance, $container->get($serviceNameToTest));
     }
 
-    public function testMultipleAliasesForADelegatedInvokableServiceReceiveSameInstance()
+    /**
+     * @dataProvider delegatorService
+     */
+    final public function testEmptyDelegatorListOriginalServiceShouldBeReturned(
+        array $config,
+        string $serviceNameToTest,
+        string $delegatedServiceName
+    ) : void {
+        $config += [
+            'delegators' => [
+                $delegatedServiceName => [],
+            ],
+        ];
+
+        $container = $this->createContainer($config);
+
+        self::assertTrue($container->has($serviceNameToTest));
+        $instance = $container->get($serviceNameToTest);
+        self::assertInstanceOf(TestAsset\Service::class, $instance);
+        self::assertEquals([], $instance->injected);
+
+        // Ensure subsequent retrievals get same instance
+        self::assertSame($instance, $container->get($serviceNameToTest));
+    }
+
+    final public function testMultipleAliasesForADelegatedInvokableServiceReceiveSameInstance() : void
     {
         $container = $this->createContainer([
             'invokables' => [
@@ -376,70 +339,75 @@ trait DelegatorTestTrait
         self::assertSame($instance, $container->get(TestAsset\Service::class));
     }
 
-    public function testNonInvokableDelegatorClassNameResultsInExceptionDuringInstanceRetrieval()
-    {
-        $container = $this->createContainer([
-            'invokables' => [
-                TestAsset\Service::class => TestAsset\Service::class,
-            ],
+    /**
+     * @dataProvider delegatorService
+     */
+    final public function testNonInvokableDelegatorClassNameResultsInExceptionDuringInstanceRetrieval(
+        array $config,
+        string $serviceNameToTest,
+        string $delegatedServiceName
+    ) : void {
+        $container = $this->createContainer($config + [
             'delegators' => [
-                TestAsset\Service::class => [
+                $delegatedServiceName => [
                     TestAsset\NonInvokableFactory::class,
                 ],
             ],
         ]);
 
-        self::assertTrue($container->has(TestAsset\Service::class));
+        self::assertTrue($container->has($serviceNameToTest));
         $this->expectException(ContainerExceptionInterface::class);
-        $container->get(TestAsset\Service::class);
+        $container->get($serviceNameToTest);
     }
 
-    public function testNonExistentDelegatorClassResultsInExceptionDuringInstanceRetrieval()
-    {
-        $container = $this->createContainer([
-            'invokables' => [
-                TestAsset\Service::class => TestAsset\Service::class,
-            ],
+    /**
+     * @dataProvider delegatorService
+     */
+    final public function testNonExistentDelegatorClassResultsInExceptionDuringInstanceRetrieval(
+        array $config,
+        string $serviceNameToTest,
+        string $delegatedServiceName
+    ) : void {
+        $container = $this->createContainer($config + [
             'delegators' => [
-                TestAsset\Service::class => [
+                $delegatedServiceName => [
                     TestAsset\NonExistentDelegatorFactory::class,
                 ],
             ],
         ]);
 
-        self::assertTrue($container->has(TestAsset\Service::class));
+        self::assertTrue($container->has($serviceNameToTest));
         $this->expectException(ContainerExceptionInterface::class);
-        $container->get(TestAsset\Service::class);
+        $container->get($serviceNameToTest);
     }
 
-    public function testDelegatorClassNameRequiringConstructorArgumentsResultsInExceptionDuringInstanceRetrieval()
-    {
-        $container = $this->createContainer([
-            'invokables' => [
-                TestAsset\Service::class => TestAsset\Service::class,
-            ],
+    /**
+     * @dataProvider delegatorService
+     */
+    final public function testDelegatorClassNameRequiringConstructorArgumentsResultsInExceptionDuringInstanceRetrieval(
+        array $config,
+        string $serviceNameToTest,
+        string $delegatedServiceName
+    ) : void {
+        $container = $this->createContainer($config + [
             'delegators' => [
-                TestAsset\Service::class => [
+                $delegatedServiceName => [
                     TestAsset\FactoryWithRequiredParameters::class,
                 ],
             ],
         ]);
 
-        self::assertTrue($container->has(TestAsset\Service::class));
+        self::assertTrue($container->has($serviceNameToTest));
 
-        $caught = false;
-        try {
-            $container->get(TestAsset\Service::class);
-        } catch (Throwable $e) {
-            if ($e instanceof TypeError || $e instanceof ContainerExceptionInterface) {
-                $caught = true;
-            }
-        }
-
-        $this->assertTrue($caught, 'No TypeError or ContainerExceptionInterface thrown when one was expected');
+        Assert::expectedExceptions(
+            function () use ($container, $serviceNameToTest) {
+                $container->get($serviceNameToTest);
+            },
+            [ArgumentCountError::class, ContainerExceptionInterface::class]
+        );
     }
 
-    public function factoriesForDelegators() : Generator
+    final public function factoriesForDelegators() : Generator
     {
         yield 'function-name'        => [['factories' => ['service' => __NAMESPACE__ . '\TestAsset\factory']]];
         yield 'invokable-class-name' => [['factories' => ['service' => TestAsset\Factory::class]]];
@@ -460,7 +428,7 @@ trait DelegatorTestTrait
     /**
      * @dataProvider factoriesForDelegators
      */
-    public function testDelegatorFactoriesTriggerForFactoryBackedServicesUsingAnyFactoryType(array $config)
+    final public function testDelegatorFactoriesTriggerForFactoryBackedServicesUsingAnyFactoryType(array $config) : void
     {
         $config += [
             'delegators' => [
@@ -480,205 +448,184 @@ trait DelegatorTestTrait
         // Retrieving a second time should retrieve the same instance.
         self::assertSame($instance, $container->get('service'));
     }
-    
-    // @codingStandardsIgnoreStart
-    public function testWhenInvokableWithDelegatorsResolvesToNonExistentClassNoExceptionIsRaisedIfCallbackNeverInvoked()
+
+    /**
+     * @dataProvider factoriesForDelegators
+     */
+    final public function testDelegatorsTriggerForFactoryServiceResolvedByAlias(array $config) : void
     {
-        // @codingStandardsIgnoreEnd
-        $container = $this->createContainer([
-            'invokables' => [
-                TestAsset\NonExistent::class,
-            ],
-            'delegators' => [
-                TestAsset\NonExistent::class => [
-                    TestAsset\DelegatorFactory::class,
-                ],
-            ],
-        ]);
-
-        self::assertTrue($container->has(TestAsset\NonExistent::class));
-        $instance = $container->get(TestAsset\NonExistent::class);
-        self::assertInstanceOf(TestAsset\Delegator::class, $instance);
-    }
-    
-    // @codingStandardsIgnoreStart
-    public function testWhenInvokableWithDelegatorsResolvesToInvalidClassAnExceptionIsRaisedIfCallbackNeverInvoked()
-    {
-        // @codingStandardsIgnoreEnd
-        $container = $this->createContainer([
-            'invokables' => [
-                TestAsset\FactoryWithRequiredParameters::class,
-            ],
-            'delegators' => [
-                TestAsset\FactoryWithRequiredParameters::class => [
-                    TestAsset\DelegatorFactory::class,
-                ],
-            ],
-        ]);
-
-        self::assertTrue($container->has(TestAsset\FactoryWithRequiredParameters::class));
-        $instance = $container->get(TestAsset\FactoryWithRequiredParameters::class);
-        self::assertInstanceOf(TestAsset\Delegator::class, $instance);
-    }
-    
-    public function testWhenInvokableWithDelegatorsResolvesToNonExistentClassAnExceptionIsRaisedWhenCallbackIsInvoked()
-    {
-        $container = $this->createContainer([
-            'invokables' => [
-                TestAsset\NonExistent::class,
-            ],
-            'delegators' => [
-                TestAsset\NonExistent::class => [
-                    TestAsset\Delegator1Factory::class,
-                ],
-            ],
-        ]);
-
-        self::assertTrue($container->has(TestAsset\NonExistent::class));
-
-        $caught = false;
-        try {
-            $container->get(TestAsset\NonExistent::class);
-        } catch (Throwable $e) {
-            if (! $e instanceof Error && ! $e instanceof TypeError && ! $e instanceof ContainerExceptionInterface) {
-                $this->fail(sprintf(
-                    'Throwable of type %s (%s) was raised; expected Error, TypeError, or %s',
-                    get_class($e),
-                    $e->getMessage(),
-                    ContainerExceptionInterface::class
-                ));
-            }
-            $caught = true;
-        }
-
-        $this->assertTrue($caught, 'No TypeError or ContainerExceptionInterface thrown when one was expected');
-    }
-    
-    // @codingStandardsIgnoreStart
-    public function testWhenInvokableWithDelegatorsResolvesToInvalidFactoryClassAnExceptionIsRaisedWhenCallbackIsInvoked()
-    {
-        // @codingStandardsIgnoreEnd
-        $container = $this->createContainer([
-            'invokables' => [
-                TestAsset\FactoryWithRequiredParameters::class,
-            ],
-            'delegators' => [
-                'service' => [
-                    TestAsset\Delegator1Factory::class,
-                ],
-            ],
-        ]);
-
-        self::assertTrue($container->has(TestAsset\FactoryWithRequiredParameters::class));
-
-        $caught = false;
-        try {
-            $container->get(TestAsset\FactoryWithRequiredParameters::class);
-        } catch (Throwable $e) {
-            if (! $e instanceof TypeError && ! $e instanceof ContainerExceptionInterface) {
-                $this->fail(sprintf(
-                    'Throwable of type %s (%s) was raised; expected TypeError or %s',
-                    get_class($e),
-                    $e->getMessage(),
-                    ContainerExceptionInterface::class
-                ));
-            }
-            $caught = true;
-        }
-
-        $this->assertTrue($caught, 'No TypeError or ContainerExceptionInterface thrown when one was expected');
-    }
-    
-    // @codingStandardsIgnoreStart
-    public function testWhenServiceWithDelegatorsResolvesToNonExistentFactoryClassNoExceptionIsRaisedIfCallbackNeverInvoked()
-    {
-        // @codingStandardsIgnoreEnd
-        $container = $this->createContainer([
-            'factories' => [
-                'service' => TestAsset\NonExistentFactory::class,
+        $config += [
+            'aliases' => [
+                'alias' => 'service',
             ],
             'delegators' => [
                 'service' => [
                     TestAsset\DelegatorFactory::class,
                 ],
             ],
-        ]);
+        ];
 
-        self::assertTrue($container->has('service'));
-        $instance = $container->get('service');
+        $container = $this->createContainer($config);
+
+        self::assertTrue($container->has('alias'));
+        $instance = $container->get('alias');
         self::assertInstanceOf(TestAsset\Delegator::class, $instance);
+        self::assertInstanceOf(TestAsset\Service::class, ($instance->callback)());
+
+        // Now ensure that the instance already retrieved by alias is the same
+        // as that when fetched by the canonical service name.
+        self::assertSame($instance, $container->get('service'));
+
+        // Now ensure that subsequent retrievals by alias retrieve the same
+        // instance.
+        self::assertSame($instance, $container->get('alias'));
     }
-    
-    // @codingStandardsIgnoreStart
-    public function testWhenServiceWithDelegatorsResolvesToInvalidFactoryClassAnExceptionIsRaisedIfCallbackNeverInvoked()
-    {
-        // @codingStandardsIgnoreEnd
-        $container = $this->createContainer([
-            'factories' => [
-                'service' => TestAsset\FactoryWithRequiredParameters::class,
+
+    /**
+     * @dataProvider factoriesForDelegators
+     */
+    final public function testDelegatorsDoNotTriggerForAliasTargetingFactoryBasedServiceUsingAnyFactoryType(
+        array $config
+    ) : void {
+        $config += [
+            'aliases' => [
+                'alias' => 'service',
             ],
             'delegators' => [
-                'service' => [
+                'alias' => [
+                    TestAsset\DelegatorFactory::class,
+                ],
+            ],
+        ];
+
+        $container = $this->createContainer($config);
+
+        self::assertTrue($container->has('alias'));
+        $instance = $container->get('alias');
+        self::assertInstanceOf(TestAsset\Service::class, $instance);
+        self::assertNotInstanceOf(TestAsset\Delegator::class, $instance);
+
+        // Now ensure that the instance already retrieved by alias is the same
+        // as that when fetched by the canonical service name.
+        self::assertSame($instance, $container->get('service'));
+    }
+
+    final public function invalidService()
+    {
+        yield 'non-existent-invokable' => [
+            ['invokables' => [TestAsset\NonExistent::class]],
+            TestAsset\NonExistent::class,
+            TestAsset\NonExistent::class,
+        ];
+
+        yield 'non-existent-aliased-invokable' => [
+            ['invokables' => ['service' => TestAsset\NonExistent::class]],
+            'service',
+            TestAsset\NonExistent::class,
+        ];
+
+        yield 'non-existent-factory' => [
+            ['factories' => ['service' => TestAsset\NonExistent::class]],
+            'service',
+            'service',
+        ];
+
+        yield 'non-existent-aliased-factory' => [
+            [
+                'aliases' => ['alias' => 'service'],
+                'factories' => ['service' => TestAsset\NonExistent::class],
+            ],
+            'alias',
+            'service',
+        ];
+
+        yield 'invalid-invokable' => [
+            ['invokables' => [TestAsset\FactoryWithRequiredParameters::class]],
+            TestAsset\FactoryWithRequiredParameters::class,
+            TestAsset\FactoryWithRequiredParameters::class,
+        ];
+
+        yield 'invalid-aliased-invokable' => [
+            ['invokables' => ['service' => TestAsset\FactoryWithRequiredParameters::class]],
+            'service',
+            TestAsset\FactoryWithRequiredParameters::class,
+        ];
+
+        yield 'invalid-factory' => [
+            ['factories' => ['service' => TestAsset\FactoryWithRequiredParameters::class]],
+            'service',
+            'service',
+        ];
+
+        yield 'invalid-aliased-factory' => [
+            [
+                'aliases' => ['alias' => 'service'],
+                'factories' => ['service' => TestAsset\FactoryWithRequiredParameters::class],
+            ],
+            'alias',
+            'service',
+        ];
+
+        yield 'non-invokable-factory' => [
+            ['factories' => ['service' => TestAsset\NonInvokableFactory::class]],
+            'service',
+            'service',
+        ];
+
+        yield 'non-invokable-aliased-factory' => [
+            [
+                'aliases' => ['alias' => 'service'],
+                'factories' => ['service' => TestAsset\NonInvokableFactory::class],
+            ],
+            'alias',
+            'service',
+        ];
+    }
+
+    /**
+     * @dataProvider invalidService
+     */
+    final public function testWithDelegatorsResolvesToInvalidClassNoExceptionIsRaisedIfCallbackNeverInvoked(
+        array $config,
+        string $serviceNameToTest,
+        string $delegatedServiceName
+    ) : void {
+        $container = $this->createContainer($config + [
+            'delegators' => [
+                $delegatedServiceName => [
                     TestAsset\DelegatorFactory::class,
                 ],
             ],
         ]);
 
-        self::assertTrue($container->has('service'));
-        $instance = $container->get('service');
+        self::assertTrue($container->has($serviceNameToTest));
+        $instance = $container->get($serviceNameToTest);
         self::assertInstanceOf(TestAsset\Delegator::class, $instance);
     }
-    
-    // @codingStandardsIgnoreStart
-    public function testWhenServiceWithDelegatorsResolvesToNonExistentFactoryClassAnExceptionIsRaisedWhenCallbackIsInvoked()
-    {
-        // @codingStandardsIgnoreEnd
-        $container = $this->createContainer([
-            'factories' => [
-                'service' => TestAsset\NonExistentFactory::class,
-            ],
+
+    /**
+     * @dataProvider invalidService
+     */
+    final public function testWithDelegatorsResolvesToInvalidClassAnExceptionIsRaisedWhenCallbackIsInvoked(
+        array $config,
+        string $serviceNameToTest,
+        string $delegatedServiceName
+    ) : void {
+        $container = $this->createContainer($config + [
             'delegators' => [
-                'service' => [
+                $delegatedServiceName => [
                     TestAsset\Delegator1Factory::class,
                 ],
             ],
         ]);
 
-        self::assertTrue($container->has('service'));
-        $this->expectException(ContainerExceptionInterface::class);
-        $container->get('service');
-    }
-    
-    public function testWhenServiceWithDelegatorsResolvesToInvalidFactoryClassAnExceptionIsRaisedWhenCallbackIsInvoked()
-    {
-        $container = $this->createContainer([
-            'factories' => [
-                'service' => TestAsset\FactoryWithRequiredParameters::class,
-            ],
-            'delegators' => [
-                'service' => [
-                    TestAsset\Delegator1Factory::class,
-                ],
-            ],
-        ]);
+        self::assertTrue($container->has($serviceNameToTest));
 
-        self::assertTrue($container->has('service'));
-
-        $caught = false;
-        try {
-            $container->get('service');
-        } catch (Throwable $e) {
-            if (! $e instanceof TypeError && ! $e instanceof ContainerExceptionInterface) {
-                $this->fail(sprintf(
-                    'Throwable of type %s (%s) was raised; expected TypeError or %s',
-                    get_class($e),
-                    $e->getMessage(),
-                    ContainerExceptionInterface::class
-                ));
-            }
-            $caught = true;
-        }
-
-        $this->assertTrue($caught, 'No TypeError or ContainerExceptionInterface thrown when one was expected');
+        Assert::expectedExceptions(
+            function () use ($container, $serviceNameToTest) {
+                $container->get($serviceNameToTest);
+            },
+            [Error::class, ContainerExceptionInterface::class]
+        );
     }
 }

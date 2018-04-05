@@ -9,15 +9,15 @@ declare(strict_types=1);
 
 namespace Zend\ContainerConfigTest;
 
+use ArgumentCountError;
 use Generator;
 use Psr\Container\ContainerInterface;
 use Psr\Container\ContainerExceptionInterface;
-use Throwable;
-use TypeError;
+use Zend\ContainerConfigTest\Helper\Assert;
 
 trait FactoryTestTrait
 {
-    public function factory() : Generator
+    final public function factory() : Generator
     {
         yield 'function-name'        => [['factories' => ['service' => __NAMESPACE__ . '\TestAsset\factory']]];
         yield 'invokable-class-name' => [['factories' => ['service' => TestAsset\Factory::class]]];
@@ -38,7 +38,7 @@ trait FactoryTestTrait
     /**
      * @dataProvider factory
      */
-    public function testFactoryIsUsedToProduceService(array $config) : void
+    final public function testFactoryIsUsedToProduceService(array $config) : void
     {
         $container = $this->createContainer($config);
 
@@ -48,7 +48,7 @@ trait FactoryTestTrait
         self::assertSame($service, $container->get('service'));
     }
 
-    public function factoryWithName() : Generator
+    final public function factoryWithName() : Generator
     {
         yield 'function-name'        => [['factories' => ['service' => __NAMESPACE__ . '\TestAsset\factoryWithName']]];
         yield 'invokable-class-name' => [['factories' => ['service' => TestAsset\FactoryWithName::class]]];
@@ -69,7 +69,7 @@ trait FactoryTestTrait
     /**
      * @dataProvider factoryWithName
      */
-    public function testFactoryIsProvidedContainerAndServiceNameAsArguments(array $config) : void
+    final public function testFactoryIsProvidedContainerAndServiceNameAsArguments(array $config) : void
     {
         $container = $this->createContainer($config);
 
@@ -81,7 +81,7 @@ trait FactoryTestTrait
         self::assertEquals('service', array_shift($args));
     }
 
-    public function testFactoryReferencingAServiceWillResultInExceptionDuringRetrieval() : void
+    final public function testFactoryReferencingAServiceWillResultInExceptionDuringRetrieval() : void
     {
         $container = $this->createContainer([
             'factories' => ['service' => 'factory'],
@@ -94,7 +94,7 @@ trait FactoryTestTrait
         $container->get('service');
     }
 
-    public function testNonInvokableFactoryClassNameResultsInExceptionDuringInstanceRetrieval()
+    final public function testNonInvokableFactoryClassNameResultsInExceptionDuringInstanceRetrieval() : void
     {
         $container = $this->createContainer([
             'factories' => [
@@ -107,7 +107,7 @@ trait FactoryTestTrait
         $container->get('service');
     }
 
-    public function testNonExistentFactoryClassResultsInExceptionDuringInstanceRetrieval()
+    final public function testNonExistentFactoryClassResultsInExceptionDuringInstanceRetrieval() : void
     {
         $container = $this->createContainer([
             'factories' => [
@@ -120,7 +120,7 @@ trait FactoryTestTrait
         $container->get('service');
     }
 
-    public function testFactoryClassNameRequiringConstructorArgumentsResultsInExceptionDuringInstanceRetrieval()
+    final public function testFactoryConstructorRequiringArgumentsResultsInExceptionDuringInstanceRetrieval() : void
     {
         $container = $this->createContainer([
             'factories' => [
@@ -130,15 +130,11 @@ trait FactoryTestTrait
 
         self::assertTrue($container->has('service'));
 
-        $caught = false;
-        try {
-            $container->get('service');
-        } catch (Throwable $e) {
-            if ($e instanceof TypeError || $e instanceof ContainerExceptionInterface) {
-                $caught = true;
-            }
-        }
-
-        $this->assertTrue($caught, 'No TypeError or ContainerExceptionInterface thrown when one was expected');
+        Assert::expectedExceptions(
+            function () use ($container) {
+                $container->get('service');
+            },
+            [ArgumentCountError::class, ContainerExceptionInterface::class]
+        );
     }
 }

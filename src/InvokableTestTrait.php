@@ -10,13 +10,13 @@ declare(strict_types=1);
 namespace Zend\ContainerConfigTest;
 
 use ArgumentCountError;
+use Error;
 use Psr\Container\ContainerExceptionInterface;
-use Throwable;
-use TypeError;
+use Zend\ContainerConfigTest\Helper\Assert;
 
 trait InvokableTestTrait
 {
-    public function testCanSpecifyInvokableWithoutKey() : void
+    final public function testCanSpecifyInvokableWithoutKey() : void
     {
         $config = [
             'invokables' => [
@@ -31,7 +31,7 @@ trait InvokableTestTrait
         self::assertInstanceOf(TestAsset\Service::class, $service);
     }
 
-    public function testCanSpecifyMultipleInvokablesWithoutKeyAndNotCauseCollisions() : void
+    final public function testCanSpecifyMultipleInvokablesWithoutKeyAndNotCauseCollisions() : void
     {
         $config = [
             'invokables' => [
@@ -52,7 +52,7 @@ trait InvokableTestTrait
         self::assertInstanceOf(TestAsset\DelegatorFactory::class, $instance);
     }
 
-    public function testCanFetchInvokableByClassName() : void
+    final public function testCanFetchInvokableByClassName() : void
     {
         $config = [
             'invokables' => [
@@ -67,7 +67,7 @@ trait InvokableTestTrait
         self::assertInstanceOf(TestAsset\Service::class, $service);
     }
 
-    public function testCanFetchInvokableByBothAliasAndClassName() : void
+    final public function testCanFetchInvokableByBothAliasAndClassName() : void
     {
         $config = [
             'invokables' => [
@@ -87,7 +87,7 @@ trait InvokableTestTrait
         self::assertSame($originService, $container->get(TestAsset\Service::class));
     }
 
-    public function testFetchingInvokableThatHasRequiredConstructorParametersResultsInException()
+    final public function testFetchingInvokableThatHasRequiredConstructorParametersResultsInException() : void
     {
         $config = [
             'invokables' => [
@@ -99,19 +99,15 @@ trait InvokableTestTrait
 
         self::assertTrue($container->has(TestAsset\Delegator::class));
 
-        $caught = false;
-        try {
-            $container->get(TestAsset\Delegator::class);
-        } catch (Throwable $e) {
-            if ($e instanceof TypeError || $e instanceof ContainerExceptionInterface) {
-                $caught = true;
-            }
-        }
-
-        $this->assertTrue($caught, 'No TypeError or ContainerExceptionInterface thrown when one was expected');
+        Assert::expectedExceptions(
+            function () use ($container) {
+                $container->get(TestAsset\Delegator::class);
+            },
+            [ArgumentCountError::class, ContainerExceptionInterface::class]
+        );
     }
 
-    public function testFetchingInvalidInvokableServiceByAliasResultsInException()
+    final public function testFetchingInvalidInvokableServiceByAliasResultsInException()
     {
         $config = [
             'invokables' => [
@@ -123,15 +119,51 @@ trait InvokableTestTrait
 
         self::assertTrue($container->has('alias'));
 
-        $caught = false;
-        try {
-            $container->get('alias');
-        } catch (Throwable $e) {
-            if ($e instanceof ArgumentCountError || $e instanceof ContainerExceptionInterface) {
-                $caught = true;
-            }
-        }
+        Assert::expectedExceptions(
+            function () use ($container) {
+                $container->get('alias');
+            },
+            [ArgumentCountError::class, ContainerExceptionInterface::class]
+        );
+    }
 
-        $this->assertTrue($caught, 'No ArgumentError or ContainerExceptionInterface thrown when one was expected');
+    final public function testFetchingNonExistingInvokableServiceResultsInException() : void
+    {
+        $config = [
+            'invokables' => [
+                TestAsset\NonExistent::class,
+            ],
+        ];
+
+        $container = $this->createContainer($config);
+
+        self::assertTrue($container->has(TestAsset\NonExistent::class));
+
+        Assert::expectedExceptions(
+            function () use ($container) {
+                $container->get(TestAsset\NonExistent::class);
+            },
+            [Error::class, ContainerExceptionInterface::class]
+        );
+    }
+
+    final public function testFetchingNonExistingInvokableByAliasServiceResultsInException() : void
+    {
+        $config = [
+            'invokables' => [
+                'alias' => TestAsset\NonExistent::class,
+            ],
+        ];
+
+        $container = $this->createContainer($config);
+
+        self::assertTrue($container->has('alias'));
+
+        Assert::expectedExceptions(
+            function () use ($container) {
+                $container->get('alias');
+            },
+            [Error::class, ContainerExceptionInterface::class]
+        );
     }
 }

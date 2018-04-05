@@ -13,7 +13,7 @@ use Generator;
 
 trait AliasTestTrait
 {
-    public function alias() : Generator
+    final public function alias() : Generator
     {
         yield 'alias-service' => [
             [
@@ -82,7 +82,7 @@ trait AliasTestTrait
     /**
      * @dataProvider alias
      */
-    public function testRetrievingServiceByNameBeforeAliasOfServiceResultsInSameInstance(
+    final public function testRetrievingServiceByNameBeforeAliasOfServiceResultsInSameInstance(
         array $config,
         string $serviceToTest
     ) : void {
@@ -96,7 +96,7 @@ trait AliasTestTrait
     /**
      * @dataProvider alias
      */
-    public function testRetrievingAliasedServiceBeforeResolvedServiceResultsInSameInstance(
+    final public function testRetrievingAliasedServiceBeforeResolvedServiceResultsInSameInstance(
         array $config,
         string $serviceToTest
     ) : void {
@@ -107,7 +107,7 @@ trait AliasTestTrait
         self::assertSame($container->get('alias'), $container->get($serviceToTest));
     }
 
-    public function testInstancesRetrievedByTwoAliasesResolvingToSameServiceMustBeTheSame()
+    final public function testInstancesRetrievedByTwoAliasesResolvingToSameServiceMustBeTheSame() : void
     {
         $container = $this->createContainer([
             'aliases' => [
