@@ -10,10 +10,11 @@ declare(strict_types=1);
 namespace ZendTest\ContainerConfigTest;
 
 use Psr\Container\ContainerInterface;
+use Zend\ContainerConfigTest\AbstractExpressiveContainerConfigTest;
 use Zend\Pimple\Config\Config;
 use Zend\Pimple\Config\ContainerFactory;
 
-class PimpleTest extends BaseContainerTest
+class PimpleTest extends AbstractExpressiveContainerConfigTest
 {
     public function createContainer(array $config) : ContainerInterface
     {

@@ -11,9 +11,6 @@ namespace Zend\ContainerConfigTest;
 
 trait AllTestTrait
 {
-    use AliasTestTrait;
-    use DelegatorTestTrait;
-    use FactoryTestTrait;
-    use InvokableTestTrait;
-    use ServiceTestTrait;
+    use ExpressiveTestTrait;
+    use SharedTestTrait;
 }

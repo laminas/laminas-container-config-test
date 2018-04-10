@@ -10,10 +10,11 @@ declare(strict_types=1);
 namespace ZendTest\ContainerConfigTest;
 
 use Psr\Container\ContainerInterface;
+use Zend\ContainerConfigTest\AbstractExpressiveContainerConfigTest;
 use Zend\ContainerConfigTest\SharedTestTrait;
 use Zend\ServiceManager\ServiceManager;
 
-class ServiceManagerTest extends BaseContainerTest
+class ServiceManagerTest extends AbstractExpressiveContainerConfigTest
 {
     use SharedTestTrait;
 

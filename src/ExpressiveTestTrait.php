@@ -7,12 +7,13 @@
 
 declare(strict_types=1);
 
-namespace ZendTest\ContainerConfigTest;
+namespace Zend\ContainerConfigTest;
 
-use Zend\ContainerConfigTest\AllTestTrait;
-use Zend\ContainerConfigTest\ContainerTest;
-
-abstract class BaseContainerTest extends ContainerTest
+trait ExpressiveTestTrait
 {
-    use AllTestTrait;
+    use AliasTestTrait;
+    use DelegatorTestTrait;
+    use FactoryTestTrait;
+    use InvokableTestTrait;
+    use ServiceTestTrait;
 }

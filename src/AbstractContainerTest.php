@@ -12,7 +12,7 @@ namespace Zend\ContainerConfigTest;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 
-abstract class ContainerTest extends TestCase
+abstract class AbstractContainerTest extends TestCase
 {
     abstract protected function createContainer(array $config) : ContainerInterface;
 }

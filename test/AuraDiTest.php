@@ -12,8 +12,9 @@ namespace ZendTest\ContainerConfigTest;
 use Psr\Container\ContainerInterface;
 use Zend\AuraDi\Config\Config;
 use Zend\AuraDi\Config\ContainerFactory;
+use Zend\ContainerConfigTest\AbstractExpressiveContainerConfigTest;
 
-class AuraDiTest extends BaseContainerTest
+class AuraDiTest extends AbstractExpressiveContainerConfigTest
 {
     public function createContainer(array $config) : ContainerInterface
     {
