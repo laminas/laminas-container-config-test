@@ -10,10 +10,13 @@ declare(strict_types=1);
 namespace ZendTest\ContainerConfigTest;
 
 use Psr\Container\ContainerInterface;
+use Zend\ContainerConfigTest\SharedTestTrait;
 use Zend\ServiceManager\ServiceManager;
 
 class ServiceManagerTest extends BaseContainerTest
 {
+    use SharedTestTrait;
+
     public function createContainer(array $config) : ContainerInterface
     {
         return new ServiceManager($config);
