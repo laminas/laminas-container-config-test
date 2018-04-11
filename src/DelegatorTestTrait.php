@@ -493,80 +493,9 @@ trait DelegatorTestTrait
         self::assertSame($instance, $container->get('service'));
     }
 
-    final public function invalidService() : Generator
-    {
-        yield 'non-existent-invokable' => [
-            ['invokables' => [TestAsset\NonExistent::class]],
-            TestAsset\NonExistent::class,
-            TestAsset\NonExistent::class,
-        ];
-
-        yield 'non-existent-aliased-invokable' => [
-            ['invokables' => ['service' => TestAsset\NonExistent::class]],
-            'service',
-            TestAsset\NonExistent::class,
-        ];
-
-        yield 'non-existent-factory' => [
-            ['factories' => ['service' => TestAsset\NonExistent::class]],
-            'service',
-            'service',
-        ];
-
-        yield 'non-existent-aliased-factory' => [
-            [
-                'aliases' => ['alias' => 'service'],
-                'factories' => ['service' => TestAsset\NonExistent::class],
-            ],
-            'alias',
-            'service',
-        ];
-
-        yield 'invalid-invokable' => [
-            ['invokables' => [TestAsset\FactoryWithRequiredParameters::class]],
-            TestAsset\FactoryWithRequiredParameters::class,
-            TestAsset\FactoryWithRequiredParameters::class,
-        ];
-
-        yield 'invalid-aliased-invokable' => [
-            ['invokables' => ['service' => TestAsset\FactoryWithRequiredParameters::class]],
-            'service',
-            TestAsset\FactoryWithRequiredParameters::class,
-        ];
-
-        yield 'invalid-factory' => [
-            ['factories' => ['service' => TestAsset\FactoryWithRequiredParameters::class]],
-            'service',
-            'service',
-        ];
-
-        yield 'invalid-aliased-factory' => [
-            [
-                'aliases' => ['alias' => 'service'],
-                'factories' => ['service' => TestAsset\FactoryWithRequiredParameters::class],
-            ],
-            'alias',
-            'service',
-        ];
-
-        yield 'non-invokable-factory' => [
-            ['factories' => ['service' => TestAsset\NonInvokableFactory::class]],
-            'service',
-            'service',
-        ];
-
-        yield 'non-invokable-aliased-factory' => [
-            [
-                'aliases' => ['alias' => 'service'],
-                'factories' => ['service' => TestAsset\NonInvokableFactory::class],
-            ],
-            'alias',
-            'service',
-        ];
-    }
-
     /**
-     * @dataProvider invalidService
+     * @dataProvider \Zend\ContainerConfigTest\Helper\Provider::invalidFactory
+     * @dataProvider \Zend\ContainerConfigTest\Helper\Provider::invalidInvokable
      */
     final public function testWithDelegatorsResolvesToInvalidClassNoExceptionIsRaisedIfCallbackNeverInvoked(
         array $config,
@@ -587,7 +516,8 @@ trait DelegatorTestTrait
     }
 
     /**
-     * @dataProvider invalidService
+     * @dataProvider \Zend\ContainerConfigTest\Helper\Provider::invalidFactory
+     * @dataProvider \Zend\ContainerConfigTest\Helper\Provider::invalidInvokable
      */
     final public function testWithDelegatorsResolvesToInvalidClassAnExceptionIsRaisedWhenCallbackIsInvoked(
         array $config,

@@ -54,4 +54,93 @@ class Provider
             ],
         ];
     }
+
+    public static function invalidInvokable() : Generator
+    {
+        yield 'non-existent-invokable' => [
+            ['invokables' => [TestAsset\NonExistent::class]],
+            TestAsset\NonExistent::class,
+            TestAsset\NonExistent::class,
+        ];
+
+        yield 'non-existent-aliased-invokable' => [
+            ['invokables' => ['service' => TestAsset\NonExistent::class]],
+            'service',
+            TestAsset\NonExistent::class,
+        ];
+
+        yield 'invalid-invokable' => [
+            ['invokables' => [TestAsset\FactoryWithRequiredParameters::class]],
+            TestAsset\FactoryWithRequiredParameters::class,
+            TestAsset\FactoryWithRequiredParameters::class,
+        ];
+
+        yield 'invalid-aliased-invokable' => [
+            ['invokables' => ['service' => TestAsset\FactoryWithRequiredParameters::class]],
+            'service',
+            TestAsset\FactoryWithRequiredParameters::class,
+        ];
+
+        yield 'non-invokable-invokable' => [
+            ['invokables' => [TestAsset\NonInvokableFactory::class]],
+            TestAsset\NonInvokableFactory::class,
+            TestAsset\NonInvokableFactory::class,
+        ];
+
+        yield 'non-invokable-aliased-invokable' => [
+            [
+                'invokables' => ['service' => TestAsset\NonInvokableFactory::class],
+            ],
+            'service',
+            TestAsset\NonInvokableFactory::class,
+        ];
+    }
+
+    public static function invalidFactory() : Generator
+    {
+        yield 'non-existent-factory' => [
+            ['factories' => ['service' => TestAsset\NonExistent::class]],
+            'service',
+            'service',
+        ];
+
+        yield 'non-existent-aliased-factory' => [
+            [
+                'aliases' => ['alias' => 'service'],
+                'factories' => ['service' => TestAsset\NonExistent::class],
+            ],
+            'alias',
+            'service',
+        ];
+
+        yield 'invalid-factory' => [
+            ['factories' => ['service' => TestAsset\FactoryWithRequiredParameters::class]],
+            'service',
+            'service',
+        ];
+
+        yield 'invalid-aliased-factory' => [
+            [
+                'aliases' => ['alias' => 'service'],
+                'factories' => ['service' => TestAsset\FactoryWithRequiredParameters::class],
+            ],
+            'alias',
+            'service',
+        ];
+
+        yield 'non-invokable-factory' => [
+            ['factories' => ['service' => TestAsset\NonInvokableFactory::class]],
+            'service',
+            'service',
+        ];
+
+        yield 'non-invokable-aliased-factory' => [
+            [
+                'aliases' => ['alias' => 'service'],
+                'factories' => ['service' => TestAsset\NonInvokableFactory::class],
+            ],
+            'alias',
+            'service',
+        ];
+    }
 }
