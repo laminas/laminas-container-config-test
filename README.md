@@ -27,7 +27,7 @@ $ composer require --dev zendframework/zend-container-config-test
 ## Using common tests
 
 In your library, you will need to extend the
-`Zend\ContainerConfigTest\ContainerTest` class within your test suite and
+`Zend\ContainerConfigTest\AbstractContainerTest` class within your test suite and
 implement the method `createContainer`:
 
 ```php
@@ -44,5 +44,30 @@ following traits into your test case:
 - `Zend\ContainerConfigTest\FactoryTestTrait` - to support `factories` configuration,
 - `Zend\ContainerConfigTest\InvokableTestTrait` - to support `invokables` configuration,
 - `Zend\ContainerConfigTest\ServiceTestTrait` - to support `services` configuration,
+- `Zend\ContainerConfigTest\SharedTestTrait` - to support `shared` and `shared_by_default` configuration.
 
-or use `Zend\ContainerConfigTest\AllTestTrait` to support the entire configuration.
+For Expressive compatible container you should extend class
+`Zend\ContainerConfigTest\AbstractExpressiveContainerConfigTest`
+and implement method `createContainer`. This class composes the following traits:
+- `Zend\ContainerConfigTest\AliasTestTrait`,
+- `Zend\ContainerConfigTest\DelegatorTestTrait`,
+- `Zend\ContainerConfigTest\FactoryTestTrait`,
+- `Zend\ContainerConfigTest\InvokableTestTrait`,
+- `Zend\ContainerConfigTest\ServiceTestTrait`.
+
+If you want also support shared services your test class should look as follows:
+
+```php
+use Zend\ContainerConfigTest\AbstractExpressiveContainerConfigTest;
+use Zend\ContainerConfigTest\ServiceTestTrait;
+
+class ContainerTest extends AbstractExpressiveContainerConfigTest
+{
+    use ServiceTestTrait;
+    
+    protected function createContainer(array $config) : ContainerInterface
+    {
+        // your container configuration
+    }
+}
+```
