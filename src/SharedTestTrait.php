@@ -9,43 +9,13 @@ declare(strict_types=1);
 
 namespace Zend\ContainerConfigTest;
 
-use Generator;
-use Zend\ContainerConfigTest\Helper\Provider;
-
 use function array_merge;
 
 trait SharedTestTrait
 {
-    final public function config() : Generator
-    {
-        yield 'invokable' => [
-            ['invokables' => [TestAsset\Service::class => TestAsset\Service::class]],
-            TestAsset\Service::class,
-        ];
-
-        yield 'aliased-invokable' => [
-            [
-                'aliases' => ['service' => TestAsset\Service::class],
-                'invokables' => [TestAsset\Service::class => TestAsset\Service::class],
-            ],
-            'service',
-        ];
-
-        foreach (Provider::factory() as $name => $params) {
-            yield 'factory-' . $name => [
-                $params[0],
-                'service',
-            ];
-
-            yield 'aliased-factory-' . $name => [
-                ['aliases' => ['alias' => 'service']] + $params[0],
-                'alias',
-            ];
-        }
-    }
-
     /**
-     * @dataProvider config
+     * @dataProvider \Zend\ContainerConfigTest\Helper\Provider::service
+     * @dataProvider \Zend\ContainerConfigTest\Helper\Provider::aliasedService
      */
     final public function testIsSharedByDefault(array $config, string $serviceToTest) : void
     {
@@ -58,7 +28,8 @@ trait SharedTestTrait
     }
 
     /**
-     * @dataProvider config
+     * @dataProvider \Zend\ContainerConfigTest\Helper\Provider::service
+     * @dataProvider \Zend\ContainerConfigTest\Helper\Provider::aliasedService
      */
     final public function testCanDisableSharedByDefault(array $config, string $serviceToTest) : void
     {
@@ -73,7 +44,8 @@ trait SharedTestTrait
     }
 
     /**
-     * @dataProvider config
+     * @dataProvider \Zend\ContainerConfigTest\Helper\Provider::service
+     * @dataProvider \Zend\ContainerConfigTest\Helper\Provider::aliasedService
      */
     final public function testCanDisableSharedForSingleService(array $config, string $serviceToTest) : void
     {
@@ -90,7 +62,8 @@ trait SharedTestTrait
     }
 
     /**
-     * @dataProvider config
+     * @dataProvider \Zend\ContainerConfigTest\Helper\Provider::service
+     * @dataProvider \Zend\ContainerConfigTest\Helper\Provider::aliasedService
      */
     final public function testCanEnableSharedForSingleService(array $config, string $serviceToTest) : void
     {

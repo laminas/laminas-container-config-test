@@ -57,11 +57,13 @@ class Provider
         ];
     }
 
-    private static function invalidAliased(callable $callable) : Generator
+    private static function aliased(callable $callable) : Generator
     {
         foreach ($callable() as $name => $params) {
+            $params[0]['aliases']['alias'] = $params[1];
+
             yield 'aliased-' . $name => [
-                $params[0] + ['aliases' => ['alias' => $params[1]]],
+                $params[0],
                 'alias',
                 $params[2],
                 $params[3] ?? [],
@@ -71,7 +73,7 @@ class Provider
 
     public static function invalidAliasedInvokable() : Generator
     {
-        yield from self::invalidAliased([__CLASS__, 'invalidInvokable']);
+        yield from self::aliased([__CLASS__, 'invalidInvokable']);
     }
 
     public static function invalidInvokable() : Generator
@@ -107,7 +109,7 @@ class Provider
 
     public static function invalidAliasedFactory() : Generator
     {
-        yield from self::invalidAliased([__CLASS__, 'invalidFactory']);
+        yield from self::aliased([__CLASS__, 'invalidFactory']);
     }
 
     public static function invalidFactory() : Generator
@@ -159,5 +161,75 @@ class Provider
         yield from self::invalidAliasedInvokable();
         yield from self::invalidFactory();
         yield from self::invalidAliasedFactory();
+    }
+
+    public static function aliasedAlias() : Generator
+    {
+        yield from self::aliased([__CLASS__, 'alias']);
+    }
+
+    public static function alias() : Generator
+    {
+        yield 'alias-service' => [
+            [
+                'aliases' => ['foo-bar' => 'service'],
+                'services' => ['service' => new TestAsset\Service()],
+            ],
+            'foo-bar',
+            'service',
+        ];
+
+        foreach (self::invokable() as $name => $params) {
+            yield 'alias-' . $name => [
+                ['aliases' => ['foo-bar' => $params[1]]] + $params[0],
+                'foo-bar',
+                $params[2],
+            ];
+        }
+
+        foreach (self::factory() as $name => $params) {
+            yield 'alias-factory-' . $name => [
+                ['aliases' => ['foo-bar' => 'service']] + $params[0],
+                'foo-bar',
+                'service',
+            ];
+        }
+    }
+
+    public static function aliasedService() : Generator
+    {
+        yield from self::aliased([__CLASS__, 'service']);
+    }
+
+    public static function service() : Generator
+    {
+        yield from self::invokable();
+
+        foreach (self::factory() as $name => $params) {
+            yield 'factory-service-' . $name => [
+                $params[0],
+                'service',
+                'service',
+            ];
+        }
+    }
+
+    public static function invokable() : Generator
+    {
+        yield 'invokable' => [
+            [
+                'invokables' => [TestAsset\Service::class],
+            ],
+            TestAsset\Service::class,
+            TestAsset\Service::class,
+        ];
+
+        yield 'invokable-with-alias' => [
+            [
+                'invokables' => ['foo-bar' => TestAsset\Service::class],
+            ],
+            'foo-bar',
+            TestAsset\Service::class,
+        ];
     }
 }

@@ -9,105 +9,41 @@ declare(strict_types=1);
 
 namespace Zend\ContainerConfigTest;
 
-use Generator;
 use Psr\Container\ContainerExceptionInterface;
 use Zend\ContainerConfigTest\Helper\Assert;
-use Zend\ContainerConfigTest\Helper\Provider;
 
 trait AliasTestTrait
 {
-    final public function alias() : Generator
-    {
-        yield 'alias-service' => [
-            [
-                'aliases' => ['alias' => 'service'],
-                'services' => ['service' => new TestAsset\Service()],
-            ],
-            'service',
-        ];
-
-        yield 'alias-invokable' => [
-            [
-                'aliases' => ['alias' => TestAsset\Service::class],
-                'invokables' => [TestAsset\Service::class => TestAsset\Service::class],
-            ],
-            TestAsset\Service::class,
-        ];
-
-        yield 'alias-alias-service' => [
-            [
-                'aliases' => [
-                    'alias' => 'alias2',
-                    'alias2' => 'service',
-                ],
-                'services' => [
-                    'service' => new TestAsset\Service(),
-                ],
-            ],
-            'service',
-        ];
-
-        yield 'alias-alias-invokable' => [
-            [
-                'aliases' => [
-                    'alias' => 'alias2',
-                    'alias2' => TestAsset\Service::class,
-                ],
-                'invokables' => [
-                    TestAsset\Service::class => TestAsset\Service::class,
-                ],
-            ],
-            TestAsset\Service::class,
-        ];
-
-        foreach (Provider::factory() as $name => $params) {
-            yield 'alias-factory-' . $name => [
-                [
-                    'aliases' => [
-                        'alias' => 'service',
-                    ],
-                ] + $params[0],
-                'service',
-            ];
-
-            yield 'alias-alias-factory-' . $name => [
-                [
-                    'aliases' => [
-                        'alias' => 'alias2',
-                        'alias2' => 'service',
-                    ],
-                ] + $params[0],
-                'service',
-            ];
-        }
-    }
-
     /**
-     * @dataProvider alias
+     * @dataProvider \Zend\ContainerConfigTest\Helper\Provider::alias
+     * @dataProvider \Zend\ContainerConfigTest\Helper\Provider::aliasedAlias
      */
     final public function testRetrievingServiceByNameBeforeAliasOfServiceResultsInSameInstance(
         array $config,
-        string $serviceToTest
+        string $alias,
+        string $name
     ) : void {
         $container = $this->createContainer($config);
 
-        self::assertTrue($container->has($serviceToTest));
-        self::assertTrue($container->has('alias'));
-        self::assertSame($container->get($serviceToTest), $container->get('alias'));
+        self::assertTrue($container->has($name));
+        self::assertTrue($container->has($alias));
+        self::assertSame($container->get($name), $container->get($alias));
     }
 
     /**
-     * @dataProvider alias
+     * @dataProvider \Zend\ContainerConfigTest\Helper\Provider::alias
+     * @dataProvider \Zend\ContainerConfigTest\Helper\Provider::aliasedAlias
      */
     final public function testRetrievingAliasedServiceBeforeResolvedServiceResultsInSameInstance(
         array $config,
-        string $serviceToTest
+        string $alias,
+        string $name
     ) : void {
         $container = $this->createContainer($config);
 
-        self::assertTrue($container->has('alias'));
-        self::assertTrue($container->has($serviceToTest));
-        self::assertSame($container->get('alias'), $container->get($serviceToTest));
+        self::assertTrue($container->has($alias));
+        self::assertTrue($container->has($name));
+        self::assertSame($container->get($alias), $container->get($name));
     }
 
     final public function testInstancesRetrievedByTwoAliasesResolvingToSameServiceMustBeTheSame() : void

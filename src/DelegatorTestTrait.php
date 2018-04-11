@@ -11,10 +11,8 @@ namespace Zend\ContainerConfigTest;
 
 use ArgumentCountError;
 use Error;
-use Generator;
 use Psr\Container\ContainerExceptionInterface;
 use Zend\ContainerConfigTest\Helper\Assert;
-use Zend\ContainerConfigTest\Helper\Provider;
 
 trait DelegatorTestTrait
 {
@@ -205,50 +203,9 @@ trait DelegatorTestTrait
         self::assertSame($instance, $container->get(TestAsset\Service::class));
     }
 
-    final public function delegatorService() : Generator
-    {
-        yield 'invokable' => [
-            [
-                'invokables' => [TestAsset\Service::class => TestAsset\Service::class],
-            ],
-            TestAsset\Service::class,
-            TestAsset\Service::class,
-        ];
-
-        yield 'aliased-invokable' => [
-            [
-                'invokables' => ['foo-bar' => TestAsset\Service::class],
-            ],
-            'foo-bar',
-            TestAsset\Service::class,
-        ];
-
-        yield 'alias-of-invokable' => [
-            [
-                'aliases' => ['foo-bar' => TestAsset\Service::class],
-                'invokables' => [TestAsset\Service::class => TestAsset\Service::class],
-            ],
-            'foo-bar',
-            TestAsset\Service::class,
-        ];
-
-        foreach (Provider::factory() as $name => $params) {
-            yield 'factory-service-' . $name => [
-                $params[0],
-                'service',
-                'service',
-            ];
-
-            yield 'alias-of-factory-service-' . $name => [
-                $params[0] + ['aliases' => ['alias' => 'service']],
-                'alias',
-                'service',
-            ];
-        }
-    }
-
     /**
-     * @dataProvider delegatorService
+     * @dataProvider \Zend\ContainerConfigTest\Helper\Provider::service
+     * @dataProvider \Zend\ContainerConfigTest\Helper\Provider::aliasedService
      */
     final public function testDelegatorsReceiveCallbackResolvingToReturnValueOfPrevious(
         array $config,
@@ -282,7 +239,8 @@ trait DelegatorTestTrait
     }
 
     /**
-     * @dataProvider delegatorService
+     * @dataProvider \Zend\ContainerConfigTest\Helper\Provider::service
+     * @dataProvider \Zend\ContainerConfigTest\Helper\Provider::aliasedService
      */
     final public function testEmptyDelegatorListOriginalServiceShouldBeReturned(
         array $config,
@@ -341,7 +299,8 @@ trait DelegatorTestTrait
     }
 
     /**
-     * @dataProvider delegatorService
+     * @dataProvider \Zend\ContainerConfigTest\Helper\Provider::service
+     * @dataProvider \Zend\ContainerConfigTest\Helper\Provider::aliasedService
      */
     final public function testNonInvokableDelegatorClassNameResultsInExceptionDuringInstanceRetrieval(
         array $config,
@@ -362,7 +321,8 @@ trait DelegatorTestTrait
     }
 
     /**
-     * @dataProvider delegatorService
+     * @dataProvider \Zend\ContainerConfigTest\Helper\Provider::service
+     * @dataProvider \Zend\ContainerConfigTest\Helper\Provider::aliasedService
      */
     final public function testNonExistentDelegatorClassResultsInExceptionDuringInstanceRetrieval(
         array $config,
@@ -383,7 +343,8 @@ trait DelegatorTestTrait
     }
 
     /**
-     * @dataProvider delegatorService
+     * @dataProvider \Zend\ContainerConfigTest\Helper\Provider::service
+     * @dataProvider \Zend\ContainerConfigTest\Helper\Provider::aliasedService
      */
     final public function testDelegatorClassNameRequiringConstructorArgumentsResultsInExceptionDuringInstanceRetrieval(
         array $config,
