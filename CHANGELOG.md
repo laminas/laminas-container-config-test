@@ -2,15 +2,18 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## 0.1.1 - TBD
+## 0.2.0 - 2018-04-11
 
 ### Added
 
-- Nothing.
+- [#7](https://github.com/zendframework/zend-container-config-test/pull/7) adds
+  the class `Zend\ContainerConfigTest\Helper\Provider`, containing data
+  providers consumed by the various test traits.
 
 ### Changed
 
-- Nothing.
+- [#7](https://github.com/zendframework/zend-container-config-test/pull/7) marks
+  all methods in `Zend\ContainerConfigTest\SharedTestTrait` as `final`.
 
 ### Deprecated
 
@@ -18,7 +21,18 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Removed
 
-- Nothing.
+- [#7](https://github.com/zendframework/zend-container-config-test/pull/7)
+  removes the data provider methods from all test traits, referencing those in
+  the new `Zend\ContainerConfigTest\Helper\Provider` class instead.
+
+- [#7](https://github.com/zendframework/zend-container-config-test/pull/7)
+  removes `Zend\ContainerConfigTest\AllTestTrait`; compose the traits you wish
+  to test against manually.
+
+- [#7](https://github.com/zendframework/zend-container-config-test/pull/7)
+  removes `Zend\ContainerConfigTest\ExpressiveTestTrait`; compose the traits you
+  wish to test against manually, or extend the class
+  `Zend\ContainerConfigTest\AbstractExpressiveContainerConfigTest`.
 
 ### Fixed
 
