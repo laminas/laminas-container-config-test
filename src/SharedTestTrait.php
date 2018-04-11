@@ -18,7 +18,7 @@ trait SharedTestTrait
     {
         yield 'invokable' => [
             ['invokables' => [TestAsset\Service::class => TestAsset\Service::class]],
-            TestAsset\Service::class
+            TestAsset\Service::class,
         ];
 
         yield 'aliased-invokable' => [
@@ -32,7 +32,7 @@ trait SharedTestTrait
         foreach (Provider::factory() as $name => $params) {
             yield 'factory-' . $name => [
                 $params[0],
-                'service'
+                'service',
             ];
 
             yield 'aliased-factory-' . $name => [
