@@ -10,6 +10,8 @@ declare(strict_types=1);
 namespace Zend\ContainerConfigTest;
 
 use Generator;
+use Psr\Container\ContainerExceptionInterface;
+use Zend\ContainerConfigTest\Helper\Assert;
 use Zend\ContainerConfigTest\Helper\Provider;
 
 trait AliasTestTrait
@@ -123,5 +125,29 @@ trait AliasTestTrait
         self::assertTrue($container->has('alias1'));
         self::assertTrue($container->has('alias2'));
         self::assertSame($container->get('alias1'), $container->get('alias2'));
+    }
+
+    /**
+     * @dataProvider \Zend\ContainerConfigTest\Helper\Provider::invalidAliasedInvokable
+     * @dataProvider \Zend\ContainerConfigTest\Helper\Provider::invalidAliasedFactory
+     */
+    final public function testInvalidAliasResultsInExceptionDuringInstanceRetrieval(
+        array $config,
+        string $name,
+        string $originName,
+        array $expectedExceptions = []
+    ) : void {
+        $expectedExceptions[] = ContainerExceptionInterface::class;
+        $container = $this->createContainer($config);
+
+        self::assertTrue($container->has($name));
+        self::assertTrue($container->has($originName));
+
+        Assert::expectedExceptions(
+            function () use ($container, $name) {
+                return $container->get($name);
+            },
+            $expectedExceptions
+        );
     }
 }

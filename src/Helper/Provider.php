@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace Zend\ContainerConfigTest\Helper;
 
+use ArgumentCountError;
+use Error;
 use Generator;
 use Zend\ContainerConfigTest\TestAsset;
 
@@ -57,12 +59,12 @@ class Provider
 
     private static function invalidAliased(callable $callable) : Generator
     {
-        foreach ($callable() as $name => $params)
-        {
+        foreach ($callable() as $name => $params) {
             yield 'aliased-' . $name => [
                 $params[0] + ['aliases' => ['alias' => $params[1]]],
                 'alias',
                 $params[2],
+                $params[3] ?? [],
             ];
         }
     }
@@ -78,18 +80,28 @@ class Provider
             ['invokables' => [TestAsset\NonExistent::class]],
             TestAsset\NonExistent::class,
             TestAsset\NonExistent::class,
+            [Error::class],
+        ];
+
+        yield 'non-existent-invokable-with-alias' => [
+            ['invokables' => ['service' => TestAsset\NonExistent::class]],
+            'service',
+            TestAsset\NonExistent::class,
+            [Error::class],
         ];
 
         yield 'invalid-invokable' => [
             ['invokables' => [TestAsset\FactoryWithRequiredParameters::class]],
             TestAsset\FactoryWithRequiredParameters::class,
             TestAsset\FactoryWithRequiredParameters::class,
+            [ArgumentCountError::class],
         ];
 
-        yield 'non-invokable-invokable' => [
-            ['invokables' => [TestAsset\NonInvokableFactory::class]],
-            TestAsset\NonInvokableFactory::class,
-            TestAsset\NonInvokableFactory::class,
+        yield 'invalid-invokable-with-alias' => [
+            ['invokables' => ['service' => TestAsset\FactoryWithRequiredParameters::class]],
+            'service',
+            TestAsset\FactoryWithRequiredParameters::class,
+            [ArgumentCountError::class],
         ];
     }
 
@@ -110,6 +122,7 @@ class Provider
             ['factories' => ['service' => TestAsset\FactoryWithRequiredParameters::class]],
             'service',
             'service',
+            [ArgumentCountError::class],
         ];
 
         yield 'non-invokable-factory' => [

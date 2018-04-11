@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace Zend\ContainerConfigTest;
 
-use ArgumentCountError;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Zend\ContainerConfigTest\Helper\Assert;
@@ -46,60 +45,24 @@ trait FactoryTestTrait
         self::assertEquals('service', array_shift($args));
     }
 
-    final public function testFactoryReferencingAServiceWillResultInExceptionDuringRetrieval() : void
-    {
-        $container = $this->createContainer([
-            'factories' => ['service' => 'factory'],
-            'services' => ['factory' => new TestAsset\Factory()],
-        ]);
+    /**
+     * @dataProvider \Zend\ContainerConfigTest\Helper\Provider::invalidFactory
+     */
+    final public function testInvalidFactoryResultsInExceptionDuringInstanceRetrieval(
+        array $config,
+        string $name,
+        string $originName,
+        array $expectedExceptions = []
+    ) : void {
+        $expectedExceptions[] = ContainerExceptionInterface::class;
+        $container = $this->createContainer($config);
 
-        self::assertTrue($container->has('service'));
-
-        $this->expectException(ContainerExceptionInterface::class);
-        $container->get('service');
-    }
-
-    final public function testNonInvokableFactoryClassNameResultsInExceptionDuringInstanceRetrieval() : void
-    {
-        $container = $this->createContainer([
-            'factories' => [
-                'service' => TestAsset\NonInvokableFactory::class,
-            ],
-        ]);
-
-        self::assertTrue($container->has('service'));
-        $this->expectException(ContainerExceptionInterface::class);
-        $container->get('service');
-    }
-
-    final public function testNonExistentFactoryClassResultsInExceptionDuringInstanceRetrieval() : void
-    {
-        $container = $this->createContainer([
-            'factories' => [
-                'service' => TestAsset\NonExistentFactory::class,
-            ],
-        ]);
-
-        self::assertTrue($container->has('service'));
-        $this->expectException(ContainerExceptionInterface::class);
-        $container->get('service');
-    }
-
-    final public function testFactoryConstructorRequiringArgumentsResultsInExceptionDuringInstanceRetrieval() : void
-    {
-        $container = $this->createContainer([
-            'factories' => [
-                'service' => TestAsset\FactoryWithRequiredParameters::class,
-            ],
-        ]);
-
-        self::assertTrue($container->has('service'));
-
+        self::assertTrue($container->has($name));
         Assert::expectedExceptions(
-            function () use ($container) {
-                $container->get('service');
+            function () use ($container, $name) {
+                $container->get($name);
             },
-            [ArgumentCountError::class, ContainerExceptionInterface::class]
+            $expectedExceptions
         );
     }
 }
