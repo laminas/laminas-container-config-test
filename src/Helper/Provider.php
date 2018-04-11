@@ -55,17 +55,28 @@ class Provider
         ];
     }
 
+    private static function invalidAliased(callable $callable) : Generator
+    {
+        foreach ($callable() as $name => $params)
+        {
+            yield 'aliased-' . $name => [
+                $params[0] + ['aliases' => ['alias' => $params[1]]],
+                'alias',
+                $params[2],
+            ];
+        }
+    }
+
+    public static function invalidAliasedInvokable() : Generator
+    {
+        yield from self::invalidAliased([__CLASS__, 'invalidInvokable']);
+    }
+
     public static function invalidInvokable() : Generator
     {
         yield 'non-existent-invokable' => [
             ['invokables' => [TestAsset\NonExistent::class]],
             TestAsset\NonExistent::class,
-            TestAsset\NonExistent::class,
-        ];
-
-        yield 'non-existent-aliased-invokable' => [
-            ['invokables' => ['service' => TestAsset\NonExistent::class]],
-            'service',
             TestAsset\NonExistent::class,
         ];
 
@@ -75,25 +86,16 @@ class Provider
             TestAsset\FactoryWithRequiredParameters::class,
         ];
 
-        yield 'invalid-aliased-invokable' => [
-            ['invokables' => ['service' => TestAsset\FactoryWithRequiredParameters::class]],
-            'service',
-            TestAsset\FactoryWithRequiredParameters::class,
-        ];
-
         yield 'non-invokable-invokable' => [
             ['invokables' => [TestAsset\NonInvokableFactory::class]],
             TestAsset\NonInvokableFactory::class,
             TestAsset\NonInvokableFactory::class,
         ];
+    }
 
-        yield 'non-invokable-aliased-invokable' => [
-            [
-                'invokables' => ['service' => TestAsset\NonInvokableFactory::class],
-            ],
-            'service',
-            TestAsset\NonInvokableFactory::class,
-        ];
+    public static function invalidAliasedFactory() : Generator
+    {
+        yield from self::invalidAliased([__CLASS__, 'invalidFactory']);
     }
 
     public static function invalidFactory() : Generator
@@ -104,27 +106,9 @@ class Provider
             'service',
         ];
 
-        yield 'non-existent-aliased-factory' => [
-            [
-                'aliases' => ['alias' => 'service'],
-                'factories' => ['service' => TestAsset\NonExistent::class],
-            ],
-            'alias',
-            'service',
-        ];
-
         yield 'invalid-factory' => [
             ['factories' => ['service' => TestAsset\FactoryWithRequiredParameters::class]],
             'service',
-            'service',
-        ];
-
-        yield 'invalid-aliased-factory' => [
-            [
-                'aliases' => ['alias' => 'service'],
-                'factories' => ['service' => TestAsset\FactoryWithRequiredParameters::class],
-            ],
-            'alias',
             'service',
         ];
 
@@ -134,27 +118,9 @@ class Provider
             'service',
         ];
 
-        yield 'non-invokable-aliased-factory' => [
-            [
-                'aliases' => ['alias' => 'service'],
-                'factories' => ['service' => TestAsset\NonInvokableFactory::class],
-            ],
-            'alias',
-            'service',
-        ];
-
         yield 'non-class-factory' => [
             ['factories' => ['service' => 5]],
             'service',
-            'service',
-        ];
-
-        yield 'non-class-aliased-factory' => [
-            [
-                'aliases' => ['alias' => 'service'],
-                'factories' => ['service' => 5],
-            ],
-            'alias',
             'service',
         ];
 
@@ -163,14 +129,13 @@ class Provider
             'service',
             'service',
         ];
+    }
 
-        yield 'array-non-static-aliased-factory' => [
-            [
-                'aliases' => ['alias' => 'service'],
-                'factories' => ['service' => [TestAsset\Factory::class, '__invoke']],
-            ],
-            'alias',
-            'service',
-        ];
+    public static function invalidService() : Generator
+    {
+        yield from self::invalidInvokable();
+        yield from self::invalidAliasedInvokable();
+        yield from self::invalidFactory();
+        yield from self::invalidAliasedFactory();
     }
 }

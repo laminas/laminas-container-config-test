@@ -494,8 +494,7 @@ trait DelegatorTestTrait
     }
 
     /**
-     * @dataProvider \Zend\ContainerConfigTest\Helper\Provider::invalidFactory
-     * @dataProvider \Zend\ContainerConfigTest\Helper\Provider::invalidInvokable
+     * @dataProvider \Zend\ContainerConfigTest\Helper\Provider::invalidService
      */
     final public function testWithDelegatorsResolvesToInvalidClassNoExceptionIsRaisedIfCallbackNeverInvoked(
         array $config,
@@ -516,8 +515,7 @@ trait DelegatorTestTrait
     }
 
     /**
-     * @dataProvider \Zend\ContainerConfigTest\Helper\Provider::invalidFactory
-     * @dataProvider \Zend\ContainerConfigTest\Helper\Provider::invalidInvokable
+     * @dataProvider \Zend\ContainerConfigTest\Helper\Provider::invalidService
      */
     final public function testWithDelegatorsResolvesToInvalidClassAnExceptionIsRaisedWhenCallbackIsInvoked(
         array $config,
