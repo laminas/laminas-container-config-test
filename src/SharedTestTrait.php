@@ -10,16 +10,12 @@ declare(strict_types=1);
 namespace Zend\ContainerConfigTest;
 
 use Generator;
+use Zend\ContainerConfigTest\Helper\Provider;
 
 trait SharedTestTrait
 {
     final public function config() : Generator
     {
-        yield 'factory' => [
-            ['factories' => ['service' => TestAsset\Factory::class]],
-            'service'
-        ];
-
         yield 'invokable' => [
             ['invokables' => [TestAsset\Service::class => TestAsset\Service::class]],
             TestAsset\Service::class
@@ -33,13 +29,17 @@ trait SharedTestTrait
             'service',
         ];
 
-        yield 'aliased-factory' => [
-            [
-                'aliases' => ['service' => TestAsset\Service::class],
-                'factories' => [TestAsset\Service::class => TestAsset\Factory::class],
-            ],
-            'service',
-        ];
+        foreach (Provider::factory() as $name => $params) {
+            yield 'factory-' . $name => [
+                $params[0],
+                'service'
+            ];
+
+            yield 'aliased-factory-' . $name => [
+                ['aliases' => ['alias' => 'service']] + $params[0],
+                'alias',
+            ];
+        }
     }
 
     /**

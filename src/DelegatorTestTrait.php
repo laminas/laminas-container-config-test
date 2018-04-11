@@ -14,6 +14,7 @@ use Error;
 use Generator;
 use Psr\Container\ContainerExceptionInterface;
 use Zend\ContainerConfigTest\Helper\Assert;
+use Zend\ContainerConfigTest\Helper\Provider;
 
 trait DelegatorTestTrait
 {
@@ -231,7 +232,7 @@ trait DelegatorTestTrait
             TestAsset\Service::class,
         ];
 
-        foreach ($this->factoriesForDelegators() as $name => $params) {
+        foreach (Provider::factory() as $name => $params) {
             yield 'factory-service-' . $name => [
                 $params[0],
                 'service',
@@ -407,26 +408,8 @@ trait DelegatorTestTrait
         );
     }
 
-    final public function factoriesForDelegators() : Generator
-    {
-        yield 'function-name'        => [['factories' => ['service' => __NAMESPACE__ . '\TestAsset\factory']]];
-        yield 'invokable-class-name' => [['factories' => ['service' => TestAsset\Factory::class]]];
-        yield 'invokable-instance'   => [['factories' => ['service' => new TestAsset\Factory()]]];
-        yield 'callable-array'       => [['factories' => ['service' => [TestAsset\FactoryStatic::class, 'create']]]];
-        yield 'callable-string'      => [['factories' => ['service' => TestAsset\FactoryStatic::class . '::create']]];
-        yield 'closure'   => [
-            [
-                'factories' => [
-                    'service' => function () {
-                        return new TestAsset\Service();
-                    },
-                ],
-            ],
-        ];
-    }
-
     /**
-     * @dataProvider factoriesForDelegators
+     * @dataProvider \Zend\ContainerConfigTest\Helper\Provider::factory
      */
     final public function testDelegatorFactoriesTriggerForFactoryBackedServicesUsingAnyFactoryType(array $config) : void
     {
@@ -450,7 +433,7 @@ trait DelegatorTestTrait
     }
 
     /**
-     * @dataProvider factoriesForDelegators
+     * @dataProvider \Zend\ContainerConfigTest\Helper\Provider::factory
      */
     final public function testDelegatorsTriggerForFactoryServiceResolvedByAlias(array $config) : void
     {
@@ -482,7 +465,7 @@ trait DelegatorTestTrait
     }
 
     /**
-     * @dataProvider factoriesForDelegators
+     * @dataProvider \Zend\ContainerConfigTest\Helper\Provider::factory
      */
     final public function testDelegatorsDoNotTriggerForAliasTargetingFactoryBasedServiceUsingAnyFactoryType(
         array $config

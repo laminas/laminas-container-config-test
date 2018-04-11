@@ -10,33 +10,14 @@ declare(strict_types=1);
 namespace Zend\ContainerConfigTest;
 
 use ArgumentCountError;
-use Generator;
 use Psr\Container\ContainerInterface;
 use Psr\Container\ContainerExceptionInterface;
 use Zend\ContainerConfigTest\Helper\Assert;
 
 trait FactoryTestTrait
 {
-    final public function factory() : Generator
-    {
-        yield 'function-name'        => [['factories' => ['service' => __NAMESPACE__ . '\TestAsset\factory']]];
-        yield 'invokable-class-name' => [['factories' => ['service' => TestAsset\Factory::class]]];
-        yield 'invokable-instance'   => [['factories' => ['service' => new TestAsset\Factory()]]];
-        yield 'callable-array'       => [['factories' => ['service' => [TestAsset\FactoryStatic::class, 'create']]]];
-        yield 'callable-string'      => [['factories' => ['service' => TestAsset\FactoryStatic::class . '::create']]];
-        yield 'closure'   => [
-            [
-                'factories' => [
-                    'service' => function () {
-                        return new TestAsset\Service();
-                    },
-                ],
-            ],
-        ];
-    }
-
     /**
-     * @dataProvider factory
+     * @dataProvider \Zend\ContainerConfigTest\Helper\Provider::factory
      */
     final public function testFactoryIsUsedToProduceService(array $config) : void
     {
@@ -48,26 +29,8 @@ trait FactoryTestTrait
         self::assertSame($service, $container->get('service'));
     }
 
-    final public function factoryWithName() : Generator
-    {
-        yield 'function-name'        => [['factories' => ['service' => __NAMESPACE__ . '\TestAsset\factoryWithName']]];
-        yield 'invokable-class-name' => [['factories' => ['service' => TestAsset\FactoryWithName::class]]];
-        yield 'invokable-instance'   => [['factories' => ['service' => new TestAsset\FactoryWithName()]]];
-        yield 'callable-array'       => [['factories' => ['service' => [TestAsset\FactoryStatic::class, 'withName']]]];
-        yield 'callable-string'      => [['factories' => ['service' => TestAsset\FactoryStatic::class . '::withName']]];
-        yield 'closure' => [
-            [
-                'factories' => [
-                    'service' => function () {
-                        return new TestAsset\FactoryService(func_get_args());
-                    },
-                ],
-            ],
-        ];
-    }
-
     /**
-     * @dataProvider factoryWithName
+     * @dataProvider \Zend\ContainerConfigTest\Helper\Provider::factoryWithName
      */
     final public function testFactoryIsProvidedContainerAndServiceNameAsArguments(array $config) : void
     {

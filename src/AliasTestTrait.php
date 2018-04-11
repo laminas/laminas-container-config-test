@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace Zend\ContainerConfigTest;
 
 use Generator;
+use Zend\ContainerConfigTest\Helper\Provider;
 
 trait AliasTestTrait
 {
@@ -29,14 +30,6 @@ trait AliasTestTrait
                 'invokables' => [TestAsset\Service::class => TestAsset\Service::class],
             ],
             TestAsset\Service::class,
-        ];
-
-        yield 'alias-factory' => [
-            [
-                'aliases' => ['alias' => 'service'],
-                'factories' => ['service' => TestAsset\Factory::class],
-            ],
-            'service',
         ];
 
         yield 'alias-alias-service' => [
@@ -65,18 +58,26 @@ trait AliasTestTrait
             TestAsset\Service::class,
         ];
 
-        yield 'alias-alias-factory' => [
-            [
-                'aliases' => [
-                    'alias' => 'alias2',
-                    'alias2' => 'service',
-                ],
-                'factories' => [
-                    'service' => TestAsset\Factory::class,
-                ],
-            ],
-            'service',
-        ];
+        foreach (Provider::factory() as $name => $params) {
+            yield 'alias-factory-' . $name => [
+                [
+                    'aliases' => [
+                        'alias' => 'service',
+                    ],
+                ] + $params[0],
+                'service',
+            ];
+
+            yield 'alias-alias-factory-' . $name => [
+                [
+                    'aliases' => [
+                        'alias' => 'alias2',
+                        'alias2' => 'service',
+                    ],
+                ] + $params[0],
+                'service',
+            ];
+        }
     }
 
     /**
