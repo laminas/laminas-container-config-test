@@ -142,5 +142,35 @@ class Provider
             'alias',
             'service',
         ];
+
+        yield 'non-class-factory' => [
+            ['factories' => ['service' => 5]],
+            'service',
+            'service',
+        ];
+
+        yield 'non-class-aliased-factory' => [
+            [
+                'aliases' => ['alias' => 'service'],
+                'factories' => ['service' => 5],
+            ],
+            'alias',
+            'service',
+        ];
+
+        yield 'array-non-static-factory' => [
+            ['factories' => ['service' => [TestAsset\Factory::class, '__invoke']]],
+            'service',
+            'service',
+        ];
+
+        yield 'array-non-static-aliased-factory' => [
+            [
+                'aliases' => ['alias' => 'service'],
+                'factories' => ['service' => [TestAsset\Factory::class, '__invoke']],
+            ],
+            'alias',
+            'service',
+        ];
     }
 }
