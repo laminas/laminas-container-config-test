@@ -8,12 +8,12 @@ subset of [zend-servicemanager](https://github.com/zendframework/zend-serviceman
 [configuration](https://docs.zendframework.com/zend-servicemanager/configuring-the-service-manager/)
 as [specified by Expressive](https://docs.zendframework.com/zend-expressive/v3/features/container/config/)
 
-It guarantee delivery of the same basic functionality across multiple PSR-11
+It guarantees delivery of the same basic functionality across multiple PSR-11
 container implementations, and simplifies switching between them.
 
 Currently we support:
-- Aura.Di - via [zend-auradi-config](https://github.com/zendframework/zend-auradi-config)
-- Pimple - via [zend-pimple-config](https://github.com/zendframework/zend-pimple-config)
+- [Aura.Di](https://github.com/auraphp/Aura.Di) - via [zend-auradi-config](https://github.com/zendframework/zend-auradi-config)
+- [Pimple](https://pimple.symfony.com/) - via [zend-pimple-config](https://github.com/zendframework/zend-pimple-config)
 - [zend-servicemanager](https://github.com/zendframework/zend-servicemanager)
 
 ## Installation
@@ -46,16 +46,18 @@ following traits into your test case:
 - `Zend\ContainerConfigTest\ServiceTestTrait` - to support `services` configuration,
 - `Zend\ContainerConfigTest\SharedTestTrait` - to support `shared` and `shared_by_default` configuration.
 
-For Expressive compatible container you should extend class
+To provide an Expressive-compatible container, you should extend the class
 `Zend\ContainerConfigTest\AbstractExpressiveContainerConfigTest`
-and implement method `createContainer`. This class composes the following traits:
+and implement the method `createContainer`. This class composes the following traits:
+
 - `Zend\ContainerConfigTest\AliasTestTrait`,
 - `Zend\ContainerConfigTest\DelegatorTestTrait`,
 - `Zend\ContainerConfigTest\FactoryTestTrait`,
 - `Zend\ContainerConfigTest\InvokableTestTrait`,
 - `Zend\ContainerConfigTest\ServiceTestTrait`.
 
-If you want also support shared services your test class should look as follows:
+If you want also plan to support shared services, your test class should compose
+the `SharedTestTrait` as well:
 
 ```php
 use Zend\ContainerConfigTest\AbstractExpressiveContainerConfigTest;
