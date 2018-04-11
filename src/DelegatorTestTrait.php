@@ -493,7 +493,7 @@ trait DelegatorTestTrait
         self::assertSame($instance, $container->get('service'));
     }
 
-    final public function invalidService()
+    final public function invalidService() : Generator
     {
         yield 'non-existent-invokable' => [
             ['invokables' => [TestAsset\NonExistent::class]],
