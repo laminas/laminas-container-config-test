@@ -129,6 +129,15 @@ class Provider
             'service',
             'service',
         ];
+
+        yield 'factory-as-string-to-service-factory' => [
+            [
+                'factories' => ['service' => 'factory'],
+                'services' => ['factory' => new TestAsset\Factory()],
+            ],
+            'service',
+            'service',
+        ];
     }
 
     public static function invalidService() : Generator
