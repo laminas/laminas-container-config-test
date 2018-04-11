@@ -13,7 +13,7 @@ use Generator;
 
 trait SharedTestTrait
 {
-    public function config() : Generator
+    final public function config() : Generator
     {
         yield 'factory' => [
             ['factories' => ['service' => TestAsset\Factory::class]],
@@ -45,7 +45,7 @@ trait SharedTestTrait
     /**
      * @dataProvider config
      */
-    public function testIsSharedByDefault(array $config, string $serviceToTest) : void
+    final public function testIsSharedByDefault(array $config, string $serviceToTest) : void
     {
         $container = $this->createContainer($config);
 
@@ -58,7 +58,7 @@ trait SharedTestTrait
     /**
      * @dataProvider config
      */
-    public function testCanDisableSharedByDefault(array $config, string $serviceToTest) : void
+    final public function testCanDisableSharedByDefault(array $config, string $serviceToTest) : void
     {
         $container = $this->createContainer(array_merge($config, [
             'shared_by_default' => false,
@@ -73,7 +73,7 @@ trait SharedTestTrait
     /**
      * @dataProvider config
      */
-    public function testCanDisableSharedForSingleService(array $config, string $serviceToTest) : void
+    final public function testCanDisableSharedForSingleService(array $config, string $serviceToTest) : void
     {
         $container = $this->createContainer(array_merge($config, [
             'shared' => [
@@ -90,7 +90,7 @@ trait SharedTestTrait
     /**
      * @dataProvider config
      */
-    public function testCanEnableSharedForSingleService(array $config, string $serviceToTest) : void
+    final public function testCanEnableSharedForSingleService(array $config, string $serviceToTest) : void
     {
         $container = $this->createContainer(array_merge($config, [
             'shared_by_default' => false,
@@ -105,7 +105,7 @@ trait SharedTestTrait
         self::assertSame($service1, $service2);
     }
 
-    public function testServiceIsSharedByDefault() : void
+    final public function testServiceIsSharedByDefault() : void
     {
         $service = new TestAsset\Service();
         $container = $this->createContainer([
@@ -121,7 +121,7 @@ trait SharedTestTrait
         self::assertSame($service, $service2);
     }
 
-    public function testServiceIsSharedEvenIfSharedByDefaultIsFalse() : void
+    final public function testServiceIsSharedEvenIfSharedByDefaultIsFalse() : void
     {
         $service = new TestAsset\Service();
         $container = $this->createContainer([
@@ -138,7 +138,7 @@ trait SharedTestTrait
         self::assertSame($service, $service2);
     }
 
-    public function testServiceIsSharedEvenIfHasSharedSetToFalse() : void
+    final public function testServiceIsSharedEvenIfHasSharedSetToFalse() : void
     {
         $service = new TestAsset\Service();
         $container = $this->createContainer([
@@ -157,7 +157,7 @@ trait SharedTestTrait
         self::assertSame($service, $service2);
     }
 
-    public function testServiceIsSharedWhenAccessedByAlias() : void
+    final public function testServiceIsSharedWhenAccessedByAlias() : void
     {
         $service = new TestAsset\Service();
         $container = $this->createContainer([
