@@ -14,21 +14,6 @@ use Zend\ContainerConfigTest\Helper\Assert;
 
 trait InvokableTestTrait
 {
-    final public function testCanSpecifyInvokableWithoutKey() : void
-    {
-        $config = [
-            'invokables' => [
-                TestAsset\Service::class,
-            ],
-        ];
-
-        $container = $this->createContainer($config);
-
-        self::assertTrue($container->has(TestAsset\Service::class));
-        $service = $container->get(TestAsset\Service::class);
-        self::assertInstanceOf(TestAsset\Service::class, $service);
-    }
-
     final public function testCanSpecifyMultipleInvokablesWithoutKeyAndNotCauseCollisions() : void
     {
         $config = [
@@ -50,39 +35,26 @@ trait InvokableTestTrait
         self::assertInstanceOf(TestAsset\DelegatorFactory::class, $instance);
     }
 
-    final public function testCanFetchInvokableByClassName() : void
-    {
-        $config = [
-            'invokables' => [
-                TestAsset\Service::class => TestAsset\Service::class,
-            ],
-        ];
-
+    /**
+     * @dataProvider \Zend\ContainerConfigTest\Helper\Provider::invokable
+     */
+    final public function testInvokable(
+        array $config,
+        string $alias,
+        string $name
+    ) : void {
         $container = $this->createContainer($config);
 
-        self::assertTrue($container->has(TestAsset\Service::class));
-        $service = $container->get(TestAsset\Service::class);
+        self::assertTrue($container->has($alias));
+        $service = $container->get($alias);
         self::assertInstanceOf(TestAsset\Service::class, $service);
-    }
 
-    final public function testCanFetchInvokableByBothAliasAndClassName() : void
-    {
-        $config = [
-            'invokables' => [
-                'alias' => TestAsset\Service::class,
-            ],
-        ];
-
-        $container = $this->createContainer($config);
-
-        self::assertTrue($container->has('alias'));
-        $service = $container->get('alias');
-        self::assertInstanceOf(TestAsset\Service::class, $service);
-        self::assertTrue($container->has(TestAsset\Service::class));
-        $originService = $container->get(TestAsset\Service::class);
+        self::assertTrue($container->has($name));
+        $originService = $container->get($name);
         self::assertInstanceOf(TestAsset\Service::class, $originService);
+
         self::assertSame($service, $originService);
-        self::assertSame($originService, $container->get(TestAsset\Service::class));
+        self::assertSame($originService, $container->get($name));
     }
 
     /**
