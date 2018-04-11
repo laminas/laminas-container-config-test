@@ -224,6 +224,14 @@ class Provider
             TestAsset\Service::class,
         ];
 
+        yield 'invokable-with-key' => [
+            [
+                'invokables' => [TestAsset\Service::class => TestAsset\Service::class],
+            ],
+            TestAsset\Service::class,
+            TestAsset\Service::class,
+        ];
+
         yield 'invokable-with-alias' => [
             [
                 'invokables' => ['foo-bar' => TestAsset\Service::class],
