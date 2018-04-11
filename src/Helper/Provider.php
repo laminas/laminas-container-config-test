@@ -234,9 +234,9 @@ class Provider
 
         yield 'invokable-with-alias' => [
             [
-                'invokables' => ['foo-bar' => TestAsset\Service::class],
+                'invokables' => ['service' => TestAsset\Service::class],
             ],
-            'foo-bar',
+            'service',
             TestAsset\Service::class,
         ];
     }
