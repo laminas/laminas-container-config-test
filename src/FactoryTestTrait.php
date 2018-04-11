@@ -10,8 +10,8 @@ declare(strict_types=1);
 namespace Zend\ContainerConfigTest;
 
 use ArgumentCountError;
-use Psr\Container\ContainerInterface;
 use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\ContainerInterface;
 use Zend\ContainerConfigTest\Helper\Assert;
 
 use function array_shift;
