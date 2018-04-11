@@ -14,6 +14,8 @@ use Psr\Container\ContainerInterface;
 use Psr\Container\ContainerExceptionInterface;
 use Zend\ContainerConfigTest\Helper\Assert;
 
+use function array_shift;
+
 trait FactoryTestTrait
 {
     /**

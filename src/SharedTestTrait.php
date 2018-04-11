@@ -12,6 +12,8 @@ namespace Zend\ContainerConfigTest;
 use Generator;
 use Zend\ContainerConfigTest\Helper\Provider;
 
+use function array_merge;
+
 trait SharedTestTrait
 {
     final public function config() : Generator
