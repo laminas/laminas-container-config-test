@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## 0.2.1 - TBD
+## 0.2.1 - 2018-04-12
 
 ### Added
 
@@ -10,7 +10,9 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Changed
 
-- Nothing.
+- [#9](https://github.com/zendframework/zend-container-config-test/pull/9) changes several test asset function names
+  in order to prevent collisions, as well as ensure all lines are covered during
+  testing.
 
 ### Deprecated
 
