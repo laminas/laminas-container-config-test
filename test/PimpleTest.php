@@ -11,11 +11,14 @@ namespace ZendTest\ContainerConfigTest;
 
 use Psr\Container\ContainerInterface;
 use Zend\ContainerConfigTest\AbstractExpressiveContainerConfigTest;
+use Zend\ContainerConfigTest\SharedTestTrait;
 use Zend\Pimple\Config\Config;
 use Zend\Pimple\Config\ContainerFactory;
 
 class PimpleTest extends AbstractExpressiveContainerConfigTest
 {
+    use SharedTestTrait;
+
     public function createContainer(array $config) : ContainerInterface
     {
         $factory = new ContainerFactory();
