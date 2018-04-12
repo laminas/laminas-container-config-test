@@ -23,7 +23,13 @@ class Provider
 {
     public static function factory() : Generator
     {
-        yield 'function-name' => [['factories' => ['service' => 'Zend\ContainerConfigTest\TestAsset\factory']]];
+        yield 'function-name' => [
+            [
+                'factories' => [
+                    'service' => 'Zend\ContainerConfigTest\TestAsset\function_factory',
+                ],
+            ],
+        ];
         yield 'invokable-class-name' => [['factories' => ['service' => TestAsset\Factory::class]]];
         yield 'invokable-instance' => [['factories' => ['service' => new TestAsset\Factory()]]];
         yield 'callable-array' => [['factories' => ['service' => [TestAsset\FactoryStatic::class, 'create']]]];
@@ -41,7 +47,13 @@ class Provider
 
     public static function factoryWithName() : Generator
     {
-        yield 'function-name' => [['factories' => ['service' => 'Zend\ContainerConfigTest\TestAsset\factoryWithName']]];
+        yield 'function-name' => [
+            [
+                'factories' => [
+                    'service' => 'Zend\ContainerConfigTest\TestAsset\function_factory_with_name',
+                ],
+            ],
+        ];
         yield 'invokable-class-name' => [['factories' => ['service' => TestAsset\FactoryWithName::class]]];
         yield 'invokable-instance' => [['factories' => ['service' => new TestAsset\FactoryWithName()]]];
         yield 'callable-array' => [['factories' => ['service' => [TestAsset\FactoryStatic::class, 'withName']]]];

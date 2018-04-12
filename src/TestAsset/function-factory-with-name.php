@@ -11,7 +11,7 @@ namespace Zend\ContainerConfigTest\TestAsset;
 
 use Psr\Container\ContainerInterface;
 
-function factoryWithName(ContainerInterface $container, string $name) : FactoryService
+function function_factory_with_name(ContainerInterface $container, string $name) : FactoryService
 {
     return new FactoryService(func_get_args());
 }
