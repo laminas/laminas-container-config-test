@@ -61,11 +61,11 @@ the `SharedTestTrait` as well:
 
 ```php
 use Zend\ContainerConfigTest\AbstractExpressiveContainerConfigTest;
-use Zend\ContainerConfigTest\ServiceTestTrait;
+use Zend\ContainerConfigTest\SharedTestTrait;
 
 class ContainerTest extends AbstractExpressiveContainerConfigTest
 {
-    use ServiceTestTrait;
+    use SharedTestTrait;
     
     protected function createContainer(array $config) : ContainerInterface
     {
