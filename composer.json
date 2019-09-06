@@ -22,7 +22,7 @@
         "psr/container": "^1.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^7.0.2",
+        "phpunit/phpunit": "^7.5.15 || ^8.3.4",
         "zendframework/zend-auradi-config": "^1.0.1",
         "zendframework/zend-coding-standard": "~1.0.0",
         "zendframework/zend-pimple-config": "^1.1",
