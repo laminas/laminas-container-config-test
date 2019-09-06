@@ -14,8 +14,8 @@
         "issues": "https://github.com/zendframework/zend-container-config-test/issues",
         "source": "https://github.com/zendframework/zend-container-config-test",
         "rss": "https://github.com/zendframework/zend-container-config-test/releases.atom",
-        "slack": "https://zendframework-slack.herokuapp.com",
-        "forum": "https://discourse.zendframework.com/c/questions/expressive"
+        "chat": "https://zendframework-slack.herokuapp.com",
+        "forum": "https://discourse.zendframework.com/c/questions/components"
     },
     "require": {
         "php": "^7.1",
