@@ -8,14 +8,16 @@
 
 declare(strict_types=1);
 
-namespace Laminas\ContainerConfigTest\TestAsset;
+namespace Zend\ContainerConfigTest\TestAsset;
 
 use Psr\Container\ContainerInterface;
 
-class Factory
+use function Laminas\ContainerConfigTest\TestAsset\factory as laminas_factory;
+
+/**
+ * @deprecated Use Laminas\ContainerConfigTest\TestAsset\factory instead
+ */
+function factory(ContainerInterface $container, string $name) : Service
 {
-    public function __invoke(ContainerInterface $container, string $name) : Service
-    {
-        return new Service();
-    }
+    laminas_factory(...func_get_args());
 }

@@ -8,14 +8,13 @@
 
 declare(strict_types=1);
 
-namespace Laminas\ContainerConfigTest\TestAsset;
+namespace Laminas\ContainerConfigTest;
 
-use Psr\Container\ContainerInterface;
-
-class Factory
+trait MezzioTestTrait
 {
-    public function __invoke(ContainerInterface $container, string $name) : Service
-    {
-        return new Service();
-    }
+    use AliasTestTrait;
+    use DelegatorTestTrait;
+    use FactoryTestTrait;
+    use InvokableTestTrait;
+    use ServiceTestTrait;
 }
