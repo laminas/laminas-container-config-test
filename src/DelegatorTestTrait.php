@@ -1,18 +1,19 @@
 <?php
+
 /**
- * @see       https://github.com/zendframework/zend-container-config-test for the canonical source repository
- * @copyright Copyright (c) 2018 Zend Technologies USA Inc. (https://www.zend.com)
- * @license   https://github.com/zendframework/zend-container-config-test/blob/master/LICENSE.md New BSD License
+ * @see       https://github.com/laminas/laminas-container-config-test for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-container-config-test/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-container-config-test/blob/master/LICENSE.md New BSD License
  */
 
 declare(strict_types=1);
 
-namespace Zend\ContainerConfigTest;
+namespace Laminas\ContainerConfigTest;
 
 use ArgumentCountError;
 use Error;
+use Laminas\ContainerConfigTest\Helper\Assert;
 use Psr\Container\ContainerExceptionInterface;
-use Zend\ContainerConfigTest\Helper\Assert;
 
 trait DelegatorTestTrait
 {
@@ -204,8 +205,8 @@ trait DelegatorTestTrait
     }
 
     /**
-     * @dataProvider \Zend\ContainerConfigTest\Helper\Provider::service
-     * @dataProvider \Zend\ContainerConfigTest\Helper\Provider::aliasedService
+     * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::service
+     * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::aliasedService
      */
     final public function testDelegatorsReceiveCallbackResolvingToReturnValueOfPrevious(
         array $config,
@@ -239,8 +240,8 @@ trait DelegatorTestTrait
     }
 
     /**
-     * @dataProvider \Zend\ContainerConfigTest\Helper\Provider::service
-     * @dataProvider \Zend\ContainerConfigTest\Helper\Provider::aliasedService
+     * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::service
+     * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::aliasedService
      */
     final public function testEmptyDelegatorListOriginalServiceShouldBeReturned(
         array $config,
@@ -299,8 +300,8 @@ trait DelegatorTestTrait
     }
 
     /**
-     * @dataProvider \Zend\ContainerConfigTest\Helper\Provider::service
-     * @dataProvider \Zend\ContainerConfigTest\Helper\Provider::aliasedService
+     * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::service
+     * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::aliasedService
      */
     final public function testNonInvokableDelegatorClassNameResultsInExceptionDuringInstanceRetrieval(
         array $config,
@@ -321,8 +322,8 @@ trait DelegatorTestTrait
     }
 
     /**
-     * @dataProvider \Zend\ContainerConfigTest\Helper\Provider::service
-     * @dataProvider \Zend\ContainerConfigTest\Helper\Provider::aliasedService
+     * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::service
+     * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::aliasedService
      */
     final public function testNonExistentDelegatorClassResultsInExceptionDuringInstanceRetrieval(
         array $config,
@@ -343,8 +344,8 @@ trait DelegatorTestTrait
     }
 
     /**
-     * @dataProvider \Zend\ContainerConfigTest\Helper\Provider::service
-     * @dataProvider \Zend\ContainerConfigTest\Helper\Provider::aliasedService
+     * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::service
+     * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::aliasedService
      */
     final public function testDelegatorClassNameRequiringConstructorArgumentsResultsInExceptionDuringInstanceRetrieval(
         array $config,
@@ -370,7 +371,7 @@ trait DelegatorTestTrait
     }
 
     /**
-     * @dataProvider \Zend\ContainerConfigTest\Helper\Provider::factory
+     * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::factory
      */
     final public function testDelegatorFactoriesTriggerForFactoryBackedServicesUsingAnyFactoryType(array $config) : void
     {
@@ -394,7 +395,7 @@ trait DelegatorTestTrait
     }
 
     /**
-     * @dataProvider \Zend\ContainerConfigTest\Helper\Provider::factory
+     * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::factory
      */
     final public function testDelegatorsTriggerForFactoryServiceResolvedByAlias(array $config) : void
     {
@@ -426,7 +427,7 @@ trait DelegatorTestTrait
     }
 
     /**
-     * @dataProvider \Zend\ContainerConfigTest\Helper\Provider::factory
+     * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::factory
      */
     final public function testDelegatorsDoNotTriggerForAliasTargetingFactoryBasedServiceUsingAnyFactoryType(
         array $config
@@ -455,7 +456,7 @@ trait DelegatorTestTrait
     }
 
     /**
-     * @dataProvider \Zend\ContainerConfigTest\Helper\Provider::invalidService
+     * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::invalidService
      */
     final public function testWithDelegatorsResolvesToInvalidClassNoExceptionIsRaisedIfCallbackNeverInvoked(
         array $config,
@@ -476,7 +477,7 @@ trait DelegatorTestTrait
     }
 
     /**
-     * @dataProvider \Zend\ContainerConfigTest\Helper\Provider::invalidService
+     * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::invalidService
      */
     final public function testWithDelegatorsResolvesToInvalidClassAnExceptionIsRaisedWhenCallbackIsInvoked(
         array $config,

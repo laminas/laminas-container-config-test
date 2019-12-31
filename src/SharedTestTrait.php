@@ -1,21 +1,22 @@
 <?php
+
 /**
- * @see       https://github.com/zendframework/zend-container-test for the canonical source repository
- * @copyright Copyright (c) 2018 Zend Technologies USA Inc. (https://www.zend.com)
- * @license   https://github.com/zendframework/zend-container-test/blob/master/LICENSE.md New BSD License
+ * @see       https://github.com/laminas/laminas-container-config-test for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-container-config-test/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-container-config-test/blob/master/LICENSE.md New BSD License
  */
 
 declare(strict_types=1);
 
-namespace Zend\ContainerConfigTest;
+namespace Laminas\ContainerConfigTest;
 
 use function array_merge;
 
 trait SharedTestTrait
 {
     /**
-     * @dataProvider \Zend\ContainerConfigTest\Helper\Provider::service
-     * @dataProvider \Zend\ContainerConfigTest\Helper\Provider::aliasedService
+     * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::service
+     * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::aliasedService
      */
     final public function testIsSharedByDefault(array $config, string $serviceToTest) : void
     {
@@ -28,8 +29,8 @@ trait SharedTestTrait
     }
 
     /**
-     * @dataProvider \Zend\ContainerConfigTest\Helper\Provider::service
-     * @dataProvider \Zend\ContainerConfigTest\Helper\Provider::aliasedService
+     * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::service
+     * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::aliasedService
      */
     final public function testCanDisableSharedByDefault(array $config, string $serviceToTest) : void
     {
@@ -44,8 +45,8 @@ trait SharedTestTrait
     }
 
     /**
-     * @dataProvider \Zend\ContainerConfigTest\Helper\Provider::service
-     * @dataProvider \Zend\ContainerConfigTest\Helper\Provider::aliasedService
+     * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::service
+     * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::aliasedService
      */
     final public function testCanDisableSharedForSingleService(array $config, string $serviceToTest) : void
     {
@@ -62,8 +63,8 @@ trait SharedTestTrait
     }
 
     /**
-     * @dataProvider \Zend\ContainerConfigTest\Helper\Provider::service
-     * @dataProvider \Zend\ContainerConfigTest\Helper\Provider::aliasedService
+     * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::service
+     * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::aliasedService
      */
     final public function testCanEnableSharedForSingleService(array $config, string $serviceToTest) : void
     {
