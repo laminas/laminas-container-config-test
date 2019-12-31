@@ -1,18 +1,19 @@
 <?php
+
 /**
- * @see       https://github.com/zendframework/zend-container-config-test for the canonical source repository
- * @copyright Copyright (c) 2018 Zend Technologies USA Inc. (https://www.zend.com)
- * @license   https://github.com/zendframework/zend-container-config-test/blob/master/LICENSE.md New BSD License
+ * @see       https://github.com/laminas/laminas-container-config-test for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-container-config-test/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-container-config-test/blob/master/LICENSE.md New BSD License
  */
 
 declare(strict_types=1);
 
-namespace Zend\ContainerConfigTest\Helper;
+namespace Laminas\ContainerConfigTest\Helper;
 
 use ArgumentCountError;
 use Error;
 use Generator;
-use Zend\ContainerConfigTest\TestAsset;
+use Laminas\ContainerConfigTest\TestAsset;
 
 use function func_get_args;
 
@@ -26,7 +27,7 @@ class Provider
         yield 'function-name' => [
             [
                 'factories' => [
-                    'service' => 'Zend\ContainerConfigTest\TestAsset\function_factory',
+                    'service' => 'Laminas\ContainerConfigTest\TestAsset\function_factory',
                 ],
             ],
         ];
@@ -50,7 +51,7 @@ class Provider
         yield 'function-name' => [
             [
                 'factories' => [
-                    'service' => 'Zend\ContainerConfigTest\TestAsset\function_factory_with_name',
+                    'service' => 'Laminas\ContainerConfigTest\TestAsset\function_factory_with_name',
                 ],
             ],
         ];

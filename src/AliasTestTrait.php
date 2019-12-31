@@ -1,22 +1,23 @@
 <?php
+
 /**
- * @see       https://github.com/zendframework/zend-container-config-test for the canonical source repository
- * @copyright Copyright (c) 2018 Zend Technologies USA Inc. (https://www.zend.com)
- * @license   https://github.com/zendframework/zend-container-config-test/blob/master/LICENSE.md New BSD License
+ * @see       https://github.com/laminas/laminas-container-config-test for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-container-config-test/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-container-config-test/blob/master/LICENSE.md New BSD License
  */
 
 declare(strict_types=1);
 
-namespace Zend\ContainerConfigTest;
+namespace Laminas\ContainerConfigTest;
 
+use Laminas\ContainerConfigTest\Helper\Assert;
 use Psr\Container\ContainerExceptionInterface;
-use Zend\ContainerConfigTest\Helper\Assert;
 
 trait AliasTestTrait
 {
     /**
-     * @dataProvider \Zend\ContainerConfigTest\Helper\Provider::alias
-     * @dataProvider \Zend\ContainerConfigTest\Helper\Provider::aliasedAlias
+     * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::alias
+     * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::aliasedAlias
      */
     final public function testRetrievingServiceByNameBeforeAliasOfServiceResultsInSameInstance(
         array $config,
@@ -31,8 +32,8 @@ trait AliasTestTrait
     }
 
     /**
-     * @dataProvider \Zend\ContainerConfigTest\Helper\Provider::alias
-     * @dataProvider \Zend\ContainerConfigTest\Helper\Provider::aliasedAlias
+     * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::alias
+     * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::aliasedAlias
      */
     final public function testRetrievingAliasedServiceBeforeResolvedServiceResultsInSameInstance(
         array $config,
@@ -64,8 +65,8 @@ trait AliasTestTrait
     }
 
     /**
-     * @dataProvider \Zend\ContainerConfigTest\Helper\Provider::invalidAliasedInvokable
-     * @dataProvider \Zend\ContainerConfigTest\Helper\Provider::invalidAliasedFactory
+     * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::invalidAliasedInvokable
+     * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::invalidAliasedFactory
      */
     final public function testInvalidAliasResultsInExceptionDuringInstanceRetrieval(
         array $config,

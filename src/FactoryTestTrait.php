@@ -1,24 +1,25 @@
 <?php
+
 /**
- * @see       https://github.com/zendframework/zend-container-config-test for the canonical source repository
- * @copyright Copyright (c) 2018 Zend Technologies USA Inc. (https://www.zend.com)
- * @license   https://github.com/zendframework/zend-container-config-test/blob/master/LICENSE.md New BSD License
+ * @see       https://github.com/laminas/laminas-container-config-test for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-container-config-test/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-container-config-test/blob/master/LICENSE.md New BSD License
  */
 
 declare(strict_types=1);
 
-namespace Zend\ContainerConfigTest;
+namespace Laminas\ContainerConfigTest;
 
+use Laminas\ContainerConfigTest\Helper\Assert;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
-use Zend\ContainerConfigTest\Helper\Assert;
 
 use function array_shift;
 
 trait FactoryTestTrait
 {
     /**
-     * @dataProvider \Zend\ContainerConfigTest\Helper\Provider::factory
+     * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::factory
      */
     final public function testFactoryIsUsedToProduceService(array $config) : void
     {
@@ -31,7 +32,7 @@ trait FactoryTestTrait
     }
 
     /**
-     * @dataProvider \Zend\ContainerConfigTest\Helper\Provider::factoryWithName
+     * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::factoryWithName
      */
     final public function testFactoryIsProvidedContainerAndServiceNameAsArguments(array $config) : void
     {
@@ -46,7 +47,7 @@ trait FactoryTestTrait
     }
 
     /**
-     * @dataProvider \Zend\ContainerConfigTest\Helper\Provider::invalidFactory
+     * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::invalidFactory
      */
     final public function testInvalidFactoryResultsInExceptionDuringInstanceRetrieval(
         array $config,
