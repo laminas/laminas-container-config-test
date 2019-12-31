@@ -1,18 +1,19 @@
 <?php
+
 /**
- * @see       https://github.com/zendframework/zend-container-config-test for the canonical source repository
- * @copyright Copyright (c) 2018 Zend Technologies USA Inc. (https://www.zend.com)
- * @license   https://github.com/zendframework/zend-container-config-test/blob/master/LICENSE.md New BSD License
+ * @see       https://github.com/laminas/laminas-container-config-test for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-container-config-test/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-container-config-test/blob/master/LICENSE.md New BSD License
  */
 
 declare(strict_types=1);
 
-namespace Zend\ContainerConfigTest\Helper;
+namespace Laminas\ContainerConfigTest\Helper;
 
 use ArgumentCountError;
 use Error;
 use Generator;
-use Zend\ContainerConfigTest\TestAsset;
+use Laminas\ContainerConfigTest\TestAsset;
 
 use function func_get_args;
 
@@ -23,7 +24,7 @@ class Provider
 {
     public static function factory() : Generator
     {
-        yield 'function-name' => [['factories' => ['service' => 'Zend\ContainerConfigTest\TestAsset\factory']]];
+        yield 'function-name' => [['factories' => ['service' => 'Laminas\ContainerConfigTest\TestAsset\factory']]];
         yield 'invokable-class-name' => [['factories' => ['service' => TestAsset\Factory::class]]];
         yield 'invokable-instance' => [['factories' => ['service' => new TestAsset\Factory()]]];
         yield 'callable-array' => [['factories' => ['service' => [TestAsset\FactoryStatic::class, 'create']]]];
@@ -41,7 +42,7 @@ class Provider
 
     public static function factoryWithName() : Generator
     {
-        yield 'function-name' => [['factories' => ['service' => 'Zend\ContainerConfigTest\TestAsset\factoryWithName']]];
+        yield 'function-name' => [['factories' => ['service' => 'Laminas\ContainerConfigTest\TestAsset\factoryWithName']]];
         yield 'invokable-class-name' => [['factories' => ['service' => TestAsset\FactoryWithName::class]]];
         yield 'invokable-instance' => [['factories' => ['service' => new TestAsset\FactoryWithName()]]];
         yield 'callable-array' => [['factories' => ['service' => [TestAsset\FactoryStatic::class, 'withName']]]];
