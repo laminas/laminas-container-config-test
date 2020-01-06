@@ -1,6 +1,6 @@
 # laminas-container-config-test
 
-[![Build Status](https://travis-ci.org/laminas/laminas-container-config-test.svg?branch=master)](https://travis-ci.org/laminas/laminas-container-config-test)
+[![Build Status](https://travis-ci.com/laminas/laminas-container-config-test.svg?branch=master)](https://travis-ci.com/laminas/laminas-container-config-test)
 [![Coverage Status](https://coveralls.io/repos/github/laminas/laminas-container-config-test/badge.svg?branch=master)](https://coveralls.io/github/laminas/laminas-container-config-test?branch=master)
 
 This library provides common tests for PSR-11 containers configured using a
