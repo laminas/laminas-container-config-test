@@ -2,27 +2,24 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## 0.3.0 - TBD
+## 0.3.0 - 2020-12-05
 
-### Added
 
-- Nothing.
+-----
 
-### Changed
+### Release Notes for [0.3.0](https://github.com/laminas/laminas-container-config-test/milestone/1)
 
-- Nothing.
 
-### Deprecated
 
-- Nothing.
+### 0.3.0
 
-### Removed
+- Total issues resolved: **0**
+- Total pull requests resolved: **1**
+- Total contributors: **1**
 
-- Nothing.
+#### Enhancement
 
-### Fixed
-
-- Nothing.
+ - [3: Bump minimum supported PHP version to 7.3 and add support for PHP 8.0](https://github.com/laminas/laminas-container-config-test/pull/3) thanks to @boesing
 
 ## 0.2.3 - TBD
 
