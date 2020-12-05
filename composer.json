@@ -23,7 +23,7 @@
     "extra": {
     },
     "require": {
-        "php": "^7.1",
+        "php": "^7.3 || ~8.0.0",
         "laminas/laminas-zendframework-bridge": "^1.0",
         "psr/container": "^1.0"
     },
