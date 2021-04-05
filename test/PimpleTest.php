@@ -20,6 +20,9 @@ class PimpleTest extends AbstractMezzioContainerConfigTest
 {
     use SharedTestTrait;
 
+    /**
+     * @return \Pimple\Psr11\Container
+     */
     public function createContainer(array $config) : ContainerInterface
     {
         $factory = new ContainerFactory();

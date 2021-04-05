@@ -17,6 +17,9 @@ use Psr\Container\ContainerInterface;
 
 class AuraDiTest extends AbstractMezzioContainerConfigTest
 {
+    /**
+     * @return \Aura\Di\Container
+     */
     public function createContainer(array $config) : ContainerInterface
     {
         $factory = new ContainerFactory();
