@@ -1,7 +1,6 @@
 # laminas-container-config-test
 
-[![Build Status](https://travis-ci.com/laminas/laminas-container-config-test.svg)](https://travis-ci.com/laminas/laminas-container-config-test)
-[![Coverage Status](https://coveralls.io/repos/github/laminas/laminas-container-config-test/badge.svg)](https://coveralls.io/github/laminas/laminas-container-config-test)
+[![Build Status](https://github.com/laminas/laminas-container-config-test/workflows/Continuous%20Integration/badge.svg)](https://github.com/laminas/laminas-container-config-test/actions?query=workflow%3A"Continuous+Integration")
 
 This library provides common tests for PSR-11 containers configured using a
 subset of [laminas-servicemanager](https://github.com/laminas/laminas-servicemanager)
