@@ -911,16 +911,16 @@
         },
         {
             "name": "laminas/laminas-pimple-config",
-            "version": "1.1.1",
+            "version": "1.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laminas/laminas-pimple-config.git",
-                "reference": "2f62d16388ff53e3f1423d633d8e309e1cade7aa"
+                "reference": "87eb235eb37ebc5ee4c40d43b6c605657dd3fad6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-pimple-config/zipball/2f62d16388ff53e3f1423d633d8e309e1cade7aa",
-                "reference": "2f62d16388ff53e3f1423d633d8e309e1cade7aa",
+                "url": "https://api.github.com/repos/laminas/laminas-pimple-config/zipball/87eb235eb37ebc5ee4c40d43b6c605657dd3fad6",
+                "reference": "87eb235eb37ebc5ee4c40d43b6c605657dd3fad6",
                 "shasum": ""
             },
             "require": {
@@ -929,20 +929,14 @@
                 "pimple/pimple": "^3.2.2"
             },
             "replace": {
-                "zendframework/zend-pimple-config": "self.version"
+                "zendframework/zend-pimple-config": "^1.1.1"
             },
             "require-dev": {
                 "laminas/laminas-coding-standard": "~1.0.0",
-                "laminas/laminas-container-config-test": "^0.2 || ^1.0",
+                "laminas/laminas-container-config-test": "^0.2 || ^0.3 || ^1.0",
                 "phpunit/phpunit": "^7.1.2"
             },
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.1.x-dev",
-                    "dev-develop": "1.2.x-dev"
-                }
-            },
             "autoload": {
                 "psr-4": {
                     "Laminas\\Pimple\\Config\\": "src/"
@@ -963,13 +957,18 @@
             ],
             "support": {
                 "chat": "https://laminas.dev/chat",
-                "docs": "https://docs.laminas.dev/laminas-pimple-config/",
                 "forum": "https://discourse.laminas.dev",
                 "issues": "https://github.com/laminas/laminas-pimple-config/issues",
                 "rss": "https://github.com/laminas/laminas-pimple-config/releases.atom",
                 "source": "https://github.com/laminas/laminas-pimple-config"
             },
-            "time": "2019-12-31T17:38:01+00:00"
+            "funding": [
+                {
+                    "url": "https://funding.communitybridge.org/projects/laminas-project",
+                    "type": "community_bridge"
+                }
+            ],
+            "time": "2021-04-13T21:02:19+00:00"
         },
         {
             "name": "laminas/laminas-servicemanager",
