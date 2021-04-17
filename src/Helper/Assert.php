@@ -46,6 +46,7 @@ class Assert
 
     private static function isInstanceOf(Throwable $e, array $types) : bool
     {
+        /** @var mixed $type */
         foreach ($types as $type) {
             if ($e instanceof $type) {
                 return true;
