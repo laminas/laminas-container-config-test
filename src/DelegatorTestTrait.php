@@ -333,6 +333,7 @@ trait DelegatorTestTrait
         $container = $this->createContainer($config + [
             'delegators' => [
                 $delegatedServiceName => [
+                    /** @psalm-suppress UndefinedClass */
                     TestAsset\NonExistentDelegatorFactory::class,
                 ],
             ],
