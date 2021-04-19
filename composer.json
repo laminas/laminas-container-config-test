@@ -32,7 +32,9 @@
         "laminas/laminas-coding-standard": "~1.0.0",
         "laminas/laminas-pimple-config": "^1.1",
         "laminas/laminas-servicemanager": "^3.3.2",
-        "phpunit/phpunit": "^7.5.15 || ^8.3.4"
+        "phpunit/phpunit": "^7.5.15 || ^8.3.4",
+        "psalm/plugin-phpunit": "^0.15.1",
+        "vimeo/psalm": "^4.7"
     },
     "autoload": {
         "files": [
@@ -57,6 +59,7 @@
         ],
         "cs-check": "phpcs",
         "cs-fix": "phpcbf",
+        "static-analysis": "psalm --shepherd --stats",
         "test": "phpunit --colors=always",
         "test-coverage": "phpunit --colors=always --coverage-clover clover.xml"
     },

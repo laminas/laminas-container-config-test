@@ -22,7 +22,9 @@ trait SharedTestTrait
     {
         $container = $this->createContainer($config);
 
+        /** @var mixed */
         $service1 = $container->get($serviceToTest);
+        /** @var mixed */
         $service2 = $container->get($serviceToTest);
 
         self::assertSame($service1, $service2);
@@ -38,7 +40,9 @@ trait SharedTestTrait
             'shared_by_default' => false,
         ]));
 
+        /** @var mixed */
         $service1 = $container->get($serviceToTest);
+        /** @var mixed */
         $service2 = $container->get($serviceToTest);
 
         self::assertNotSame($service1, $service2);
@@ -56,7 +60,9 @@ trait SharedTestTrait
             ],
         ]));
 
+        /** @var mixed */
         $service1 = $container->get($serviceToTest);
+        /** @var mixed */
         $service2 = $container->get($serviceToTest);
 
         self::assertNotSame($service1, $service2);
@@ -75,7 +81,9 @@ trait SharedTestTrait
             ],
         ]));
 
+        /** @var mixed */
         $service1 = $container->get($serviceToTest);
+        /** @var mixed */
         $service2 = $container->get($serviceToTest);
 
         self::assertSame($service1, $service2);
@@ -90,7 +98,9 @@ trait SharedTestTrait
             ],
         ]);
 
+        /** @var mixed */
         $service1 = $container->get('service');
+        /** @var mixed */
         $service2 = $container->get('service');
 
         self::assertSame($service, $service1);
@@ -107,7 +117,9 @@ trait SharedTestTrait
             'shared_by_default' => false,
         ]);
 
+        /** @var mixed */
         $service1 = $container->get('service');
+        /** @var mixed */
         $service2 = $container->get('service');
 
         self::assertSame($service, $service1);
@@ -126,7 +138,9 @@ trait SharedTestTrait
             ],
         ]);
 
+        /** @var mixed */
         $service1 = $container->get('service');
+        /** @var mixed */
         $service2 = $container->get('service');
 
         self::assertSame($service, $service1);

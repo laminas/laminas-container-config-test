@@ -29,9 +29,11 @@ trait InvokableTestTrait
         self::assertTrue($container->has(TestAsset\Service::class));
         self::assertTrue($container->has(TestAsset\DelegatorFactory::class));
 
+        /** @var TestAsset\Service $instance */
         $instance = $container->get(TestAsset\Service::class);
         self::assertInstanceOf(TestAsset\Service::class, $instance);
 
+        /** @var TestAsset\DelegatorFactory $instance */
         $instance = $container->get(TestAsset\DelegatorFactory::class);
         self::assertInstanceOf(TestAsset\DelegatorFactory::class, $instance);
     }
