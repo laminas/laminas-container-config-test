@@ -1,7 +1,6 @@
 {
     "name": "laminas/laminas-container-config-test",
     "description": "Mezzio PSR-11 container configuration tests",
-    "license": "BSD-3-Clause",
     "keywords": [
         "laminas",
         "mezzio",
@@ -10,22 +9,14 @@
         "psr-11"
     ],
     "homepage": "https://laminas.dev",
-    "support": {
-        "issues": "https://github.com/laminas/laminas-container-config-test/issues",
-        "source": "https://github.com/laminas/laminas-container-config-test",
-        "rss": "https://github.com/laminas/laminas-container-config-test/releases.atom",
-        "chat": "https://laminas.dev/chat",
-        "forum": "https://discourse.laminas.dev"
-    },
-    "config": {
-        "sort-packages": true
-    },
-    "extra": {
-    },
+    "license": "BSD-3-Clause",
     "require": {
         "php": "^7.3 || ~8.0.0",
         "laminas/laminas-zendframework-bridge": "^1.0",
         "psr/container": "^1.0"
+    },
+    "replace": {
+        "zendframework/zend-container-config-test": "^0.2.2"
     },
     "require-dev": {
         "laminas/laminas-auradi-config": "^1.0.1",
@@ -36,16 +27,20 @@
         "psalm/plugin-phpunit": "^0.15.1",
         "vimeo/psalm": "^4.7"
     },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {},
     "autoload": {
+        "psr-4": {
+            "Laminas\\ContainerConfigTest\\": "src/"
+        },
         "files": [
             "src/TestAsset/function-factory.php",
             "src/TestAsset/function-factory-with-name.php",
             "src/TestAsset/function-factory.legacy.php",
             "src/TestAsset/function-factory-with-name.legacy.php"
-        ],
-        "psr-4": {
-            "Laminas\\ContainerConfigTest\\": "src/"
-        }
+        ]
     },
     "autoload-dev": {
         "psr-4": {
@@ -63,7 +58,11 @@
         "test": "phpunit --colors=always",
         "test-coverage": "phpunit --colors=always --coverage-clover clover.xml"
     },
-    "replace": {
-        "zendframework/zend-container-config-test": "^0.2.2"
+    "support": {
+        "issues": "https://github.com/laminas/laminas-container-config-test/issues",
+        "forum": "https://discourse.laminas.dev",
+        "chat": "https://laminas.dev/chat",
+        "source": "https://github.com/laminas/laminas-container-config-test",
+        "rss": "https://github.com/laminas/laminas-container-config-test/releases.atom"
     }
 }
