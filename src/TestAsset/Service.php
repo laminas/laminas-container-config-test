@@ -6,7 +6,7 @@ namespace Laminas\ContainerConfigTest\TestAsset;
 
 class Service
 {
-    public $injected = [];
+    public array $injected = [];
 
     /**
      * @param mixed $a

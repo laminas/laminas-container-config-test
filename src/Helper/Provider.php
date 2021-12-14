@@ -78,7 +78,7 @@ class Provider
          * @var mixed $params
          */
         foreach ($callable() as $name => $params) {
-            /** @var mixed */
+            /** @var mixed $params[0]['aliases']['alias'] */
             $params[0]['aliases']['alias'] = $params[1];
 
             yield 'aliased-' . $name => [
