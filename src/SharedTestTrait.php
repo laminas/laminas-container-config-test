@@ -12,7 +12,7 @@ trait SharedTestTrait
      * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::service
      * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::aliasedService
      */
-    final public function testIsSharedByDefault(array $config, string $serviceToTest) : void
+    final public function testIsSharedByDefault(array $config, string $serviceToTest): void
     {
         $container = $this->createContainer($config);
 
@@ -28,7 +28,7 @@ trait SharedTestTrait
      * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::service
      * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::aliasedService
      */
-    final public function testCanDisableSharedByDefault(array $config, string $serviceToTest) : void
+    final public function testCanDisableSharedByDefault(array $config, string $serviceToTest): void
     {
         $container = $this->createContainer(array_merge($config, [
             'shared_by_default' => false,
@@ -46,7 +46,7 @@ trait SharedTestTrait
      * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::service
      * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::aliasedService
      */
-    final public function testCanDisableSharedForSingleService(array $config, string $serviceToTest) : void
+    final public function testCanDisableSharedForSingleService(array $config, string $serviceToTest): void
     {
         $container = $this->createContainer(array_merge($config, [
             'shared' => [
@@ -66,11 +66,11 @@ trait SharedTestTrait
      * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::service
      * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::aliasedService
      */
-    final public function testCanEnableSharedForSingleService(array $config, string $serviceToTest) : void
+    final public function testCanEnableSharedForSingleService(array $config, string $serviceToTest): void
     {
         $container = $this->createContainer(array_merge($config, [
             'shared_by_default' => false,
-            'shared' => [
+            'shared'            => [
                 $serviceToTest => true,
             ],
         ]));
@@ -83,9 +83,9 @@ trait SharedTestTrait
         self::assertSame($service1, $service2);
     }
 
-    final public function testServiceIsSharedByDefault() : void
+    final public function testServiceIsSharedByDefault(): void
     {
-        $service = new TestAsset\Service();
+        $service   = new TestAsset\Service();
         $container = $this->createContainer([
             'services' => [
                 'service' => $service,
@@ -101,11 +101,11 @@ trait SharedTestTrait
         self::assertSame($service, $service2);
     }
 
-    final public function testServiceIsSharedEvenIfSharedByDefaultIsFalse() : void
+    final public function testServiceIsSharedEvenIfSharedByDefaultIsFalse(): void
     {
-        $service = new TestAsset\Service();
+        $service   = new TestAsset\Service();
         $container = $this->createContainer([
-            'services' => [
+            'services'          => [
                 'service' => $service,
             ],
             'shared_by_default' => false,
@@ -120,14 +120,14 @@ trait SharedTestTrait
         self::assertSame($service, $service2);
     }
 
-    final public function testServiceIsSharedEvenIfHasSharedSetToFalse() : void
+    final public function testServiceIsSharedEvenIfHasSharedSetToFalse(): void
     {
-        $service = new TestAsset\Service();
+        $service   = new TestAsset\Service();
         $container = $this->createContainer([
             'services' => [
                 'service' => $service,
             ],
-            'shared' => [
+            'shared'   => [
                 'service' => false,
             ],
         ]);
@@ -141,11 +141,11 @@ trait SharedTestTrait
         self::assertSame($service, $service2);
     }
 
-    final public function testServiceIsSharedWhenAccessedByAlias() : void
+    final public function testServiceIsSharedWhenAccessedByAlias(): void
     {
-        $service = new TestAsset\Service();
+        $service   = new TestAsset\Service();
         $container = $this->createContainer([
-            'aliases' => [
+            'aliases'  => [
                 'alias' => 'service',
             ],
             'services' => [

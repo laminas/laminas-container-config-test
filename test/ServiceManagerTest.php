@@ -16,7 +16,7 @@ class ServiceManagerTest extends AbstractMezzioContainerConfigTest
     /**
      * @return ServiceManager
      */
-    public function createContainer(array $config) : ContainerInterface
+    public function createContainer(array $config): ContainerInterface
     {
         return new ServiceManager($config);
     }

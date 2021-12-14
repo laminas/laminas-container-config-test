@@ -9,5 +9,5 @@ use Psr\Container\ContainerInterface;
 
 abstract class AbstractContainerTest extends TestCase
 {
-    abstract protected function createContainer(array $config) : ContainerInterface;
+    abstract protected function createContainer(array $config): ContainerInterface;
 }

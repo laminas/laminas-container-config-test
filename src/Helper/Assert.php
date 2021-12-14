@@ -13,7 +13,7 @@ use function sprintf;
 
 class Assert
 {
-    public static function expectedExceptions(callable $function, array $exceptions) : void
+    public static function expectedExceptions(callable $function, array $exceptions): void
     {
         $caught = false;
 
@@ -38,7 +38,7 @@ class Assert
         );
     }
 
-    private static function isInstanceOf(Throwable $e, array $types) : bool
+    private static function isInstanceOf(Throwable $e, array $types): bool
     {
         /** @var mixed $type */
         foreach ($types as $type) {

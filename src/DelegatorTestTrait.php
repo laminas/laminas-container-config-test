@@ -11,7 +11,7 @@ use Psr\Container\ContainerExceptionInterface;
 
 trait DelegatorTestTrait
 {
-    final public function testDelegatorsOperateOnInvokables() : void
+    final public function testDelegatorsOperateOnInvokables(): void
     {
         $config = [
             'invokables' => [
@@ -35,11 +35,11 @@ trait DelegatorTestTrait
         self::assertSame($instance, $container->get(TestAsset\Service::class));
     }
 
-    final public function testDelegatorsDoNotOperateOnServices() : void
+    final public function testDelegatorsDoNotOperateOnServices(): void
     {
         $myService = new TestAsset\Service();
-        $config = [
-            'services' => [
+        $config    = [
+            'services'   => [
                 'foo-bar' => $myService,
             ],
             'delegators' => [
@@ -57,10 +57,10 @@ trait DelegatorTestTrait
         self::assertSame($myService, $instance);
     }
 
-    final public function testDelegatorsApplyToInvokableServiceResolvedViaAlias() : void
+    final public function testDelegatorsApplyToInvokableServiceResolvedViaAlias(): void
     {
         $config = [
-            'aliases' => [
+            'aliases'    => [
                 'alias' => TestAsset\Service::class,
             ],
             'invokables' => [
@@ -85,10 +85,10 @@ trait DelegatorTestTrait
         self::assertSame($instance, $container->get(TestAsset\Service::class));
     }
 
-    final public function testDelegatorsNamedForAliasDoNotApplyToInvokableServiceResolvedViaAlias() : void
+    final public function testDelegatorsNamedForAliasDoNotApplyToInvokableServiceResolvedViaAlias(): void
     {
         $config = [
-            'aliases' => [
+            'aliases'    => [
                 'alias' => TestAsset\Service::class,
             ],
             'invokables' => [
@@ -113,7 +113,7 @@ trait DelegatorTestTrait
         self::assertSame($instance, $container->get(TestAsset\Service::class));
     }
 
-    final public function testDelegatorsNamedForAliasDoNotApplyToInvokableServiceWithAlias() : void
+    final public function testDelegatorsNamedForAliasDoNotApplyToInvokableServiceWithAlias(): void
     {
         $config = [
             'invokables' => [
@@ -138,18 +138,18 @@ trait DelegatorTestTrait
         self::assertSame($instance, $container->get(TestAsset\Service::class));
     }
 
-    final public function testDelegatorsDoNotApplyToAliasResolvingToServiceEntry() : void
+    final public function testDelegatorsDoNotApplyToAliasResolvingToServiceEntry(): void
     {
         $myService = new TestAsset\Service();
-        $config = [
-            'aliases' => [
+        $config    = [
+            'aliases'    => [
                 'alias' => 'foo-bar',
             ],
-            'services' => [
+            'services'   => [
                 'foo-bar' => $myService,
             ],
             'delegators' => [
-                'alias' => [
+                'alias'   => [
                     TestAsset\DelegatorFactory::class,
                 ],
                 'foo-bar' => [
@@ -170,10 +170,10 @@ trait DelegatorTestTrait
         self::assertSame($instance, $container->get('foo-bar'));
     }
 
-    final public function testDelegatorsDoNotTriggerForAliasTargetingInvokableService() : void
+    final public function testDelegatorsDoNotTriggerForAliasTargetingInvokableService(): void
     {
         $config = [
-            'aliases' => [
+            'aliases'    => [
                 'alias' => TestAsset\Service::class,
             ],
             'invokables' => [
@@ -206,7 +206,7 @@ trait DelegatorTestTrait
         array $config,
         string $serviceNameToTest,
         string $delegatedServiceName
-    ) : void {
+    ): void {
         $config += [
             'delegators' => [
                 $delegatedServiceName => [
@@ -241,7 +241,7 @@ trait DelegatorTestTrait
         array $config,
         string $serviceNameToTest,
         string $delegatedServiceName
-    ) : void {
+    ): void {
         $config += [
             'delegators' => [
                 $delegatedServiceName => [],
@@ -259,7 +259,7 @@ trait DelegatorTestTrait
         self::assertSame($instance, $container->get($serviceNameToTest));
     }
 
-    final public function testMultipleAliasesForADelegatedInvokableServiceReceiveSameInstance() : void
+    final public function testMultipleAliasesForADelegatedInvokableServiceReceiveSameInstance(): void
     {
         $container = $this->createContainer([
             'invokables' => [
@@ -301,7 +301,7 @@ trait DelegatorTestTrait
         array $config,
         string $serviceNameToTest,
         string $delegatedServiceName
-    ) : void {
+    ): void {
         $container = $this->createContainer($config + [
             'delegators' => [
                 $delegatedServiceName => [
@@ -323,7 +323,7 @@ trait DelegatorTestTrait
         array $config,
         string $serviceNameToTest,
         string $delegatedServiceName
-    ) : void {
+    ): void {
         $container = $this->createContainer($config + [
             'delegators' => [
                 $delegatedServiceName => [
@@ -346,7 +346,7 @@ trait DelegatorTestTrait
         array $config,
         string $serviceNameToTest,
         string $delegatedServiceName
-    ) : void {
+    ): void {
         $container = $this->createContainer($config + [
             'delegators' => [
                 $delegatedServiceName => [
@@ -368,7 +368,7 @@ trait DelegatorTestTrait
     /**
      * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::factory
      */
-    final public function testDelegatorFactoriesTriggerForFactoryBackedServicesUsingAnyFactoryType(array $config) : void
+    final public function testDelegatorFactoriesTriggerForFactoryBackedServicesUsingAnyFactoryType(array $config): void
     {
         $config += [
             'delegators' => [
@@ -392,10 +392,10 @@ trait DelegatorTestTrait
     /**
      * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::factory
      */
-    final public function testDelegatorsTriggerForFactoryServiceResolvedByAlias(array $config) : void
+    final public function testDelegatorsTriggerForFactoryServiceResolvedByAlias(array $config): void
     {
         $config += [
-            'aliases' => [
+            'aliases'    => [
                 'alias' => 'service',
             ],
             'delegators' => [
@@ -426,9 +426,9 @@ trait DelegatorTestTrait
      */
     final public function testDelegatorsDoNotTriggerForAliasTargetingFactoryBasedServiceUsingAnyFactoryType(
         array $config
-    ) : void {
+    ): void {
         $config += [
-            'aliases' => [
+            'aliases'    => [
                 'alias' => 'service',
             ],
             'delegators' => [
@@ -457,7 +457,7 @@ trait DelegatorTestTrait
         array $config,
         string $serviceNameToTest,
         string $delegatedServiceName
-    ) : void {
+    ): void {
         $container = $this->createContainer($config + [
             'delegators' => [
                 $delegatedServiceName => [
@@ -478,7 +478,7 @@ trait DelegatorTestTrait
         array $config,
         string $serviceNameToTest,
         string $delegatedServiceName
-    ) : void {
+    ): void {
         $container = $this->createContainer($config + [
             'delegators' => [
                 $delegatedServiceName => [

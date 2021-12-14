@@ -9,7 +9,7 @@ use Psr\Container\ContainerExceptionInterface;
 
 trait InvokableTestTrait
 {
-    final public function testCanSpecifyMultipleInvokablesWithoutKeyAndNotCauseCollisions() : void
+    final public function testCanSpecifyMultipleInvokablesWithoutKeyAndNotCauseCollisions(): void
     {
         $config = [
             'invokables' => [
@@ -39,7 +39,7 @@ trait InvokableTestTrait
         array $config,
         string $alias,
         string $name
-    ) : void {
+    ): void {
         $container = $this->createContainer($config);
 
         self::assertTrue($container->has($alias));
@@ -62,9 +62,9 @@ trait InvokableTestTrait
         string $name,
         string $originName,
         array $expectedExceptions = []
-    ) : void {
+    ): void {
         $expectedExceptions[] = ContainerExceptionInterface::class;
-        $container = $this->createContainer($config);
+        $container            = $this->createContainer($config);
 
         self::assertTrue($container->has($name));
         Assert::expectedExceptions(

@@ -17,7 +17,7 @@ trait AliasTestTrait
         array $config,
         string $alias,
         string $name
-    ) : void {
+    ): void {
         $container = $this->createContainer($config);
 
         self::assertTrue($container->has($name));
@@ -33,7 +33,7 @@ trait AliasTestTrait
         array $config,
         string $alias,
         string $name
-    ) : void {
+    ): void {
         $container = $this->createContainer($config);
 
         self::assertTrue($container->has($alias));
@@ -41,10 +41,10 @@ trait AliasTestTrait
         self::assertSame($container->get($alias), $container->get($name));
     }
 
-    final public function testInstancesRetrievedByTwoAliasesResolvingToSameServiceMustBeTheSame() : void
+    final public function testInstancesRetrievedByTwoAliasesResolvingToSameServiceMustBeTheSame(): void
     {
         $container = $this->createContainer([
-            'aliases' => [
+            'aliases'    => [
                 'alias1' => TestAsset\Service::class,
                 'alias2' => TestAsset\Service::class,
             ],
@@ -67,9 +67,9 @@ trait AliasTestTrait
         string $name,
         string $originName,
         array $expectedExceptions = []
-    ) : void {
+    ): void {
         $expectedExceptions[] = ContainerExceptionInterface::class;
-        $container = $this->createContainer($config);
+        $container            = $this->createContainer($config);
 
         self::assertTrue($container->has($name));
         self::assertTrue($container->has($originName));

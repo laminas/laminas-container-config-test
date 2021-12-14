@@ -17,7 +17,7 @@ class Service
         return $a;
     }
 
-    public function inject(string $name) : void
+    public function inject(string $name): void
     {
         $this->injected[] = $name;
     }

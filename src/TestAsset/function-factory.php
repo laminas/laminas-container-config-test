@@ -6,7 +6,7 @@ namespace Laminas\ContainerConfigTest\TestAsset;
 
 use Psr\Container\ContainerInterface;
 
-function function_factory(ContainerInterface $container, string $name) : Service
+function function_factory(ContainerInterface $container, string $name): Service
 {
     return new Service();
 }

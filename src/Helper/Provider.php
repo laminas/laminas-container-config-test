@@ -17,7 +17,7 @@ use function func_get_args;
 class Provider
 {
     /** @psalm-return Generator */
-    public static function factory() : Generator
+    public static function factory(): Generator
     {
         yield 'function-name' => [
             [
@@ -42,7 +42,7 @@ class Provider
     }
 
     /** @psalm-return Generator */
-    public static function factoryWithName() : Generator
+    public static function factoryWithName(): Generator
     {
         yield 'function-name' => [
             [
@@ -71,7 +71,7 @@ class Provider
      * @psalm-suppress MixedArrayAssignment
      * @psalm-return Generator
      */
-    private static function aliased(callable $callable) : Generator
+    private static function aliased(callable $callable): Generator
     {
         /**
          * @var string $name
@@ -90,16 +90,16 @@ class Provider
         }
     }
 
-    public static function invalidAliasedInvokable() : Generator
+    public static function invalidAliasedInvokable(): Generator
     {
-        yield from self::aliased([__CLASS__, 'invalidInvokable']);
+        yield from self::aliased([self::class, 'invalidInvokable']);
     }
 
     /**
      * @psalm-suppress UndefinedClass
      * @psalm-return Generator
      */
-    public static function invalidInvokable() : Generator
+    public static function invalidInvokable(): Generator
     {
         yield 'non-existent-invokable' => [
             ['invokables' => [TestAsset\NonExistent::class]],
@@ -131,13 +131,13 @@ class Provider
     }
 
     /** @psalm-return Generator */
-    public static function invalidAliasedFactory() : Generator
+    public static function invalidAliasedFactory(): Generator
     {
-        yield from self::aliased([__CLASS__, 'invalidFactory']);
+        yield from self::aliased([self::class, 'invalidFactory']);
     }
 
     /** @psalm-return Generator */
-    public static function invalidFactory() : Generator
+    public static function invalidFactory(): Generator
     {
         /** @psalm-suppress UndefinedClass */
         yield 'non-existent-factory' => [
@@ -174,7 +174,7 @@ class Provider
         yield 'factory-as-string-to-service-factory' => [
             [
                 'factories' => ['service' => 'factory'],
-                'services' => ['factory' => new TestAsset\Factory()],
+                'services'  => ['factory' => new TestAsset\Factory()],
             ],
             'service',
             'service',
@@ -182,7 +182,7 @@ class Provider
     }
 
     /** @psalm-return Generator */
-    public static function invalidService() : Generator
+    public static function invalidService(): Generator
     {
         yield from self::invalidInvokable();
         yield from self::invalidAliasedInvokable();
@@ -191,9 +191,9 @@ class Provider
     }
 
     /** @psalm-return Generator */
-    public static function aliasedAlias() : Generator
+    public static function aliasedAlias(): Generator
     {
-        yield from self::aliased([__CLASS__, 'alias']);
+        yield from self::aliased([self::class, 'alias']);
     }
 
     /**
@@ -201,11 +201,11 @@ class Provider
      * @psalm-suppress MixedArrayAccess
      * @psalm-return Generator
      */
-    public static function alias() : Generator
+    public static function alias(): Generator
     {
         yield 'alias-service' => [
             [
-                'aliases' => ['foo-bar' => 'service'],
+                'aliases'  => ['foo-bar' => 'service'],
                 'services' => ['service' => new TestAsset\Service()],
             ],
             'foo-bar',
@@ -238,13 +238,13 @@ class Provider
     }
 
     /** @psalm-return Generator */
-    public static function aliasedService() : Generator
+    public static function aliasedService(): Generator
     {
-        yield from self::aliased([__CLASS__, 'service']);
+        yield from self::aliased([self::class, 'service']);
     }
 
     /** @psalm-return Generator */
-    public static function service() : Generator
+    public static function service(): Generator
     {
         yield from self::invokable();
 
@@ -263,7 +263,7 @@ class Provider
     }
 
     /** @psalm-return Generator */
-    public static function invokable() : Generator
+    public static function invokable(): Generator
     {
         yield 'invokable' => [
             [

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace LaminasTest\ContainerConfigTest;
 
+use Aura\Di\Container;
 use Laminas\AuraDi\Config\Config;
 use Laminas\AuraDi\Config\ContainerFactory;
 use Laminas\ContainerConfigTest\AbstractMezzioContainerConfigTest;
@@ -12,9 +13,9 @@ use Psr\Container\ContainerInterface;
 class AuraDiTest extends AbstractMezzioContainerConfigTest
 {
     /**
-     * @return \Aura\Di\Container
+     * @return Container
      */
-    public function createContainer(array $config) : ContainerInterface
+    public function createContainer(array $config): ContainerInterface
     {
         $factory = new ContainerFactory();
 
