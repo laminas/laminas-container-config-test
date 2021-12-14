@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cae1f3da04845fef36d0ad972ddc9b02",
+    "content-hash": "bf68e9694cadd715271c05ceb31cd3fc",
     "packages": [
         {
             "name": "psr/container",
@@ -224,29 +224,29 @@
         },
         {
             "name": "aura/di",
-            "version": "3.4.0",
+            "version": "4.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/auraphp/Aura.Di.git",
-                "reference": "f676b38a0d1c3b0d7897b0a082f4811eb8b08faa"
+                "reference": "fefda6b3db5cb04feb2bcf36f845317cfead857e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/auraphp/Aura.Di/zipball/f676b38a0d1c3b0d7897b0a082f4811eb8b08faa",
-                "reference": "f676b38a0d1c3b0d7897b0a082f4811eb8b08faa",
+                "url": "https://api.github.com/repos/auraphp/Aura.Di/zipball/fefda6b3db5cb04feb2bcf36f845317cfead857e",
+                "reference": "fefda6b3db5cb04feb2bcf36f845317cfead857e",
                 "shasum": ""
             },
             "require": {
-                "container-interop/container-interop": "~1.0",
-                "php": ">=5.5.0"
+                "php": ">=7.2.0",
+                "psr/container": "^1.0"
             },
             "provide": {
-                "container-interop/container-interop-implementation": "^1.0"
+                "psr/container-implementation": "^1.0"
             },
             "require-dev": {
-                "acclimate/container": "~1.0",
-                "mouf/picotainer": "~1.0",
-                "phpunit/phpunit": "~5.7 || ~4.8"
+                "acclimate/container": "^2",
+                "phpunit/phpunit": "^8",
+                "producer/producer": "^2.3"
             },
             "type": "library",
             "autoload": {
@@ -275,9 +275,9 @@
             ],
             "support": {
                 "issues": "https://github.com/auraphp/Aura.Di/issues",
-                "source": "https://github.com/auraphp/Aura.Di/tree/3.x"
+                "source": "https://github.com/auraphp/Aura.Di/tree/4.x"
             },
-            "time": "2017-07-30T04:14:30+00:00"
+            "time": "2020-05-26T11:19:26+00:00"
         },
         {
             "name": "composer/package-versions-deprecated",
@@ -812,41 +812,34 @@
         },
         {
             "name": "laminas/laminas-auradi-config",
-            "version": "1.0.2",
+            "version": "2.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laminas/laminas-auradi-config.git",
-                "reference": "dbec23ad448a4f4f02ee1bace55b563651b0c6d4"
+                "reference": "26cfc1c90dd153d37dcd5bbfd4a6670ac607b17c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-auradi-config/zipball/dbec23ad448a4f4f02ee1bace55b563651b0c6d4",
-                "reference": "dbec23ad448a4f4f02ee1bace55b563651b0c6d4",
+                "url": "https://api.github.com/repos/laminas/laminas-auradi-config/zipball/26cfc1c90dd153d37dcd5bbfd4a6670ac607b17c",
+                "reference": "26cfc1c90dd153d37dcd5bbfd4a6670ac607b17c",
                 "shasum": ""
             },
             "require": {
-                "aura/di": "^3.4",
-                "laminas/laminas-zendframework-bridge": "^1.0",
-                "php": "^7.1"
+                "aura/di": "^3.4 || ^4.0",
+                "php": "^7.3 || ~8.0.0 || ~8.1.0"
             },
             "conflict": {
                 "container-interop/container-interop": "<1.2.0"
             },
-            "replace": {
-                "zendframework/zend-auradi-config": "self.version"
-            },
             "require-dev": {
-                "laminas/laminas-coding-standard": "~1.0.0",
-                "laminas/laminas-container-config-test": "^0.2 || ^1.0",
-                "phpunit/phpunit": "^7.1.2"
+                "laminas/laminas-coding-standard": "~2.1.4",
+                "laminas/laminas-container-config-test": "^0.3 || ^1.0",
+                "phpspec/prophecy-phpunit": "^2.0.1",
+                "phpunit/phpunit": "^9.3",
+                "psalm/plugin-phpunit": "^0.15.1",
+                "vimeo/psalm": "^4.6"
             },
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0.x-dev",
-                    "dev-develop": "1.1.x-dev"
-                }
-            },
             "autoload": {
                 "psr-4": {
                     "Laminas\\AuraDi\\Config\\": "src/"
@@ -867,13 +860,18 @@
             ],
             "support": {
                 "chat": "https://laminas.dev/chat",
-                "docs": "https://docs.laminas.dev/laminas-auradi-config/",
                 "forum": "https://discourse.laminas.dev",
                 "issues": "https://github.com/laminas/laminas-auradi-config/issues",
                 "rss": "https://github.com/laminas/laminas-auradi-config/releases.atom",
                 "source": "https://github.com/laminas/laminas-auradi-config"
             },
-            "time": "2019-12-31T16:13:22+00:00"
+            "funding": [
+                {
+                    "url": "https://funding.communitybridge.org/projects/laminas-project",
+                    "type": "community_bridge"
+                }
+            ],
+            "time": "2021-09-14T04:21:05+00:00"
         },
         {
             "name": "laminas/laminas-coding-standard",
