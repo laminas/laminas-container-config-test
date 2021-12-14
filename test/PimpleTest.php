@@ -16,6 +16,7 @@ class PimpleTest extends AbstractMezzioContainerConfigTest
     use SharedTestTrait;
 
     /**
+     * @param array<string,mixed> $config
      * @return Container
      */
     public function createContainer(array $config): ContainerInterface

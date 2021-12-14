@@ -12,6 +12,7 @@ trait AliasTestTrait
     /**
      * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::alias
      * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::aliasedAlias
+     * @param array<string,mixed> $config
      */
     final public function testRetrievingServiceByNameBeforeAliasOfServiceResultsInSameInstance(
         array $config,
@@ -28,6 +29,7 @@ trait AliasTestTrait
     /**
      * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::alias
      * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::aliasedAlias
+     * @param array<string,mixed> $config
      */
     final public function testRetrievingAliasedServiceBeforeResolvedServiceResultsInSameInstance(
         array $config,
@@ -61,6 +63,7 @@ trait AliasTestTrait
     /**
      * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::invalidAliasedInvokable
      * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::invalidAliasedFactory
+     * @param array<string,mixed> $config
      */
     final public function testInvalidAliasResultsInExceptionDuringInstanceRetrieval(
         array $config,

@@ -201,6 +201,7 @@ trait DelegatorTestTrait
     /**
      * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::service
      * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::aliasedService
+     * @param array<string,mixed> $config
      */
     final public function testDelegatorsReceiveCallbackResolvingToReturnValueOfPrevious(
         array $config,
@@ -236,6 +237,7 @@ trait DelegatorTestTrait
     /**
      * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::service
      * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::aliasedService
+     * @param array<string,mixed> $config
      */
     final public function testEmptyDelegatorListOriginalServiceShouldBeReturned(
         array $config,
@@ -296,6 +298,7 @@ trait DelegatorTestTrait
     /**
      * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::service
      * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::aliasedService
+     * @param array<string,mixed> $config
      */
     final public function testNonInvokableDelegatorClassNameResultsInExceptionDuringInstanceRetrieval(
         array $config,
@@ -318,6 +321,7 @@ trait DelegatorTestTrait
     /**
      * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::service
      * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::aliasedService
+     * @param array<string,mixed> $config
      */
     final public function testNonExistentDelegatorClassResultsInExceptionDuringInstanceRetrieval(
         array $config,
@@ -341,6 +345,7 @@ trait DelegatorTestTrait
     /**
      * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::service
      * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::aliasedService
+     * @param array<string,mixed> $config
      */
     final public function testDelegatorClassNameRequiringConstructorArgumentsResultsInExceptionDuringInstanceRetrieval(
         array $config,
@@ -367,6 +372,7 @@ trait DelegatorTestTrait
 
     /**
      * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::factory
+     * @param array<string,mixed> $config
      */
     final public function testDelegatorFactoriesTriggerForFactoryBackedServicesUsingAnyFactoryType(array $config): void
     {
@@ -391,6 +397,7 @@ trait DelegatorTestTrait
 
     /**
      * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::factory
+     * @param array<string,mixed> $config
      */
     final public function testDelegatorsTriggerForFactoryServiceResolvedByAlias(array $config): void
     {
@@ -423,6 +430,7 @@ trait DelegatorTestTrait
 
     /**
      * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::factory
+     * @param array<string,mixed> $config
      */
     final public function testDelegatorsDoNotTriggerForAliasTargetingFactoryBasedServiceUsingAnyFactoryType(
         array $config
@@ -452,6 +460,7 @@ trait DelegatorTestTrait
 
     /**
      * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::invalidService
+     * @param array<string,mixed> $config
      */
     final public function testWithDelegatorsResolvesToInvalidClassNoExceptionIsRaisedIfCallbackNeverInvoked(
         array $config,
@@ -473,6 +482,7 @@ trait DelegatorTestTrait
 
     /**
      * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::invalidService
+     * @param array<string,mixed> $config
      */
     final public function testWithDelegatorsResolvesToInvalidClassAnExceptionIsRaisedWhenCallbackIsInvoked(
         array $config,

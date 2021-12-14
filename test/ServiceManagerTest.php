@@ -14,6 +14,7 @@ class ServiceManagerTest extends AbstractMezzioContainerConfigTest
     use SharedTestTrait;
 
     /**
+     * @param array<string,mixed> $config
      * @return ServiceManager
      */
     public function createContainer(array $config): ContainerInterface

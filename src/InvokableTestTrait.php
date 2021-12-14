@@ -34,6 +34,7 @@ trait InvokableTestTrait
 
     /**
      * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::invokable
+     * @param array<string,mixed> $config
      */
     final public function testInvokable(
         array $config,
@@ -56,6 +57,7 @@ trait InvokableTestTrait
 
     /**
      * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::invalidInvokable
+     * @param array<string,mixed> $config
      */
     final public function testInvalidInvokableResultsInExceptionDuringInstanceRetrieval(
         array $config,

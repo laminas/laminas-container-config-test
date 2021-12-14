@@ -14,6 +14,7 @@ trait FactoryTestTrait
 {
     /**
      * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::factory
+     * @param array<string,mixed> $config
      */
     final public function testFactoryIsUsedToProduceService(array $config): void
     {
@@ -27,6 +28,7 @@ trait FactoryTestTrait
 
     /**
      * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::factoryWithName
+     * @param array<string,mixed> $config
      */
     final public function testFactoryIsProvidedContainerAndServiceNameAsArguments(array $config): void
     {
@@ -42,6 +44,7 @@ trait FactoryTestTrait
 
     /**
      * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::invalidFactory
+     * @param array<string,mixed> $config
      */
     final public function testInvalidFactoryResultsInExceptionDuringInstanceRetrieval(
         array $config,

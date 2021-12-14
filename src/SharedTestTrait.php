@@ -11,6 +11,7 @@ trait SharedTestTrait
     /**
      * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::service
      * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::aliasedService
+     * @param array<string,mixed> $config
      */
     final public function testIsSharedByDefault(array $config, string $serviceToTest): void
     {
@@ -27,6 +28,7 @@ trait SharedTestTrait
     /**
      * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::service
      * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::aliasedService
+     * @param array<string,mixed> $config
      */
     final public function testCanDisableSharedByDefault(array $config, string $serviceToTest): void
     {
@@ -45,6 +47,7 @@ trait SharedTestTrait
     /**
      * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::service
      * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::aliasedService
+     * @param array<string,mixed> $config
      */
     final public function testCanDisableSharedForSingleService(array $config, string $serviceToTest): void
     {
@@ -65,6 +68,7 @@ trait SharedTestTrait
     /**
      * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::service
      * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::aliasedService
+     * @param array<string,mixed> $config
      */
     final public function testCanEnableSharedForSingleService(array $config, string $serviceToTest): void
     {
