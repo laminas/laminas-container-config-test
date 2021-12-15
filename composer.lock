@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "eff6b7349711d83c7146bbb0b48998fc",
+    "content-hash": "de3f47ec033903242820eea3da8fe771",
     "packages": [
         {
             "name": "psr/container",
@@ -221,63 +221,6 @@
                 }
             ],
             "time": "2021-03-30T17:13:30+00:00"
-        },
-        {
-            "name": "aura/di",
-            "version": "4.1.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/auraphp/Aura.Di.git",
-                "reference": "fefda6b3db5cb04feb2bcf36f845317cfead857e"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/auraphp/Aura.Di/zipball/fefda6b3db5cb04feb2bcf36f845317cfead857e",
-                "reference": "fefda6b3db5cb04feb2bcf36f845317cfead857e",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.2.0",
-                "psr/container": "^1.0"
-            },
-            "provide": {
-                "psr/container-implementation": "^1.0"
-            },
-            "require-dev": {
-                "acclimate/container": "^2",
-                "phpunit/phpunit": "^8",
-                "producer/producer": "^2.3"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Aura\\Di\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Aura.Di Contributors",
-                    "homepage": "https://github.com/auraphp/Aura.Di/contributors"
-                }
-            ],
-            "description": "A serializable dependency injection container with constructor and setter injection, interface and trait awareness, configuration inheritance, and much more.",
-            "homepage": "https://github.com/auraphp/Aura.Di",
-            "keywords": [
-                "container",
-                "dependency injection",
-                "dependency injection container",
-                "di",
-                "di container"
-            ],
-            "support": {
-                "issues": "https://github.com/auraphp/Aura.Di/issues",
-                "source": "https://github.com/auraphp/Aura.Di/tree/4.x"
-            },
-            "time": "2020-05-26T11:19:26+00:00"
         },
         {
             "name": "composer/package-versions-deprecated",
@@ -809,69 +752,6 @@
                 "source": "https://github.com/felixfbecker/php-language-server-protocol/tree/1.5.1"
             },
             "time": "2021-02-22T14:02:09+00:00"
-        },
-        {
-            "name": "laminas/laminas-auradi-config",
-            "version": "2.2.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/laminas/laminas-auradi-config.git",
-                "reference": "26cfc1c90dd153d37dcd5bbfd4a6670ac607b17c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-auradi-config/zipball/26cfc1c90dd153d37dcd5bbfd4a6670ac607b17c",
-                "reference": "26cfc1c90dd153d37dcd5bbfd4a6670ac607b17c",
-                "shasum": ""
-            },
-            "require": {
-                "aura/di": "^3.4 || ^4.0",
-                "php": "^7.3 || ~8.0.0 || ~8.1.0"
-            },
-            "conflict": {
-                "container-interop/container-interop": "<1.2.0"
-            },
-            "require-dev": {
-                "laminas/laminas-coding-standard": "~2.1.4",
-                "laminas/laminas-container-config-test": "^0.3 || ^1.0",
-                "phpspec/prophecy-phpunit": "^2.0.1",
-                "phpunit/phpunit": "^9.3",
-                "psalm/plugin-phpunit": "^0.15.1",
-                "vimeo/psalm": "^4.6"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Laminas\\AuraDi\\Config\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "description": "PSR-11 Aura.DI container configurator for Laminas and Mezzio applications",
-            "homepage": "https://laminas.dev",
-            "keywords": [
-                "PSR-11",
-                "aura di",
-                "container",
-                "laminas",
-                "mezzio"
-            ],
-            "support": {
-                "chat": "https://laminas.dev/chat",
-                "forum": "https://discourse.laminas.dev",
-                "issues": "https://github.com/laminas/laminas-auradi-config/issues",
-                "rss": "https://github.com/laminas/laminas-auradi-config/releases.atom",
-                "source": "https://github.com/laminas/laminas-auradi-config"
-            },
-            "funding": [
-                {
-                    "url": "https://funding.communitybridge.org/projects/laminas-project",
-                    "type": "community_bridge"
-                }
-            ],
-            "time": "2021-09-14T04:21:05+00:00"
         },
         {
             "name": "laminas/laminas-coding-standard",
