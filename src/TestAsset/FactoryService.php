@@ -6,7 +6,7 @@ namespace Laminas\ContainerConfigTest\TestAsset;
 
 class FactoryService
 {
-    public $args = [];
+    public array $args = [];
 
     public function __construct(array $args)
     {

@@ -14,8 +14,9 @@ trait FactoryTestTrait
 {
     /**
      * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::factory
+     * @param array<string,mixed> $config
      */
-    final public function testFactoryIsUsedToProduceService(array $config) : void
+    final public function testFactoryIsUsedToProduceService(array $config): void
     {
         $container = $this->createContainer($config);
 
@@ -27,8 +28,9 @@ trait FactoryTestTrait
 
     /**
      * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::factoryWithName
+     * @param array<string,mixed> $config
      */
-    final public function testFactoryIsProvidedContainerAndServiceNameAsArguments(array $config) : void
+    final public function testFactoryIsProvidedContainerAndServiceNameAsArguments(array $config): void
     {
         $container = $this->createContainer($config);
 
@@ -42,15 +44,16 @@ trait FactoryTestTrait
 
     /**
      * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::invalidFactory
+     * @param array<string,mixed> $config
      */
     final public function testInvalidFactoryResultsInExceptionDuringInstanceRetrieval(
         array $config,
         string $name,
         string $originName,
         array $expectedExceptions = []
-    ) : void {
+    ): void {
         $expectedExceptions[] = ContainerExceptionInterface::class;
-        $container = $this->createContainer($config);
+        $container            = $this->createContainer($config);
 
         self::assertTrue($container->has($name));
         Assert::expectedExceptions(

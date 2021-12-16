@@ -6,10 +6,10 @@ namespace Laminas\ContainerConfigTest;
 
 trait ServiceTestTrait
 {
-    final public function testFetchingServiceReturnsSameInstance() : void
+    final public function testFetchingServiceReturnsSameInstance(): void
     {
         $service = new TestAsset\Service();
-        $config = [
+        $config  = [
             'services' => [
                 'foo-bar' => $service,
             ],

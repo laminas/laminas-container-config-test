@@ -6,7 +6,7 @@ namespace Laminas\ContainerConfigTest\TestAsset;
 
 class Service
 {
-    public $injected = [];
+    public array $injected = [];
 
     /**
      * @param mixed $a
@@ -17,7 +17,7 @@ class Service
         return $a;
     }
 
-    public function inject(string $name) : void
+    public function inject(string $name): void
     {
         $this->injected[] = $name;
     }

@@ -12,12 +12,13 @@ trait AliasTestTrait
     /**
      * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::alias
      * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::aliasedAlias
+     * @param array<string,mixed> $config
      */
     final public function testRetrievingServiceByNameBeforeAliasOfServiceResultsInSameInstance(
         array $config,
         string $alias,
         string $name
-    ) : void {
+    ): void {
         $container = $this->createContainer($config);
 
         self::assertTrue($container->has($name));
@@ -28,12 +29,13 @@ trait AliasTestTrait
     /**
      * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::alias
      * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::aliasedAlias
+     * @param array<string,mixed> $config
      */
     final public function testRetrievingAliasedServiceBeforeResolvedServiceResultsInSameInstance(
         array $config,
         string $alias,
         string $name
-    ) : void {
+    ): void {
         $container = $this->createContainer($config);
 
         self::assertTrue($container->has($alias));
@@ -41,10 +43,10 @@ trait AliasTestTrait
         self::assertSame($container->get($alias), $container->get($name));
     }
 
-    final public function testInstancesRetrievedByTwoAliasesResolvingToSameServiceMustBeTheSame() : void
+    final public function testInstancesRetrievedByTwoAliasesResolvingToSameServiceMustBeTheSame(): void
     {
         $container = $this->createContainer([
-            'aliases' => [
+            'aliases'    => [
                 'alias1' => TestAsset\Service::class,
                 'alias2' => TestAsset\Service::class,
             ],
@@ -61,15 +63,16 @@ trait AliasTestTrait
     /**
      * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::invalidAliasedInvokable
      * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::invalidAliasedFactory
+     * @param array<string,mixed> $config
      */
     final public function testInvalidAliasResultsInExceptionDuringInstanceRetrieval(
         array $config,
         string $name,
         string $originName,
         array $expectedExceptions = []
-    ) : void {
+    ): void {
         $expectedExceptions[] = ContainerExceptionInterface::class;
-        $container = $this->createContainer($config);
+        $container            = $this->createContainer($config);
 
         self::assertTrue($container->has($name));
         self::assertTrue($container->has($originName));

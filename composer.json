@@ -23,15 +23,12 @@
     "extra": {
     },
     "require": {
-        "php": "^7.3 || ~8.0.0",
+        "php": "^7.4 || ~8.0.0 || ~8.1.0",
         "psr/container": "^1.0"
     },
     "require-dev": {
-        "laminas/laminas-auradi-config": "^1.0.1",
-        "laminas/laminas-coding-standard": "~1.0.0",
-        "laminas/laminas-pimple-config": "^1.1",
-        "laminas/laminas-servicemanager": "^3.3.2",
-        "phpunit/phpunit": "^7.5.15 || ^8.3.4",
+        "laminas/laminas-coding-standard": "^2.3",
+        "phpunit/phpunit": "^9.5.5",
         "psalm/plugin-phpunit": "^0.15.1",
         "vimeo/psalm": "^4.7"
     },
