@@ -27,7 +27,7 @@
     },
     "require": {
         "php": "^7.4 || ~8.0.0 || ~8.1.0",
-        "psr/container": "^1.0"
+        "psr/container": "^1.0 || ^2.0"
     },
     "require-dev": {
         "laminas/laminas-coding-standard": "^2.3",
