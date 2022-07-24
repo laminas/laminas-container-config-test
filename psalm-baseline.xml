@@ -1,20 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="4.7.0@d4377c0baf3ffbf0b1ec6998e8d1be2a40971005">
+<files psalm-version="4.24.0@06dd975cb55d36af80f242561738f16c5f58264f">
   <file src="src/AliasTestTrait.php">
     <MissingClosureReturnType occurrences="1">
       <code>function () use ($container, $name) {</code>
     </MissingClosureReturnType>
   </file>
   <file src="src/DelegatorTestTrait.php">
-    <InvalidArgument occurrences="2">
-      <code>ContainerExceptionInterface::class</code>
-      <code>ContainerExceptionInterface::class</code>
-    </InvalidArgument>
-    <MissingPropertyType occurrences="3">
-      <code>$instance-&gt;injected</code>
-      <code>$instance-&gt;injected</code>
-      <code>$instance-&gt;injected</code>
-    </MissingPropertyType>
     <UndefinedClass occurrences="1">
       <code>TestAsset\NonExistentDelegatorFactory</code>
     </UndefinedClass>
@@ -31,35 +22,8 @@
       <code>$container-&gt;get('service')-&gt;args</code>
     </MixedPropertyFetch>
   </file>
-  <file src="src/Helper/Assert.php">
-    <MixedAssignment occurrences="1">
-      <code>$type</code>
-    </MixedAssignment>
-  </file>
   <file src="src/Helper/Provider.php">
-    <MixedArrayAccess occurrences="9">
-      <code>$params[0]</code>
-      <code>$params[0]</code>
-      <code>$params[0]</code>
-      <code>$params[0]</code>
-      <code>$params[1]</code>
-      <code>$params[1]</code>
-      <code>$params[2]</code>
-      <code>$params[2]</code>
-      <code>$params[3]</code>
-    </MixedArrayAccess>
-    <MixedArrayAssignment occurrences="1">
-      <code>$params[0]</code>
-    </MixedArrayAssignment>
-    <MixedAssignment occurrences="9">
-      <code>$name</code>
-      <code>$name</code>
-      <code>$name</code>
-      <code>$name</code>
-      <code>$params</code>
-      <code>$params</code>
-      <code>$params</code>
-      <code>$params</code>
+    <MixedAssignment occurrences="1">
       <code>$params[0]['aliases']['alias']</code>
     </MixedAssignment>
     <MixedInferredReturnType occurrences="12">
@@ -76,89 +40,5 @@
       <code>Generator</code>
       <code>Generator</code>
     </MixedInferredReturnType>
-    <MixedOperand occurrences="6">
-      <code>$name</code>
-      <code>$name</code>
-      <code>$name</code>
-      <code>$name</code>
-      <code>$params[0]</code>
-      <code>$params[0]</code>
-    </MixedOperand>
-    <UndefinedClass occurrences="6">
-      <code>TestAsset\NonExistent</code>
-      <code>TestAsset\NonExistent</code>
-      <code>TestAsset\NonExistent</code>
-      <code>TestAsset\NonExistent</code>
-      <code>TestAsset\NonExistent</code>
-      <code>TestAsset\NonExistent</code>
-    </UndefinedClass>
-  </file>
-  <file src="src/InvokableTestTrait.php">
-    <MixedAssignment occurrences="1">
-      <code>$instance</code>
-    </MixedAssignment>
-  </file>
-  <file src="src/SharedTestTrait.php">
-    <MixedAssignment occurrences="8">
-      <code>$service1</code>
-      <code>$service1</code>
-      <code>$service1</code>
-      <code>$service1</code>
-      <code>$service2</code>
-      <code>$service2</code>
-      <code>$service2</code>
-      <code>$service2</code>
-    </MixedAssignment>
-  </file>
-  <file src="src/TestAsset/Delegator.php">
-    <MissingParamType occurrences="1">
-      <code>$name</code>
-    </MissingParamType>
-  </file>
-  <file src="src/TestAsset/Delegator1Factory.php">
-    <MissingParamType occurrences="1">
-      <code>$name</code>
-    </MissingParamType>
-    <MixedAssignment occurrences="1">
-      <code>$service</code>
-    </MixedAssignment>
-    <MixedMethodCall occurrences="1">
-      <code>inject</code>
-    </MixedMethodCall>
-  </file>
-  <file src="src/TestAsset/DelegatorFactory.php">
-    <MissingParamType occurrences="1">
-      <code>$name</code>
-    </MissingParamType>
-  </file>
-  <file src="src/TestAsset/Service.php">
-    <MissingPropertyType occurrences="1">
-      <code>$injected</code>
-    </MissingPropertyType>
-    <MixedArrayAssignment occurrences="1">
-      <code>$this-&gt;injected[]</code>
-    </MixedArrayAssignment>
-  </file>
-  <file src="src/TestAsset/function-factory-with-name.legacy.php">
-    <InvalidReturnType occurrences="1">
-      <code>FactoryService</code>
-    </InvalidReturnType>
-    <MixedArgument occurrences="1">
-      <code>func_get_args()</code>
-    </MixedArgument>
-  </file>
-  <file src="src/TestAsset/function-factory.legacy.php">
-    <InvalidReturnType occurrences="1">
-      <code>Service</code>
-    </InvalidReturnType>
-    <MixedArgument occurrences="1">
-      <code>func_get_args()</code>
-    </MixedArgument>
-  </file>
-  <file src="src/TestAsset/function-factory.php">
-    <UnusedParam occurrences="2">
-      <code>$container</code>
-      <code>$name</code>
-    </UnusedParam>
   </file>
 </files>
