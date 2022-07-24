@@ -6,6 +6,7 @@ namespace Laminas\ContainerConfigTest;
 
 use Laminas\ContainerConfigTest\Helper\Assert;
 use Psr\Container\ContainerExceptionInterface;
+use Throwable;
 
 trait AliasTestTrait
 {
@@ -64,6 +65,7 @@ trait AliasTestTrait
      * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::invalidAliasedInvokable
      * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::invalidAliasedFactory
      * @param array<string,mixed> $config
+     * @param list<class-string<Throwable>> $expectedExceptions
      */
     final public function testInvalidAliasResultsInExceptionDuringInstanceRetrieval(
         array $config,

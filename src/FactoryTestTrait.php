@@ -7,6 +7,7 @@ namespace Laminas\ContainerConfigTest;
 use Laminas\ContainerConfigTest\Helper\Assert;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
+use Throwable;
 
 use function array_shift;
 
@@ -45,6 +46,7 @@ trait FactoryTestTrait
     /**
      * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::invalidFactory
      * @param array<string,mixed> $config
+     * @param list<class-string<Throwable>> $expectedExceptions
      */
     final public function testInvalidFactoryResultsInExceptionDuringInstanceRetrieval(
         array $config,
