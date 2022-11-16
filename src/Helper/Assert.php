@@ -7,7 +7,6 @@ namespace Laminas\ContainerConfigTest\Helper;
 use PHPUnit\Framework\Assert as PHPUnitAssert;
 use Throwable;
 
-use function get_class;
 use function implode;
 use function sprintf;
 
@@ -24,7 +23,7 @@ class Assert
             if (! self::isInstanceOf($e, $exceptions)) {
                 PHPUnitAssert::fail(sprintf(
                     'Throwable of type %s (%s) was raised; expected one of %s',
-                    get_class($e),
+                    $e::class,
                     $e->getMessage(),
                     implode(', ', $exceptions)
                 ));
