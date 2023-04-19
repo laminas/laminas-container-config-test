@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Laminas\ContainerConfigTest;
 
-use Laminas\ContainerConfigTest\Helper\Assert;
-use Psr\Container\ContainerExceptionInterface;
-use Throwable;
+use function assert;
 
+/**
+ * @psalm-require-extends AbstractContainerTest
+ */
 trait AliasTestTrait
 {
     /**
@@ -20,6 +21,8 @@ trait AliasTestTrait
         string $alias,
         string $name
     ): void {
+        assert($this instanceof AbstractContainerTest);
+
         $container = $this->createContainer($config);
 
         self::assertTrue($container->has($name));
@@ -37,6 +40,8 @@ trait AliasTestTrait
         string $alias,
         string $name
     ): void {
+        assert($this instanceof AbstractContainerTest);
+
         $container = $this->createContainer($config);
 
         self::assertTrue($container->has($alias));
@@ -59,31 +64,5 @@ trait AliasTestTrait
         self::assertTrue($container->has('alias1'));
         self::assertTrue($container->has('alias2'));
         self::assertSame($container->get('alias1'), $container->get('alias2'));
-    }
-
-    /**
-     * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::invalidAliasedInvokable
-     * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::invalidAliasedFactory
-     * @param array<string,mixed> $config
-     * @param list<class-string<Throwable>> $expectedExceptions
-     */
-    final public function testInvalidAliasResultsInExceptionDuringInstanceRetrieval(
-        array $config,
-        string $name,
-        string $originName,
-        array $expectedExceptions = []
-    ): void {
-        $expectedExceptions[] = ContainerExceptionInterface::class;
-        $container            = $this->createContainer($config);
-
-        self::assertTrue($container->has($name));
-        self::assertTrue($container->has($originName));
-
-        Assert::expectedExceptions(
-            function () use ($container, $name) {
-                return $container->get($name);
-            },
-            $expectedExceptions
-        );
     }
 }

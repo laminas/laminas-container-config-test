@@ -4,10 +4,16 @@ declare(strict_types=1);
 
 namespace Laminas\ContainerConfigTest;
 
+use function assert;
+
+/**
+ * @psalm-require-extends AbstractContainerTest
+ */
 trait ServiceTestTrait
 {
     final public function testFetchingServiceReturnsSameInstance(): void
     {
+        assert($this instanceof AbstractContainerTest);
         $service = new TestAsset\Service();
         $config  = [
             'services' => [

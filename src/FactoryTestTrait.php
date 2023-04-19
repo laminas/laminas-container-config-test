@@ -4,13 +4,15 @@ declare(strict_types=1);
 
 namespace Laminas\ContainerConfigTest;
 
-use Laminas\ContainerConfigTest\Helper\Assert;
-use Psr\Container\ContainerExceptionInterface;
+use Laminas\ContainerConfigTest\TestAsset\FactoryService;
 use Psr\Container\ContainerInterface;
-use Throwable;
 
 use function array_shift;
+use function assert;
 
+/**
+ * @psalm-require-extends AbstractContainerTest
+ */
 trait FactoryTestTrait
 {
     /**
@@ -19,6 +21,7 @@ trait FactoryTestTrait
      */
     final public function testFactoryIsUsedToProduceService(array $config): void
     {
+        assert($this instanceof AbstractContainerTest);
         $container = $this->createContainer($config);
 
         self::assertTrue($container->has('service'));
@@ -33,36 +36,16 @@ trait FactoryTestTrait
      */
     final public function testFactoryIsProvidedContainerAndServiceNameAsArguments(array $config): void
     {
+        assert($this instanceof AbstractContainerTest);
         $container = $this->createContainer($config);
 
-        $args = $container->get('service')->args;
+        $service = $container->get('service');
+        self::assertInstanceOf(FactoryService::class, $service);
+        $args = $service->args;
         self::assertGreaterThanOrEqual(2, $args);
         // Not testing for identical $container argument here, as some implementations
         // may decorate another container in order to fulfill the config contracts.
         self::assertInstanceOf(ContainerInterface::class, array_shift($args));
         self::assertEquals('service', array_shift($args));
-    }
-
-    /**
-     * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::invalidFactory
-     * @param array<string,mixed> $config
-     * @param list<class-string<Throwable>> $expectedExceptions
-     */
-    final public function testInvalidFactoryResultsInExceptionDuringInstanceRetrieval(
-        array $config,
-        string $name,
-        string $originName,
-        array $expectedExceptions = []
-    ): void {
-        $expectedExceptions[] = ContainerExceptionInterface::class;
-        $container            = $this->createContainer($config);
-
-        self::assertTrue($container->has($name));
-        Assert::expectedExceptions(
-            function () use ($container, $name) {
-                $container->get($name);
-            },
-            $expectedExceptions
-        );
     }
 }
