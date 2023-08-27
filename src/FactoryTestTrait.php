@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Laminas\ContainerConfigTest;
 
+use Laminas\ContainerConfigTest\Helper\Provider;
 use Laminas\ContainerConfigTest\TestAsset\FactoryService;
+use PHPUnit\Framework\Attributes\DataProviderExternal;
 use Psr\Container\ContainerInterface;
 
 use function array_shift;
@@ -16,9 +18,9 @@ use function assert;
 trait FactoryTestTrait
 {
     /**
-     * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::factory
      * @param array<string,mixed> $config
      */
+    #[DataProviderExternal(Provider::class, 'factory')]
     final public function testFactoryIsUsedToProduceService(array $config): void
     {
         assert($this instanceof AbstractContainerTest);
@@ -31,9 +33,9 @@ trait FactoryTestTrait
     }
 
     /**
-     * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::factoryWithName
      * @param array<string,mixed> $config
      */
+    #[DataProviderExternal(Provider::class, 'factoryWithName')]
     final public function testFactoryIsProvidedContainerAndServiceNameAsArguments(array $config): void
     {
         assert($this instanceof AbstractContainerTest);

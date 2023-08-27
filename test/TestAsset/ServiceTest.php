@@ -9,9 +9,6 @@ use PHPUnit\Framework\TestCase;
 
 class ServiceTest extends TestCase
 {
-    /**
-     * @covers \Laminas\ContainerConfigTest\TestAsset\Service::inject
-     */
     public function testInject(): void
     {
         $service = new Service();

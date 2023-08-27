@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Laminas\ContainerConfigTest;
 
+use Laminas\ContainerConfigTest\Helper\Provider;
+use PHPUnit\Framework\Attributes\DataProviderExternal;
+
 use function array_merge;
 use function assert;
 
@@ -13,10 +16,10 @@ use function assert;
 trait SharedTestTrait
 {
     /**
-     * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::service
-     * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::aliasedService
      * @param array<string,mixed> $config
      */
+    #[DataProviderExternal(Provider::class, 'service')]
+    #[DataProviderExternal(Provider::class, 'aliasedService')]
     final public function testIsSharedByDefault(array $config, string $serviceToTest): void
     {
         assert($this instanceof AbstractContainerTest);
@@ -31,10 +34,10 @@ trait SharedTestTrait
     }
 
     /**
-     * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::service
-     * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::aliasedService
      * @param array<string,mixed> $config
      */
+    #[DataProviderExternal(Provider::class, 'service')]
+    #[DataProviderExternal(Provider::class, 'aliasedService')]
     final public function testCanDisableSharedByDefault(array $config, string $serviceToTest): void
     {
         assert($this instanceof AbstractContainerTest);
@@ -52,10 +55,10 @@ trait SharedTestTrait
     }
 
     /**
-     * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::service
-     * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::aliasedService
      * @param array<string,mixed> $config
      */
+    #[DataProviderExternal(Provider::class, 'service')]
+    #[DataProviderExternal(Provider::class, 'aliasedService')]
     final public function testCanDisableSharedForSingleService(array $config, string $serviceToTest): void
     {
         assert($this instanceof AbstractContainerTest);
@@ -74,10 +77,10 @@ trait SharedTestTrait
     }
 
     /**
-     * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::service
-     * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::aliasedService
      * @param array<string,mixed> $config
      */
+    #[DataProviderExternal(Provider::class, 'service')]
+    #[DataProviderExternal(Provider::class, 'aliasedService')]
     final public function testCanEnableSharedForSingleService(array $config, string $serviceToTest): void
     {
         assert($this instanceof AbstractContainerTest);
