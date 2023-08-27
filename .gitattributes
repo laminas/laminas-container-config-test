@@ -2,9 +2,10 @@
 /.github/ export-ignore
 /.gitignore export-ignore
 /docs/ export-ignore
+/.lamimas-ci.json export-ignore
 /phpcs.xml export-ignore
 /psalm.xml export-ignore
 /psalm-baseline.xml export-ignore
 /phpunit.xml.dist export-ignore
+/renovate.json export-ignore
 /test/ export-ignore
-/renovate.json

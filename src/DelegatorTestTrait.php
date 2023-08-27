@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Laminas\ContainerConfigTest;
 
+use Laminas\ContainerConfigTest\Helper\Provider;
+use PHPUnit\Framework\Attributes\DataProviderExternal;
+
 use function assert;
 
 /**
@@ -213,10 +216,10 @@ trait DelegatorTestTrait
     }
 
     /**
-     * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::service
-     * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::aliasedService
      * @param array<string,mixed> $config
      */
+    #[DataProviderExternal(Provider::class, 'service')]
+    #[DataProviderExternal(Provider::class, 'aliasedService')]
     final public function testDelegatorsReceiveCallbackResolvingToReturnValueOfPrevious(
         array $config,
         string $serviceNameToTest,
@@ -251,10 +254,10 @@ trait DelegatorTestTrait
     }
 
     /**
-     * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::service
-     * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::aliasedService
      * @param array<string,mixed> $config
      */
+    #[DataProviderExternal(Provider::class, 'service')]
+    #[DataProviderExternal(Provider::class, 'aliasedService')]
     final public function testEmptyDelegatorListOriginalServiceShouldBeReturned(
         array $config,
         string $serviceNameToTest,
@@ -316,9 +319,9 @@ trait DelegatorTestTrait
     }
 
     /**
-     * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::factory
      * @param array<string,mixed> $config
      */
+    #[DataProviderExternal(Provider::class, 'factory')]
     final public function testDelegatorFactoriesTriggerForFactoryBackedServicesUsingAnyFactoryType(array $config): void
     {
         assert($this instanceof AbstractContainerTest);
@@ -343,9 +346,9 @@ trait DelegatorTestTrait
     }
 
     /**
-     * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::factory
      * @param array<string,mixed> $config
      */
+    #[DataProviderExternal(Provider::class, 'factory')]
     final public function testDelegatorsTriggerForFactoryServiceResolvedByAlias(array $config): void
     {
         assert($this instanceof AbstractContainerTest);
@@ -378,9 +381,9 @@ trait DelegatorTestTrait
     }
 
     /**
-     * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::factory
      * @param array<string,mixed> $config
      */
+    #[DataProviderExternal(Provider::class, 'factory')]
     final public function testDelegatorsDoNotTriggerForAliasTargetingFactoryBasedServiceUsingAnyFactoryType(
         array $config
     ): void {
@@ -410,9 +413,9 @@ trait DelegatorTestTrait
     }
 
     /**
-     * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::service()
      * @param array<string,mixed> $config
      */
+    #[DataProviderExternal(Provider::class, 'service')]
     final public function testWithDelegatorsResolvesToInvalidClassNoExceptionIsRaisedIfCallbackNeverInvoked(
         array $config,
         string $serviceNameToTest,

@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Laminas\ContainerConfigTest;
 
+use Laminas\ContainerConfigTest\Helper\Provider;
+use PHPUnit\Framework\Attributes\DataProviderExternal;
+
 use function assert;
 
 /**
@@ -12,10 +15,10 @@ use function assert;
 trait AliasTestTrait
 {
     /**
-     * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::alias
-     * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::aliasedAlias
      * @param array<string,mixed> $config
      */
+    #[DataProviderExternal(Provider::class, 'alias')]
+    #[DataProviderExternal(Provider::class, 'aliasedAlias')]
     final public function testRetrievingServiceByNameBeforeAliasOfServiceResultsInSameInstance(
         array $config,
         string $alias,
@@ -31,10 +34,10 @@ trait AliasTestTrait
     }
 
     /**
-     * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::alias
-     * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::aliasedAlias
      * @param array<string,mixed> $config
      */
+    #[DataProviderExternal(Provider::class, 'alias')]
+    #[DataProviderExternal(Provider::class, 'aliasedAlias')]
     final public function testRetrievingAliasedServiceBeforeResolvedServiceResultsInSameInstance(
         array $config,
         string $alias,

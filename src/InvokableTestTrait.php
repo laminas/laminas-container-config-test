@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Laminas\ContainerConfigTest;
 
+use Laminas\ContainerConfigTest\Helper\Provider;
+use PHPUnit\Framework\Attributes\DataProviderExternal;
+
 use function assert;
 
 /**
@@ -36,9 +39,9 @@ trait InvokableTestTrait
     }
 
     /**
-     * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::invokable
      * @param array<string,mixed> $config
      */
+    #[DataProviderExternal(Provider::class, 'invokable')]
     final public function testInvokable(
         array $config,
         string $alias,
