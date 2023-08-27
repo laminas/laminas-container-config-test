@@ -5,7 +5,11 @@ declare(strict_types=1);
 namespace Laminas\ContainerConfigTest;
 
 use function array_merge;
+use function assert;
 
+/**
+ * @psalm-require-extends AbstractContainerTest
+ */
 trait SharedTestTrait
 {
     /**
@@ -15,6 +19,7 @@ trait SharedTestTrait
      */
     final public function testIsSharedByDefault(array $config, string $serviceToTest): void
     {
+        assert($this instanceof AbstractContainerTest);
         $container = $this->createContainer($config);
 
         /** @var mixed $service1 */
@@ -32,6 +37,8 @@ trait SharedTestTrait
      */
     final public function testCanDisableSharedByDefault(array $config, string $serviceToTest): void
     {
+        assert($this instanceof AbstractContainerTest);
+
         $container = $this->createContainer(array_merge($config, [
             'shared_by_default' => false,
         ]));
@@ -51,6 +58,7 @@ trait SharedTestTrait
      */
     final public function testCanDisableSharedForSingleService(array $config, string $serviceToTest): void
     {
+        assert($this instanceof AbstractContainerTest);
         $container = $this->createContainer(array_merge($config, [
             'shared' => [
                 $serviceToTest => false,
@@ -72,6 +80,7 @@ trait SharedTestTrait
      */
     final public function testCanEnableSharedForSingleService(array $config, string $serviceToTest): void
     {
+        assert($this instanceof AbstractContainerTest);
         $container = $this->createContainer(array_merge($config, [
             'shared_by_default' => false,
             'shared'            => [
@@ -89,6 +98,7 @@ trait SharedTestTrait
 
     final public function testServiceIsSharedByDefault(): void
     {
+        assert($this instanceof AbstractContainerTest);
         $service   = new TestAsset\Service();
         $container = $this->createContainer([
             'services' => [
@@ -107,6 +117,7 @@ trait SharedTestTrait
 
     final public function testServiceIsSharedEvenIfSharedByDefaultIsFalse(): void
     {
+        assert($this instanceof AbstractContainerTest);
         $service   = new TestAsset\Service();
         $container = $this->createContainer([
             'services'          => [
@@ -126,6 +137,7 @@ trait SharedTestTrait
 
     final public function testServiceIsSharedEvenIfHasSharedSetToFalse(): void
     {
+        assert($this instanceof AbstractContainerTest);
         $service   = new TestAsset\Service();
         $container = $this->createContainer([
             'services' => [
@@ -147,6 +159,7 @@ trait SharedTestTrait
 
     final public function testServiceIsSharedWhenAccessedByAlias(): void
     {
+        assert($this instanceof AbstractContainerTest);
         $service   = new TestAsset\Service();
         $container = $this->createContainer([
             'aliases'  => [

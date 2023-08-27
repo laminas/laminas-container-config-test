@@ -16,5 +16,14 @@
     <file>test</file>
 
     <!-- Include all rules from the Laminas Coding Standard -->
-    <rule ref="LaminasCodingStandard"/>
+    <rule ref="LaminasCodingStandard">
+        <!-- Sniff cannot handle multiline array-shape parameter declarations -->
+        <exclude name="Squiz.Commenting.FunctionComment.MissingParamName"/>
+        <!--
+            Sniff wants to enforce spaces after each comma but does not allow spaces before comma.
+            Due to the usage of list() pattern along with skipped arguments, i.e. list($foo,,$bar), there is no
+            way to fulfill this without introducing an unused variable, which then would be reported by psalm.
+        -->
+        <exclude name="WebimpressCodingStandard.WhiteSpace.CommaSpacing.NoSpaceAfterComma"/>
+    </rule>
 </ruleset>

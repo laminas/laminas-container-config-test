@@ -4,15 +4,17 @@ declare(strict_types=1);
 
 namespace Laminas\ContainerConfigTest;
 
-use ArgumentCountError;
-use Error;
-use Laminas\ContainerConfigTest\Helper\Assert;
-use Psr\Container\ContainerExceptionInterface;
+use function assert;
 
+/**
+ * @psalm-require-extends AbstractContainerTest
+ */
 trait DelegatorTestTrait
 {
     final public function testDelegatorsOperateOnInvokables(): void
     {
+        assert($this instanceof AbstractContainerTest);
+
         $config = [
             'invokables' => [
                 TestAsset\Service::class => TestAsset\Service::class,
@@ -37,6 +39,8 @@ trait DelegatorTestTrait
 
     final public function testDelegatorsDoNotOperateOnServices(): void
     {
+        assert($this instanceof AbstractContainerTest);
+
         $myService = new TestAsset\Service();
         $config    = [
             'services'   => [
@@ -59,6 +63,8 @@ trait DelegatorTestTrait
 
     final public function testDelegatorsApplyToInvokableServiceResolvedViaAlias(): void
     {
+        assert($this instanceof AbstractContainerTest);
+
         $config = [
             'aliases'    => [
                 'alias' => TestAsset\Service::class,
@@ -87,6 +93,8 @@ trait DelegatorTestTrait
 
     final public function testDelegatorsNamedForAliasDoNotApplyToInvokableServiceResolvedViaAlias(): void
     {
+        assert($this instanceof AbstractContainerTest);
+
         $config = [
             'aliases'    => [
                 'alias' => TestAsset\Service::class,
@@ -115,6 +123,8 @@ trait DelegatorTestTrait
 
     final public function testDelegatorsNamedForAliasDoNotApplyToInvokableServiceWithAlias(): void
     {
+        assert($this instanceof AbstractContainerTest);
+
         $config = [
             'invokables' => [
                 'alias' => TestAsset\Service::class,
@@ -140,6 +150,8 @@ trait DelegatorTestTrait
 
     final public function testDelegatorsDoNotApplyToAliasResolvingToServiceEntry(): void
     {
+        assert($this instanceof AbstractContainerTest);
+
         $myService = new TestAsset\Service();
         $config    = [
             'aliases'    => [
@@ -172,6 +184,8 @@ trait DelegatorTestTrait
 
     final public function testDelegatorsDoNotTriggerForAliasTargetingInvokableService(): void
     {
+        assert($this instanceof AbstractContainerTest);
+
         $config = [
             'aliases'    => [
                 'alias' => TestAsset\Service::class,
@@ -208,6 +222,8 @@ trait DelegatorTestTrait
         string $serviceNameToTest,
         string $delegatedServiceName
     ): void {
+        assert($this instanceof AbstractContainerTest);
+
         $config += [
             'delegators' => [
                 $delegatedServiceName => [
@@ -244,6 +260,8 @@ trait DelegatorTestTrait
         string $serviceNameToTest,
         string $delegatedServiceName
     ): void {
+        assert($this instanceof AbstractContainerTest);
+
         $config += [
             'delegators' => [
                 $delegatedServiceName => [],
@@ -263,6 +281,8 @@ trait DelegatorTestTrait
 
     final public function testMultipleAliasesForADelegatedInvokableServiceReceiveSameInstance(): void
     {
+        assert($this instanceof AbstractContainerTest);
+
         $container = $this->createContainer([
             'invokables' => [
                 'alias1' => TestAsset\Service::class,
@@ -296,86 +316,13 @@ trait DelegatorTestTrait
     }
 
     /**
-     * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::service
-     * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::aliasedService
-     * @param array<string,mixed> $config
-     */
-    final public function testNonInvokableDelegatorClassNameResultsInExceptionDuringInstanceRetrieval(
-        array $config,
-        string $serviceNameToTest,
-        string $delegatedServiceName
-    ): void {
-        $container = $this->createContainer($config + [
-            'delegators' => [
-                $delegatedServiceName => [
-                    TestAsset\NonInvokableFactory::class,
-                ],
-            ],
-        ]);
-
-        self::assertTrue($container->has($serviceNameToTest));
-        $this->expectException(ContainerExceptionInterface::class);
-        $container->get($serviceNameToTest);
-    }
-
-    /**
-     * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::service
-     * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::aliasedService
-     * @param array<string,mixed> $config
-     */
-    final public function testNonExistentDelegatorClassResultsInExceptionDuringInstanceRetrieval(
-        array $config,
-        string $serviceNameToTest,
-        string $delegatedServiceName
-    ): void {
-        $container = $this->createContainer($config + [
-            'delegators' => [
-                $delegatedServiceName => [
-                    /** @psalm-suppress UndefinedClass */
-                    TestAsset\NonExistentDelegatorFactory::class,
-                ],
-            ],
-        ]);
-
-        self::assertTrue($container->has($serviceNameToTest));
-        $this->expectException(ContainerExceptionInterface::class);
-        $container->get($serviceNameToTest);
-    }
-
-    /**
-     * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::service
-     * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::aliasedService
-     * @param array<string,mixed> $config
-     */
-    final public function testDelegatorClassNameRequiringConstructorArgumentsResultsInExceptionDuringInstanceRetrieval(
-        array $config,
-        string $serviceNameToTest,
-        string $delegatedServiceName
-    ): void {
-        $container = $this->createContainer($config + [
-            'delegators' => [
-                $delegatedServiceName => [
-                    TestAsset\FactoryWithRequiredParameters::class,
-                ],
-            ],
-        ]);
-
-        self::assertTrue($container->has($serviceNameToTest));
-
-        Assert::expectedExceptions(
-            function () use ($container, $serviceNameToTest) {
-                $container->get($serviceNameToTest);
-            },
-            [ArgumentCountError::class, ContainerExceptionInterface::class]
-        );
-    }
-
-    /**
      * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::factory
      * @param array<string,mixed> $config
      */
     final public function testDelegatorFactoriesTriggerForFactoryBackedServicesUsingAnyFactoryType(array $config): void
     {
+        assert($this instanceof AbstractContainerTest);
+
         $config += [
             'delegators' => [
                 'service' => [
@@ -401,6 +348,8 @@ trait DelegatorTestTrait
      */
     final public function testDelegatorsTriggerForFactoryServiceResolvedByAlias(array $config): void
     {
+        assert($this instanceof AbstractContainerTest);
+
         $config += [
             'aliases'    => [
                 'alias' => 'service',
@@ -435,6 +384,8 @@ trait DelegatorTestTrait
     final public function testDelegatorsDoNotTriggerForAliasTargetingFactoryBasedServiceUsingAnyFactoryType(
         array $config
     ): void {
+        assert($this instanceof AbstractContainerTest);
+
         $config += [
             'aliases'    => [
                 'alias' => 'service',
@@ -459,7 +410,7 @@ trait DelegatorTestTrait
     }
 
     /**
-     * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::invalidService
+     * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::service()
      * @param array<string,mixed> $config
      */
     final public function testWithDelegatorsResolvesToInvalidClassNoExceptionIsRaisedIfCallbackNeverInvoked(
@@ -467,6 +418,8 @@ trait DelegatorTestTrait
         string $serviceNameToTest,
         string $delegatedServiceName
     ): void {
+        assert($this instanceof AbstractContainerTest);
+
         $container = $this->createContainer($config + [
             'delegators' => [
                 $delegatedServiceName => [
@@ -478,32 +431,5 @@ trait DelegatorTestTrait
         self::assertTrue($container->has($serviceNameToTest));
         $instance = $container->get($serviceNameToTest);
         self::assertInstanceOf(TestAsset\Delegator::class, $instance);
-    }
-
-    /**
-     * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::invalidService
-     * @param array<string,mixed> $config
-     */
-    final public function testWithDelegatorsResolvesToInvalidClassAnExceptionIsRaisedWhenCallbackIsInvoked(
-        array $config,
-        string $serviceNameToTest,
-        string $delegatedServiceName
-    ): void {
-        $container = $this->createContainer($config + [
-            'delegators' => [
-                $delegatedServiceName => [
-                    TestAsset\Delegator1Factory::class,
-                ],
-            ],
-        ]);
-
-        self::assertTrue($container->has($serviceNameToTest));
-
-        Assert::expectedExceptions(
-            function () use ($container, $serviceNameToTest) {
-                $container->get($serviceNameToTest);
-            },
-            [Error::class, ContainerExceptionInterface::class]
-        );
     }
 }

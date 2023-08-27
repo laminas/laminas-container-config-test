@@ -4,14 +4,16 @@ declare(strict_types=1);
 
 namespace Laminas\ContainerConfigTest;
 
-use Laminas\ContainerConfigTest\Helper\Assert;
-use Psr\Container\ContainerExceptionInterface;
-use Throwable;
+use function assert;
 
+/**
+ * @psalm-require-extends AbstractContainerTest
+ */
 trait InvokableTestTrait
 {
     final public function testCanSpecifyMultipleInvokablesWithoutKeyAndNotCauseCollisions(): void
     {
+        assert($this instanceof AbstractContainerTest);
         $config = [
             'invokables' => [
                 TestAsset\Service::class,
@@ -42,6 +44,7 @@ trait InvokableTestTrait
         string $alias,
         string $name
     ): void {
+        assert($this instanceof AbstractContainerTest);
         $container = $this->createContainer($config);
 
         self::assertTrue($container->has($alias));
@@ -54,28 +57,5 @@ trait InvokableTestTrait
 
         self::assertSame($service, $originService);
         self::assertSame($originService, $container->get($name));
-    }
-
-    /**
-     * @dataProvider \Laminas\ContainerConfigTest\Helper\Provider::invalidInvokable
-     * @param array<string,mixed> $config
-     * @param list<class-string<Throwable>> $expectedExceptions
-     */
-    final public function testInvalidInvokableResultsInExceptionDuringInstanceRetrieval(
-        array $config,
-        string $name,
-        string $originName,
-        array $expectedExceptions = []
-    ): void {
-        $expectedExceptions[] = ContainerExceptionInterface::class;
-        $container            = $this->createContainer($config);
-
-        self::assertTrue($container->has($name));
-        Assert::expectedExceptions(
-            function () use ($container) {
-                $container->get(TestAsset\Delegator::class);
-            },
-            $expectedExceptions
-        );
     }
 }

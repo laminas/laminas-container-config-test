@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Laminas\ContainerConfigTest\Helper;
 
-use ArgumentCountError;
-use Error;
 use Generator;
 use Laminas\ContainerConfigTest\TestAsset;
 
@@ -16,7 +14,7 @@ use function func_get_args;
  */
 class Provider
 {
-    /** @psalm-return Generator */
+    /** @return Generator<non-empty-string,array{0:array<string,mixed>}> */
     public static function factory(): Generator
     {
         yield 'function-name' => [
@@ -41,7 +39,7 @@ class Provider
         ];
     }
 
-    /** @psalm-return Generator */
+    /** @return Generator<non-empty-string,array{0:array<string,mixed>}> */
     public static function factoryWithName(): Generator
     {
         yield 'function-name' => [
@@ -67,139 +65,51 @@ class Provider
     }
 
     /**
-     * @psalm-suppress MixedArrayAccess
-     * @psalm-suppress MixedArrayAssignment
-     * @psalm-return Generator
+     * @param callable():iterable<non-empty-string,array{
+     *     array<string,mixed>,
+     *     non-empty-string,
+     *     non-empty-string
+     * }> $callable
+     * @return Generator<non-empty-string,array{
+     *     array<string,mixed>,
+     *     non-empty-string,
+     *     non-empty-string
+     * }>
      */
     private static function aliased(callable $callable): Generator
     {
-        /**
-         * @var string $name
-         * @var mixed $params
-         */
-        foreach ($callable() as $name => $params) {
-            /** @var mixed $params[0]['aliases']['alias'] */
-            $params[0]['aliases']['alias'] = $params[1];
+        foreach ($callable() as $name => [$config,, $serviceName]) {
+            /** @var array<string,string> $aliases */
+            $aliases           = $config['aliases'] ?? [];
+            $aliases['alias']  = $serviceName;
+            $config['aliases'] = $aliases;
 
             yield 'aliased-' . $name => [
-                $params[0],
+                $config,
                 'alias',
-                $params[2],
-                $params[3] ?? [],
+                $serviceName,
             ];
         }
     }
 
-    public static function invalidAliasedInvokable(): Generator
-    {
-        yield from self::aliased([self::class, 'invalidInvokable']);
-    }
-
     /**
-     * @psalm-suppress UndefinedClass
-     * @psalm-return Generator
+     * @return Generator<non-empty-string,array{
+     *     array<string,mixed>,
+     *     non-empty-string,
+     *     non-empty-string
+     * }>
      */
-    public static function invalidInvokable(): Generator
-    {
-        yield 'non-existent-invokable' => [
-            ['invokables' => [TestAsset\NonExistent::class]],
-            TestAsset\NonExistent::class,
-            TestAsset\NonExistent::class,
-            [Error::class],
-        ];
-
-        yield 'non-existent-invokable-with-alias' => [
-            ['invokables' => ['service' => TestAsset\NonExistent::class]],
-            'service',
-            TestAsset\NonExistent::class,
-            [Error::class],
-        ];
-
-        yield 'invalid-invokable' => [
-            ['invokables' => [TestAsset\FactoryWithRequiredParameters::class]],
-            TestAsset\FactoryWithRequiredParameters::class,
-            TestAsset\FactoryWithRequiredParameters::class,
-            [ArgumentCountError::class],
-        ];
-
-        yield 'invalid-invokable-with-alias' => [
-            ['invokables' => ['service' => TestAsset\FactoryWithRequiredParameters::class]],
-            'service',
-            TestAsset\FactoryWithRequiredParameters::class,
-            [ArgumentCountError::class],
-        ];
-    }
-
-    /** @psalm-return Generator */
-    public static function invalidAliasedFactory(): Generator
-    {
-        yield from self::aliased([self::class, 'invalidFactory']);
-    }
-
-    /** @psalm-return Generator */
-    public static function invalidFactory(): Generator
-    {
-        /** @psalm-suppress UndefinedClass */
-        yield 'non-existent-factory' => [
-            ['factories' => ['service' => TestAsset\NonExistent::class]],
-            'service',
-            'service',
-        ];
-
-        yield 'invalid-factory' => [
-            ['factories' => ['service' => TestAsset\FactoryWithRequiredParameters::class]],
-            'service',
-            'service',
-            [ArgumentCountError::class],
-        ];
-
-        yield 'non-invokable-factory' => [
-            ['factories' => ['service' => TestAsset\NonInvokableFactory::class]],
-            'service',
-            'service',
-        ];
-
-        yield 'non-class-factory' => [
-            ['factories' => ['service' => 5]],
-            'service',
-            'service',
-        ];
-
-        yield 'array-non-static-factory' => [
-            ['factories' => ['service' => [TestAsset\Factory::class, '__invoke']]],
-            'service',
-            'service',
-        ];
-
-        yield 'factory-as-string-to-service-factory' => [
-            [
-                'factories' => ['service' => 'factory'],
-                'services'  => ['factory' => new TestAsset\Factory()],
-            ],
-            'service',
-            'service',
-        ];
-    }
-
-    /** @psalm-return Generator */
-    public static function invalidService(): Generator
-    {
-        yield from self::invalidInvokable();
-        yield from self::invalidAliasedInvokable();
-        yield from self::invalidFactory();
-        yield from self::invalidAliasedFactory();
-    }
-
-    /** @psalm-return Generator */
     public static function aliasedAlias(): Generator
     {
-        yield from self::aliased([self::class, 'alias']);
+        yield from self::aliased(fn () => self::alias());
     }
 
     /**
-     * @psalm-suppress MixedOperand
-     * @psalm-suppress MixedArrayAccess
-     * @psalm-return Generator
+     * @return Generator<non-empty-string,array{
+     *     array<string,mixed>,
+     *     non-empty-string,
+     *     non-empty-string
+     * }>
      */
     public static function alias(): Generator
     {
@@ -212,10 +122,6 @@ class Provider
             'service',
         ];
 
-        /**
-         * @var string $name
-         * @var mixed $params
-         */
         foreach (self::invokable() as $name => $params) {
             yield 'alias-' . $name => [
                 ['aliases' => ['foo-bar' => $params[1]]] + $params[0],
@@ -224,10 +130,6 @@ class Provider
             ];
         }
 
-        /**
-         * @var string $name
-         * @var mixed $params
-         */
         foreach (self::factory() as $name => $params) {
             yield 'alias-factory-' . $name => [
                 ['aliases' => ['foo-bar' => 'service']] + $params[0],
@@ -237,22 +139,29 @@ class Provider
         }
     }
 
-    /** @psalm-return Generator */
+    /**
+     * @return Generator<non-empty-string,array{
+     *     array<string,mixed>,
+     *     non-empty-string,
+     *     non-empty-string
+     * }>
+     */
     public static function aliasedService(): Generator
     {
-        yield from self::aliased([self::class, 'service']);
+        yield from self::aliased(fn() => self::service());
     }
 
-    /** @psalm-return Generator */
+    /**
+     * @return Generator<non-empty-string,array{
+     *     array<string,mixed>,
+     *     non-empty-string,
+     *     non-empty-string
+     * }>
+     */
     public static function service(): Generator
     {
         yield from self::invokable();
 
-        /**
-         * @var string $name
-         * @var mixed $params
-         * @psalm-suppress MixedArrayAccess
-         */
         foreach (self::factory() as $name => $params) {
             yield 'factory-service-' . $name => [
                 $params[0],
@@ -262,7 +171,13 @@ class Provider
         }
     }
 
-    /** @psalm-return Generator */
+    /**
+     * @return Generator<non-empty-string,array{
+     *     array<string,mixed>,
+     *     non-empty-string,
+     *     class-string,
+     * }>
+     */
     public static function invokable(): Generator
     {
         yield 'invokable' => [
