@@ -2,3 +2,4 @@
 /.phpcs-cache
 /phpunit.xml
 /vendor/
+/.phpunit.cache
