@@ -11,6 +11,8 @@ use function func_get_args;
 
 /**
  * @internal
+ *
+ * @final
  */
 class Provider
 {

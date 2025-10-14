@@ -7,6 +7,7 @@ namespace LaminasTest\ContainerConfigTest\TestAsset;
 use Laminas\ContainerConfigTest\TestAsset\Service;
 use PHPUnit\Framework\TestCase;
 
+/** @final */
 class ServiceTest extends TestCase
 {
     public function testInject(): void
