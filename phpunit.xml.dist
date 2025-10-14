@@ -4,8 +4,6 @@
          bootstrap="vendor/autoload.php"
          colors="true"
          cacheDirectory=".phpunit.cache"
-         failOnAllIssues="true"
-         displayDetailsOnAllIssues="true"
 >
     <coverage/>
     <testsuites>
@@ -13,7 +11,7 @@
             <directory>./test</directory>
         </testsuite>
     </testsuites>
-    <source ignoreIndirectDeprecations="true">
+    <source>
         <include>
             <directory suffix=".php">./src</directory>
         </include>
