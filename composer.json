@@ -31,7 +31,7 @@
     },
     "require": {
         "php": "~8.2.0 || ~8.3.0 || ~8.4.0 || ~8.5.0",
-        "phpunit/phpunit": "^11.5",
+        "phpunit/phpunit": "^12.5.22",
         "psr/container": "^1.0 || ^2.0.2"
     },
     "require-dev": {
